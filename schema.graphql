@@ -1,0 +1,3848 @@
+schema {
+  query: query_root
+  mutation: mutation_root
+  subscription: subscription_root
+}
+
+"""whether this query should be cached (Hasura Cloud only)"""
+directive @cached(
+  """measured in seconds"""
+  ttl: Int! = 60
+
+  """refresh the cache entry"""
+  refresh: Boolean! = false
+) on QUERY
+
+"""
+columns and relationships of "account"
+"""
+type account {
+  id: Int!
+  name: String!
+  password: String!
+  role: String!
+  username: String!
+}
+
+"""
+aggregated selection of "account"
+"""
+type account_aggregate {
+  aggregate: account_aggregate_fields
+  nodes: [account!]!
+}
+
+"""
+aggregate fields of "account"
+"""
+type account_aggregate_fields {
+  avg: account_avg_fields
+  count(columns: [account_select_column!], distinct: Boolean): Int!
+  max: account_max_fields
+  min: account_min_fields
+  stddev: account_stddev_fields
+  stddev_pop: account_stddev_pop_fields
+  stddev_samp: account_stddev_samp_fields
+  sum: account_sum_fields
+  var_pop: account_var_pop_fields
+  var_samp: account_var_samp_fields
+  variance: account_variance_fields
+}
+
+"""aggregate avg on columns"""
+type account_avg_fields {
+  id: Float
+}
+
+"""
+Boolean expression to filter rows from the table "account". All fields are combined with a logical 'AND'.
+"""
+input account_bool_exp {
+  _and: [account_bool_exp!]
+  _not: account_bool_exp
+  _or: [account_bool_exp!]
+  id: Int_comparison_exp
+  name: String_comparison_exp
+  password: String_comparison_exp
+  role: String_comparison_exp
+  username: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "account"
+"""
+enum account_constraint {
+  """unique or primary key constraint"""
+  account_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "account"
+"""
+input account_inc_input {
+  id: Int
+}
+
+"""
+input type for inserting data into table "account"
+"""
+input account_insert_input {
+  id: Int
+  name: String
+  password: String
+  role: String
+  username: String
+}
+
+"""aggregate max on columns"""
+type account_max_fields {
+  id: Int
+  name: String
+  password: String
+  role: String
+  username: String
+}
+
+"""aggregate min on columns"""
+type account_min_fields {
+  id: Int
+  name: String
+  password: String
+  role: String
+  username: String
+}
+
+"""
+response of any mutation on the table "account"
+"""
+type account_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [account!]!
+}
+
+"""
+on_conflict condition type for table "account"
+"""
+input account_on_conflict {
+  constraint: account_constraint!
+  update_columns: [account_update_column!]! = []
+  where: account_bool_exp
+}
+
+"""Ordering options when selecting data from "account"."""
+input account_order_by {
+  id: order_by
+  name: order_by
+  password: order_by
+  role: order_by
+  username: order_by
+}
+
+"""primary key columns input for table: account"""
+input account_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "account"
+"""
+enum account_select_column {
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  password
+
+  """column name"""
+  role
+
+  """column name"""
+  username
+}
+
+"""
+input type for updating data in table "account"
+"""
+input account_set_input {
+  id: Int
+  name: String
+  password: String
+  role: String
+  username: String
+}
+
+"""aggregate stddev on columns"""
+type account_stddev_fields {
+  id: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type account_stddev_pop_fields {
+  id: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type account_stddev_samp_fields {
+  id: Float
+}
+
+"""aggregate sum on columns"""
+type account_sum_fields {
+  id: Int
+}
+
+"""
+update columns of table "account"
+"""
+enum account_update_column {
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  password
+
+  """column name"""
+  role
+
+  """column name"""
+  username
+}
+
+"""aggregate var_pop on columns"""
+type account_var_pop_fields {
+  id: Float
+}
+
+"""aggregate var_samp on columns"""
+type account_var_samp_fields {
+  id: Float
+}
+
+"""aggregate variance on columns"""
+type account_variance_fields {
+  id: Float
+}
+
+"""
+columns and relationships of "category"
+"""
+type category {
+  id: Int!
+  name: String!
+
+  """An array relationship"""
+  products(
+    """distinct select on columns"""
+    distinct_on: [product_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_order_by!]
+
+    """filter the rows returned"""
+    where: product_bool_exp
+  ): [product!]!
+
+  """An aggregate relationship"""
+  products_aggregate(
+    """distinct select on columns"""
+    distinct_on: [product_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_order_by!]
+
+    """filter the rows returned"""
+    where: product_bool_exp
+  ): product_aggregate!
+}
+
+"""
+aggregated selection of "category"
+"""
+type category_aggregate {
+  aggregate: category_aggregate_fields
+  nodes: [category!]!
+}
+
+"""
+aggregate fields of "category"
+"""
+type category_aggregate_fields {
+  avg: category_avg_fields
+  count(columns: [category_select_column!], distinct: Boolean): Int!
+  max: category_max_fields
+  min: category_min_fields
+  stddev: category_stddev_fields
+  stddev_pop: category_stddev_pop_fields
+  stddev_samp: category_stddev_samp_fields
+  sum: category_sum_fields
+  var_pop: category_var_pop_fields
+  var_samp: category_var_samp_fields
+  variance: category_variance_fields
+}
+
+"""aggregate avg on columns"""
+type category_avg_fields {
+  id: Float
+}
+
+"""
+Boolean expression to filter rows from the table "category". All fields are combined with a logical 'AND'.
+"""
+input category_bool_exp {
+  _and: [category_bool_exp!]
+  _not: category_bool_exp
+  _or: [category_bool_exp!]
+  id: Int_comparison_exp
+  name: String_comparison_exp
+  products: product_bool_exp
+}
+
+"""
+unique or primary key constraints on table "category"
+"""
+enum category_constraint {
+  """unique or primary key constraint"""
+  category_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "category"
+"""
+input category_inc_input {
+  id: Int
+}
+
+"""
+input type for inserting data into table "category"
+"""
+input category_insert_input {
+  id: Int
+  name: String
+  products: product_arr_rel_insert_input
+}
+
+"""aggregate max on columns"""
+type category_max_fields {
+  id: Int
+  name: String
+}
+
+"""aggregate min on columns"""
+type category_min_fields {
+  id: Int
+  name: String
+}
+
+"""
+response of any mutation on the table "category"
+"""
+type category_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [category!]!
+}
+
+"""
+input type for inserting object relation for remote table "category"
+"""
+input category_obj_rel_insert_input {
+  data: category_insert_input!
+
+  """upsert condition"""
+  on_conflict: category_on_conflict
+}
+
+"""
+on_conflict condition type for table "category"
+"""
+input category_on_conflict {
+  constraint: category_constraint!
+  update_columns: [category_update_column!]! = []
+  where: category_bool_exp
+}
+
+"""Ordering options when selecting data from "category"."""
+input category_order_by {
+  id: order_by
+  name: order_by
+  products_aggregate: product_aggregate_order_by
+}
+
+"""primary key columns input for table: category"""
+input category_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "category"
+"""
+enum category_select_column {
+  """column name"""
+  id
+
+  """column name"""
+  name
+}
+
+"""
+input type for updating data in table "category"
+"""
+input category_set_input {
+  id: Int
+  name: String
+}
+
+"""aggregate stddev on columns"""
+type category_stddev_fields {
+  id: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type category_stddev_pop_fields {
+  id: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type category_stddev_samp_fields {
+  id: Float
+}
+
+"""aggregate sum on columns"""
+type category_sum_fields {
+  id: Int
+}
+
+"""
+update columns of table "category"
+"""
+enum category_update_column {
+  """column name"""
+  id
+
+  """column name"""
+  name
+}
+
+"""aggregate var_pop on columns"""
+type category_var_pop_fields {
+  id: Float
+}
+
+"""aggregate var_samp on columns"""
+type category_var_samp_fields {
+  id: Float
+}
+
+"""aggregate variance on columns"""
+type category_variance_fields {
+  id: Float
+}
+
+"""
+columns and relationships of "customer"
+"""
+type customer {
+  """An array relationship"""
+  Orders(
+    """distinct select on columns"""
+    distinct_on: [Order_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [Order_order_by!]
+
+    """filter the rows returned"""
+    where: Order_bool_exp
+  ): [Order!]!
+
+  """An aggregate relationship"""
+  Orders_aggregate(
+    """distinct select on columns"""
+    distinct_on: [Order_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [Order_order_by!]
+
+    """filter the rows returned"""
+    where: Order_bool_exp
+  ): Order_aggregate!
+  id: Int!
+  name: String!
+  phone: String!
+}
+
+"""
+aggregated selection of "customer"
+"""
+type customer_aggregate {
+  aggregate: customer_aggregate_fields
+  nodes: [customer!]!
+}
+
+"""
+aggregate fields of "customer"
+"""
+type customer_aggregate_fields {
+  avg: customer_avg_fields
+  count(columns: [customer_select_column!], distinct: Boolean): Int!
+  max: customer_max_fields
+  min: customer_min_fields
+  stddev: customer_stddev_fields
+  stddev_pop: customer_stddev_pop_fields
+  stddev_samp: customer_stddev_samp_fields
+  sum: customer_sum_fields
+  var_pop: customer_var_pop_fields
+  var_samp: customer_var_samp_fields
+  variance: customer_variance_fields
+}
+
+"""aggregate avg on columns"""
+type customer_avg_fields {
+  id: Float
+}
+
+"""
+Boolean expression to filter rows from the table "customer". All fields are combined with a logical 'AND'.
+"""
+input customer_bool_exp {
+  Orders: Order_bool_exp
+  _and: [customer_bool_exp!]
+  _not: customer_bool_exp
+  _or: [customer_bool_exp!]
+  id: Int_comparison_exp
+  name: String_comparison_exp
+  phone: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "customer"
+"""
+enum customer_constraint {
+  """unique or primary key constraint"""
+  customer_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "customer"
+"""
+input customer_inc_input {
+  id: Int
+}
+
+"""
+input type for inserting data into table "customer"
+"""
+input customer_insert_input {
+  Orders: Order_arr_rel_insert_input
+  id: Int
+  name: String
+  phone: String
+}
+
+"""aggregate max on columns"""
+type customer_max_fields {
+  id: Int
+  name: String
+  phone: String
+}
+
+"""aggregate min on columns"""
+type customer_min_fields {
+  id: Int
+  name: String
+  phone: String
+}
+
+"""
+response of any mutation on the table "customer"
+"""
+type customer_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [customer!]!
+}
+
+"""
+input type for inserting object relation for remote table "customer"
+"""
+input customer_obj_rel_insert_input {
+  data: customer_insert_input!
+
+  """upsert condition"""
+  on_conflict: customer_on_conflict
+}
+
+"""
+on_conflict condition type for table "customer"
+"""
+input customer_on_conflict {
+  constraint: customer_constraint!
+  update_columns: [customer_update_column!]! = []
+  where: customer_bool_exp
+}
+
+"""Ordering options when selecting data from "customer"."""
+input customer_order_by {
+  Orders_aggregate: Order_aggregate_order_by
+  id: order_by
+  name: order_by
+  phone: order_by
+}
+
+"""primary key columns input for table: customer"""
+input customer_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "customer"
+"""
+enum customer_select_column {
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  phone
+}
+
+"""
+input type for updating data in table "customer"
+"""
+input customer_set_input {
+  id: Int
+  name: String
+  phone: String
+}
+
+"""aggregate stddev on columns"""
+type customer_stddev_fields {
+  id: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type customer_stddev_pop_fields {
+  id: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type customer_stddev_samp_fields {
+  id: Float
+}
+
+"""aggregate sum on columns"""
+type customer_sum_fields {
+  id: Int
+}
+
+"""
+update columns of table "customer"
+"""
+enum customer_update_column {
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  phone
+}
+
+"""aggregate var_pop on columns"""
+type customer_var_pop_fields {
+  id: Float
+}
+
+"""aggregate var_samp on columns"""
+type customer_var_samp_fields {
+  id: Float
+}
+
+"""aggregate variance on columns"""
+type customer_variance_fields {
+  id: Float
+}
+
+"""
+Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
+"""
+input Int_comparison_exp {
+  _eq: Int
+  _gt: Int
+  _gte: Int
+  _in: [Int!]
+  _is_null: Boolean
+  _lt: Int
+  _lte: Int
+  _neq: Int
+  _nin: [Int!]
+}
+
+"""mutation root"""
+type mutation_root {
+  """
+  delete data from the table: "Order"
+  """
+  delete_Order(
+    """filter the rows which have to be deleted"""
+    where: Order_bool_exp!
+  ): Order_mutation_response
+
+  """
+  delete single row from the table: "Order"
+  """
+  delete_Order_by_pk(id: Int!): Order
+
+  """
+  delete data from the table: "account"
+  """
+  delete_account(
+    """filter the rows which have to be deleted"""
+    where: account_bool_exp!
+  ): account_mutation_response
+
+  """
+  delete single row from the table: "account"
+  """
+  delete_account_by_pk(id: Int!): account
+
+  """
+  delete data from the table: "category"
+  """
+  delete_category(
+    """filter the rows which have to be deleted"""
+    where: category_bool_exp!
+  ): category_mutation_response
+
+  """
+  delete single row from the table: "category"
+  """
+  delete_category_by_pk(id: Int!): category
+
+  """
+  delete data from the table: "customer"
+  """
+  delete_customer(
+    """filter the rows which have to be deleted"""
+    where: customer_bool_exp!
+  ): customer_mutation_response
+
+  """
+  delete single row from the table: "customer"
+  """
+  delete_customer_by_pk(id: Int!): customer
+
+  """
+  delete data from the table: "orderdetail"
+  """
+  delete_orderdetail(
+    """filter the rows which have to be deleted"""
+    where: orderdetail_bool_exp!
+  ): orderdetail_mutation_response
+
+  """
+  delete single row from the table: "orderdetail"
+  """
+  delete_orderdetail_by_pk(id: Int!): orderdetail
+
+  """
+  delete data from the table: "product"
+  """
+  delete_product(
+    """filter the rows which have to be deleted"""
+    where: product_bool_exp!
+  ): product_mutation_response
+
+  """
+  delete single row from the table: "product"
+  """
+  delete_product_by_pk(id: Int!): product
+
+  """
+  delete data from the table: "supplier"
+  """
+  delete_supplier(
+    """filter the rows which have to be deleted"""
+    where: supplier_bool_exp!
+  ): supplier_mutation_response
+
+  """
+  delete single row from the table: "supplier"
+  """
+  delete_supplier_by_pk(id: Int!): supplier
+
+  """
+  delete data from the table: "unit"
+  """
+  delete_unit(
+    """filter the rows which have to be deleted"""
+    where: unit_bool_exp!
+  ): unit_mutation_response
+
+  """
+  delete single row from the table: "unit"
+  """
+  delete_unit_by_pk(id: Int!): unit
+
+  """
+  insert data into the table: "Order"
+  """
+  insert_Order(
+    """the rows to be inserted"""
+    objects: [Order_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: Order_on_conflict
+  ): Order_mutation_response
+
+  """
+  insert a single row into the table: "Order"
+  """
+  insert_Order_one(
+    """the row to be inserted"""
+    object: Order_insert_input!
+
+    """upsert condition"""
+    on_conflict: Order_on_conflict
+  ): Order
+
+  """
+  insert data into the table: "account"
+  """
+  insert_account(
+    """the rows to be inserted"""
+    objects: [account_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: account_on_conflict
+  ): account_mutation_response
+
+  """
+  insert a single row into the table: "account"
+  """
+  insert_account_one(
+    """the row to be inserted"""
+    object: account_insert_input!
+
+    """upsert condition"""
+    on_conflict: account_on_conflict
+  ): account
+
+  """
+  insert data into the table: "category"
+  """
+  insert_category(
+    """the rows to be inserted"""
+    objects: [category_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: category_on_conflict
+  ): category_mutation_response
+
+  """
+  insert a single row into the table: "category"
+  """
+  insert_category_one(
+    """the row to be inserted"""
+    object: category_insert_input!
+
+    """upsert condition"""
+    on_conflict: category_on_conflict
+  ): category
+
+  """
+  insert data into the table: "customer"
+  """
+  insert_customer(
+    """the rows to be inserted"""
+    objects: [customer_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: customer_on_conflict
+  ): customer_mutation_response
+
+  """
+  insert a single row into the table: "customer"
+  """
+  insert_customer_one(
+    """the row to be inserted"""
+    object: customer_insert_input!
+
+    """upsert condition"""
+    on_conflict: customer_on_conflict
+  ): customer
+
+  """
+  insert data into the table: "orderdetail"
+  """
+  insert_orderdetail(
+    """the rows to be inserted"""
+    objects: [orderdetail_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: orderdetail_on_conflict
+  ): orderdetail_mutation_response
+
+  """
+  insert a single row into the table: "orderdetail"
+  """
+  insert_orderdetail_one(
+    """the row to be inserted"""
+    object: orderdetail_insert_input!
+
+    """upsert condition"""
+    on_conflict: orderdetail_on_conflict
+  ): orderdetail
+
+  """
+  insert data into the table: "product"
+  """
+  insert_product(
+    """the rows to be inserted"""
+    objects: [product_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: product_on_conflict
+  ): product_mutation_response
+
+  """
+  insert a single row into the table: "product"
+  """
+  insert_product_one(
+    """the row to be inserted"""
+    object: product_insert_input!
+
+    """upsert condition"""
+    on_conflict: product_on_conflict
+  ): product
+
+  """
+  insert data into the table: "supplier"
+  """
+  insert_supplier(
+    """the rows to be inserted"""
+    objects: [supplier_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: supplier_on_conflict
+  ): supplier_mutation_response
+
+  """
+  insert a single row into the table: "supplier"
+  """
+  insert_supplier_one(
+    """the row to be inserted"""
+    object: supplier_insert_input!
+
+    """upsert condition"""
+    on_conflict: supplier_on_conflict
+  ): supplier
+
+  """
+  insert data into the table: "unit"
+  """
+  insert_unit(
+    """the rows to be inserted"""
+    objects: [unit_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: unit_on_conflict
+  ): unit_mutation_response
+
+  """
+  insert a single row into the table: "unit"
+  """
+  insert_unit_one(
+    """the row to be inserted"""
+    object: unit_insert_input!
+
+    """upsert condition"""
+    on_conflict: unit_on_conflict
+  ): unit
+
+  """
+  update data of the table: "Order"
+  """
+  update_Order(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: Order_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: Order_set_input
+
+    """filter the rows which have to be updated"""
+    where: Order_bool_exp!
+  ): Order_mutation_response
+
+  """
+  update single row of the table: "Order"
+  """
+  update_Order_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: Order_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: Order_set_input
+    pk_columns: Order_pk_columns_input!
+  ): Order
+
+  """
+  update data of the table: "account"
+  """
+  update_account(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: account_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: account_set_input
+
+    """filter the rows which have to be updated"""
+    where: account_bool_exp!
+  ): account_mutation_response
+
+  """
+  update single row of the table: "account"
+  """
+  update_account_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: account_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: account_set_input
+    pk_columns: account_pk_columns_input!
+  ): account
+
+  """
+  update data of the table: "category"
+  """
+  update_category(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: category_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: category_set_input
+
+    """filter the rows which have to be updated"""
+    where: category_bool_exp!
+  ): category_mutation_response
+
+  """
+  update single row of the table: "category"
+  """
+  update_category_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: category_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: category_set_input
+    pk_columns: category_pk_columns_input!
+  ): category
+
+  """
+  update data of the table: "customer"
+  """
+  update_customer(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: customer_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: customer_set_input
+
+    """filter the rows which have to be updated"""
+    where: customer_bool_exp!
+  ): customer_mutation_response
+
+  """
+  update single row of the table: "customer"
+  """
+  update_customer_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: customer_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: customer_set_input
+    pk_columns: customer_pk_columns_input!
+  ): customer
+
+  """
+  update data of the table: "orderdetail"
+  """
+  update_orderdetail(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: orderdetail_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: orderdetail_set_input
+
+    """filter the rows which have to be updated"""
+    where: orderdetail_bool_exp!
+  ): orderdetail_mutation_response
+
+  """
+  update single row of the table: "orderdetail"
+  """
+  update_orderdetail_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: orderdetail_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: orderdetail_set_input
+    pk_columns: orderdetail_pk_columns_input!
+  ): orderdetail
+
+  """
+  update data of the table: "product"
+  """
+  update_product(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: product_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: product_set_input
+
+    """filter the rows which have to be updated"""
+    where: product_bool_exp!
+  ): product_mutation_response
+
+  """
+  update single row of the table: "product"
+  """
+  update_product_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: product_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: product_set_input
+    pk_columns: product_pk_columns_input!
+  ): product
+
+  """
+  update data of the table: "supplier"
+  """
+  update_supplier(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: supplier_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: supplier_set_input
+
+    """filter the rows which have to be updated"""
+    where: supplier_bool_exp!
+  ): supplier_mutation_response
+
+  """
+  update single row of the table: "supplier"
+  """
+  update_supplier_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: supplier_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: supplier_set_input
+    pk_columns: supplier_pk_columns_input!
+  ): supplier
+
+  """
+  update data of the table: "unit"
+  """
+  update_unit(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: unit_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: unit_set_input
+
+    """filter the rows which have to be updated"""
+    where: unit_bool_exp!
+  ): unit_mutation_response
+
+  """
+  update single row of the table: "unit"
+  """
+  update_unit_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: unit_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: unit_set_input
+    pk_columns: unit_pk_columns_input!
+  ): unit
+}
+
+"""
+columns and relationships of "Order"
+"""
+type Order {
+  """An object relationship"""
+  customer: customer
+  customerid: Int
+  id: Int!
+
+  """An array relationship"""
+  orderdetails(
+    """distinct select on columns"""
+    distinct_on: [orderdetail_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [orderdetail_order_by!]
+
+    """filter the rows returned"""
+    where: orderdetail_bool_exp
+  ): [orderdetail!]!
+
+  """An aggregate relationship"""
+  orderdetails_aggregate(
+    """distinct select on columns"""
+    distinct_on: [orderdetail_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [orderdetail_order_by!]
+
+    """filter the rows returned"""
+    where: orderdetail_bool_exp
+  ): orderdetail_aggregate!
+  status: String!
+  total: Int!
+}
+
+"""
+aggregated selection of "Order"
+"""
+type Order_aggregate {
+  aggregate: Order_aggregate_fields
+  nodes: [Order!]!
+}
+
+"""
+aggregate fields of "Order"
+"""
+type Order_aggregate_fields {
+  avg: Order_avg_fields
+  count(columns: [Order_select_column!], distinct: Boolean): Int!
+  max: Order_max_fields
+  min: Order_min_fields
+  stddev: Order_stddev_fields
+  stddev_pop: Order_stddev_pop_fields
+  stddev_samp: Order_stddev_samp_fields
+  sum: Order_sum_fields
+  var_pop: Order_var_pop_fields
+  var_samp: Order_var_samp_fields
+  variance: Order_variance_fields
+}
+
+"""
+order by aggregate values of table "Order"
+"""
+input Order_aggregate_order_by {
+  avg: Order_avg_order_by
+  count: order_by
+  max: Order_max_order_by
+  min: Order_min_order_by
+  stddev: Order_stddev_order_by
+  stddev_pop: Order_stddev_pop_order_by
+  stddev_samp: Order_stddev_samp_order_by
+  sum: Order_sum_order_by
+  var_pop: Order_var_pop_order_by
+  var_samp: Order_var_samp_order_by
+  variance: Order_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "Order"
+"""
+input Order_arr_rel_insert_input {
+  data: [Order_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: Order_on_conflict
+}
+
+"""aggregate avg on columns"""
+type Order_avg_fields {
+  customerid: Float
+  id: Float
+  total: Float
+}
+
+"""
+order by avg() on columns of table "Order"
+"""
+input Order_avg_order_by {
+  customerid: order_by
+  id: order_by
+  total: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "Order". All fields are combined with a logical 'AND'.
+"""
+input Order_bool_exp {
+  _and: [Order_bool_exp!]
+  _not: Order_bool_exp
+  _or: [Order_bool_exp!]
+  customer: customer_bool_exp
+  customerid: Int_comparison_exp
+  id: Int_comparison_exp
+  orderdetails: orderdetail_bool_exp
+  status: String_comparison_exp
+  total: Int_comparison_exp
+}
+
+"""column ordering options"""
+enum order_by {
+  """in ascending order, nulls last"""
+  asc
+
+  """in ascending order, nulls first"""
+  asc_nulls_first
+
+  """in ascending order, nulls last"""
+  asc_nulls_last
+
+  """in descending order, nulls first"""
+  desc
+
+  """in descending order, nulls first"""
+  desc_nulls_first
+
+  """in descending order, nulls last"""
+  desc_nulls_last
+}
+
+"""
+unique or primary key constraints on table "Order"
+"""
+enum Order_constraint {
+  """unique or primary key constraint"""
+  Order_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "Order"
+"""
+input Order_inc_input {
+  customerid: Int
+  id: Int
+  total: Int
+}
+
+"""
+input type for inserting data into table "Order"
+"""
+input Order_insert_input {
+  customer: customer_obj_rel_insert_input
+  customerid: Int
+  id: Int
+  orderdetails: orderdetail_arr_rel_insert_input
+  status: String
+  total: Int
+}
+
+"""aggregate max on columns"""
+type Order_max_fields {
+  customerid: Int
+  id: Int
+  status: String
+  total: Int
+}
+
+"""
+order by max() on columns of table "Order"
+"""
+input Order_max_order_by {
+  customerid: order_by
+  id: order_by
+  status: order_by
+  total: order_by
+}
+
+"""aggregate min on columns"""
+type Order_min_fields {
+  customerid: Int
+  id: Int
+  status: String
+  total: Int
+}
+
+"""
+order by min() on columns of table "Order"
+"""
+input Order_min_order_by {
+  customerid: order_by
+  id: order_by
+  status: order_by
+  total: order_by
+}
+
+"""
+response of any mutation on the table "Order"
+"""
+type Order_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [Order!]!
+}
+
+"""
+input type for inserting object relation for remote table "Order"
+"""
+input Order_obj_rel_insert_input {
+  data: Order_insert_input!
+
+  """upsert condition"""
+  on_conflict: Order_on_conflict
+}
+
+"""
+on_conflict condition type for table "Order"
+"""
+input Order_on_conflict {
+  constraint: Order_constraint!
+  update_columns: [Order_update_column!]! = []
+  where: Order_bool_exp
+}
+
+"""Ordering options when selecting data from "Order"."""
+input Order_order_by {
+  customer: customer_order_by
+  customerid: order_by
+  id: order_by
+  orderdetails_aggregate: orderdetail_aggregate_order_by
+  status: order_by
+  total: order_by
+}
+
+"""primary key columns input for table: Order"""
+input Order_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "Order"
+"""
+enum Order_select_column {
+  """column name"""
+  customerid
+
+  """column name"""
+  id
+
+  """column name"""
+  status
+
+  """column name"""
+  total
+}
+
+"""
+input type for updating data in table "Order"
+"""
+input Order_set_input {
+  customerid: Int
+  id: Int
+  status: String
+  total: Int
+}
+
+"""aggregate stddev on columns"""
+type Order_stddev_fields {
+  customerid: Float
+  id: Float
+  total: Float
+}
+
+"""
+order by stddev() on columns of table "Order"
+"""
+input Order_stddev_order_by {
+  customerid: order_by
+  id: order_by
+  total: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type Order_stddev_pop_fields {
+  customerid: Float
+  id: Float
+  total: Float
+}
+
+"""
+order by stddev_pop() on columns of table "Order"
+"""
+input Order_stddev_pop_order_by {
+  customerid: order_by
+  id: order_by
+  total: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type Order_stddev_samp_fields {
+  customerid: Float
+  id: Float
+  total: Float
+}
+
+"""
+order by stddev_samp() on columns of table "Order"
+"""
+input Order_stddev_samp_order_by {
+  customerid: order_by
+  id: order_by
+  total: order_by
+}
+
+"""aggregate sum on columns"""
+type Order_sum_fields {
+  customerid: Int
+  id: Int
+  total: Int
+}
+
+"""
+order by sum() on columns of table "Order"
+"""
+input Order_sum_order_by {
+  customerid: order_by
+  id: order_by
+  total: order_by
+}
+
+"""
+update columns of table "Order"
+"""
+enum Order_update_column {
+  """column name"""
+  customerid
+
+  """column name"""
+  id
+
+  """column name"""
+  status
+
+  """column name"""
+  total
+}
+
+"""aggregate var_pop on columns"""
+type Order_var_pop_fields {
+  customerid: Float
+  id: Float
+  total: Float
+}
+
+"""
+order by var_pop() on columns of table "Order"
+"""
+input Order_var_pop_order_by {
+  customerid: order_by
+  id: order_by
+  total: order_by
+}
+
+"""aggregate var_samp on columns"""
+type Order_var_samp_fields {
+  customerid: Float
+  id: Float
+  total: Float
+}
+
+"""
+order by var_samp() on columns of table "Order"
+"""
+input Order_var_samp_order_by {
+  customerid: order_by
+  id: order_by
+  total: order_by
+}
+
+"""aggregate variance on columns"""
+type Order_variance_fields {
+  customerid: Float
+  id: Float
+  total: Float
+}
+
+"""
+order by variance() on columns of table "Order"
+"""
+input Order_variance_order_by {
+  customerid: order_by
+  id: order_by
+  total: order_by
+}
+
+"""
+columns and relationships of "orderdetail"
+"""
+type orderdetail {
+  """An object relationship"""
+  Order: Order
+  id: Int!
+  orderid: Int
+  price: Int!
+
+  """An object relationship"""
+  product: product
+  productid: Int
+  quantity: Int!
+  total: Int!
+}
+
+"""
+aggregated selection of "orderdetail"
+"""
+type orderdetail_aggregate {
+  aggregate: orderdetail_aggregate_fields
+  nodes: [orderdetail!]!
+}
+
+"""
+aggregate fields of "orderdetail"
+"""
+type orderdetail_aggregate_fields {
+  avg: orderdetail_avg_fields
+  count(columns: [orderdetail_select_column!], distinct: Boolean): Int!
+  max: orderdetail_max_fields
+  min: orderdetail_min_fields
+  stddev: orderdetail_stddev_fields
+  stddev_pop: orderdetail_stddev_pop_fields
+  stddev_samp: orderdetail_stddev_samp_fields
+  sum: orderdetail_sum_fields
+  var_pop: orderdetail_var_pop_fields
+  var_samp: orderdetail_var_samp_fields
+  variance: orderdetail_variance_fields
+}
+
+"""
+order by aggregate values of table "orderdetail"
+"""
+input orderdetail_aggregate_order_by {
+  avg: orderdetail_avg_order_by
+  count: order_by
+  max: orderdetail_max_order_by
+  min: orderdetail_min_order_by
+  stddev: orderdetail_stddev_order_by
+  stddev_pop: orderdetail_stddev_pop_order_by
+  stddev_samp: orderdetail_stddev_samp_order_by
+  sum: orderdetail_sum_order_by
+  var_pop: orderdetail_var_pop_order_by
+  var_samp: orderdetail_var_samp_order_by
+  variance: orderdetail_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "orderdetail"
+"""
+input orderdetail_arr_rel_insert_input {
+  data: [orderdetail_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: orderdetail_on_conflict
+}
+
+"""aggregate avg on columns"""
+type orderdetail_avg_fields {
+  id: Float
+  orderid: Float
+  price: Float
+  productid: Float
+  quantity: Float
+  total: Float
+}
+
+"""
+order by avg() on columns of table "orderdetail"
+"""
+input orderdetail_avg_order_by {
+  id: order_by
+  orderid: order_by
+  price: order_by
+  productid: order_by
+  quantity: order_by
+  total: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "orderdetail". All fields are combined with a logical 'AND'.
+"""
+input orderdetail_bool_exp {
+  Order: Order_bool_exp
+  _and: [orderdetail_bool_exp!]
+  _not: orderdetail_bool_exp
+  _or: [orderdetail_bool_exp!]
+  id: Int_comparison_exp
+  orderid: Int_comparison_exp
+  price: Int_comparison_exp
+  product: product_bool_exp
+  productid: Int_comparison_exp
+  quantity: Int_comparison_exp
+  total: Int_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "orderdetail"
+"""
+enum orderdetail_constraint {
+  """unique or primary key constraint"""
+  orderdetail_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "orderdetail"
+"""
+input orderdetail_inc_input {
+  id: Int
+  orderid: Int
+  price: Int
+  productid: Int
+  quantity: Int
+  total: Int
+}
+
+"""
+input type for inserting data into table "orderdetail"
+"""
+input orderdetail_insert_input {
+  Order: Order_obj_rel_insert_input
+  id: Int
+  orderid: Int
+  price: Int
+  product: product_obj_rel_insert_input
+  productid: Int
+  quantity: Int
+  total: Int
+}
+
+"""aggregate max on columns"""
+type orderdetail_max_fields {
+  id: Int
+  orderid: Int
+  price: Int
+  productid: Int
+  quantity: Int
+  total: Int
+}
+
+"""
+order by max() on columns of table "orderdetail"
+"""
+input orderdetail_max_order_by {
+  id: order_by
+  orderid: order_by
+  price: order_by
+  productid: order_by
+  quantity: order_by
+  total: order_by
+}
+
+"""aggregate min on columns"""
+type orderdetail_min_fields {
+  id: Int
+  orderid: Int
+  price: Int
+  productid: Int
+  quantity: Int
+  total: Int
+}
+
+"""
+order by min() on columns of table "orderdetail"
+"""
+input orderdetail_min_order_by {
+  id: order_by
+  orderid: order_by
+  price: order_by
+  productid: order_by
+  quantity: order_by
+  total: order_by
+}
+
+"""
+response of any mutation on the table "orderdetail"
+"""
+type orderdetail_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [orderdetail!]!
+}
+
+"""
+on_conflict condition type for table "orderdetail"
+"""
+input orderdetail_on_conflict {
+  constraint: orderdetail_constraint!
+  update_columns: [orderdetail_update_column!]! = []
+  where: orderdetail_bool_exp
+}
+
+"""Ordering options when selecting data from "orderdetail"."""
+input orderdetail_order_by {
+  Order: Order_order_by
+  id: order_by
+  orderid: order_by
+  price: order_by
+  product: product_order_by
+  productid: order_by
+  quantity: order_by
+  total: order_by
+}
+
+"""primary key columns input for table: orderdetail"""
+input orderdetail_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "orderdetail"
+"""
+enum orderdetail_select_column {
+  """column name"""
+  id
+
+  """column name"""
+  orderid
+
+  """column name"""
+  price
+
+  """column name"""
+  productid
+
+  """column name"""
+  quantity
+
+  """column name"""
+  total
+}
+
+"""
+input type for updating data in table "orderdetail"
+"""
+input orderdetail_set_input {
+  id: Int
+  orderid: Int
+  price: Int
+  productid: Int
+  quantity: Int
+  total: Int
+}
+
+"""aggregate stddev on columns"""
+type orderdetail_stddev_fields {
+  id: Float
+  orderid: Float
+  price: Float
+  productid: Float
+  quantity: Float
+  total: Float
+}
+
+"""
+order by stddev() on columns of table "orderdetail"
+"""
+input orderdetail_stddev_order_by {
+  id: order_by
+  orderid: order_by
+  price: order_by
+  productid: order_by
+  quantity: order_by
+  total: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type orderdetail_stddev_pop_fields {
+  id: Float
+  orderid: Float
+  price: Float
+  productid: Float
+  quantity: Float
+  total: Float
+}
+
+"""
+order by stddev_pop() on columns of table "orderdetail"
+"""
+input orderdetail_stddev_pop_order_by {
+  id: order_by
+  orderid: order_by
+  price: order_by
+  productid: order_by
+  quantity: order_by
+  total: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type orderdetail_stddev_samp_fields {
+  id: Float
+  orderid: Float
+  price: Float
+  productid: Float
+  quantity: Float
+  total: Float
+}
+
+"""
+order by stddev_samp() on columns of table "orderdetail"
+"""
+input orderdetail_stddev_samp_order_by {
+  id: order_by
+  orderid: order_by
+  price: order_by
+  productid: order_by
+  quantity: order_by
+  total: order_by
+}
+
+"""aggregate sum on columns"""
+type orderdetail_sum_fields {
+  id: Int
+  orderid: Int
+  price: Int
+  productid: Int
+  quantity: Int
+  total: Int
+}
+
+"""
+order by sum() on columns of table "orderdetail"
+"""
+input orderdetail_sum_order_by {
+  id: order_by
+  orderid: order_by
+  price: order_by
+  productid: order_by
+  quantity: order_by
+  total: order_by
+}
+
+"""
+update columns of table "orderdetail"
+"""
+enum orderdetail_update_column {
+  """column name"""
+  id
+
+  """column name"""
+  orderid
+
+  """column name"""
+  price
+
+  """column name"""
+  productid
+
+  """column name"""
+  quantity
+
+  """column name"""
+  total
+}
+
+"""aggregate var_pop on columns"""
+type orderdetail_var_pop_fields {
+  id: Float
+  orderid: Float
+  price: Float
+  productid: Float
+  quantity: Float
+  total: Float
+}
+
+"""
+order by var_pop() on columns of table "orderdetail"
+"""
+input orderdetail_var_pop_order_by {
+  id: order_by
+  orderid: order_by
+  price: order_by
+  productid: order_by
+  quantity: order_by
+  total: order_by
+}
+
+"""aggregate var_samp on columns"""
+type orderdetail_var_samp_fields {
+  id: Float
+  orderid: Float
+  price: Float
+  productid: Float
+  quantity: Float
+  total: Float
+}
+
+"""
+order by var_samp() on columns of table "orderdetail"
+"""
+input orderdetail_var_samp_order_by {
+  id: order_by
+  orderid: order_by
+  price: order_by
+  productid: order_by
+  quantity: order_by
+  total: order_by
+}
+
+"""aggregate variance on columns"""
+type orderdetail_variance_fields {
+  id: Float
+  orderid: Float
+  price: Float
+  productid: Float
+  quantity: Float
+  total: Float
+}
+
+"""
+order by variance() on columns of table "orderdetail"
+"""
+input orderdetail_variance_order_by {
+  id: order_by
+  orderid: order_by
+  price: order_by
+  productid: order_by
+  quantity: order_by
+  total: order_by
+}
+
+"""
+columns and relationships of "product"
+"""
+type product {
+  """An object relationship"""
+  category: category
+  categoryid: Int
+  code: String!
+  id: Int!
+  name: String!
+
+  """An array relationship"""
+  orderdetails(
+    """distinct select on columns"""
+    distinct_on: [orderdetail_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [orderdetail_order_by!]
+
+    """filter the rows returned"""
+    where: orderdetail_bool_exp
+  ): [orderdetail!]!
+
+  """An aggregate relationship"""
+  orderdetails_aggregate(
+    """distinct select on columns"""
+    distinct_on: [orderdetail_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [orderdetail_order_by!]
+
+    """filter the rows returned"""
+    where: orderdetail_bool_exp
+  ): orderdetail_aggregate!
+  origin: String!
+  quantity: Int!
+
+  """An array relationship"""
+  units(
+    """distinct select on columns"""
+    distinct_on: [unit_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [unit_order_by!]
+
+    """filter the rows returned"""
+    where: unit_bool_exp
+  ): [unit!]!
+
+  """An aggregate relationship"""
+  units_aggregate(
+    """distinct select on columns"""
+    distinct_on: [unit_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [unit_order_by!]
+
+    """filter the rows returned"""
+    where: unit_bool_exp
+  ): unit_aggregate!
+}
+
+"""
+aggregated selection of "product"
+"""
+type product_aggregate {
+  aggregate: product_aggregate_fields
+  nodes: [product!]!
+}
+
+"""
+aggregate fields of "product"
+"""
+type product_aggregate_fields {
+  avg: product_avg_fields
+  count(columns: [product_select_column!], distinct: Boolean): Int!
+  max: product_max_fields
+  min: product_min_fields
+  stddev: product_stddev_fields
+  stddev_pop: product_stddev_pop_fields
+  stddev_samp: product_stddev_samp_fields
+  sum: product_sum_fields
+  var_pop: product_var_pop_fields
+  var_samp: product_var_samp_fields
+  variance: product_variance_fields
+}
+
+"""
+order by aggregate values of table "product"
+"""
+input product_aggregate_order_by {
+  avg: product_avg_order_by
+  count: order_by
+  max: product_max_order_by
+  min: product_min_order_by
+  stddev: product_stddev_order_by
+  stddev_pop: product_stddev_pop_order_by
+  stddev_samp: product_stddev_samp_order_by
+  sum: product_sum_order_by
+  var_pop: product_var_pop_order_by
+  var_samp: product_var_samp_order_by
+  variance: product_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "product"
+"""
+input product_arr_rel_insert_input {
+  data: [product_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: product_on_conflict
+}
+
+"""aggregate avg on columns"""
+type product_avg_fields {
+  categoryid: Float
+  id: Float
+  quantity: Float
+}
+
+"""
+order by avg() on columns of table "product"
+"""
+input product_avg_order_by {
+  categoryid: order_by
+  id: order_by
+  quantity: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "product". All fields are combined with a logical 'AND'.
+"""
+input product_bool_exp {
+  _and: [product_bool_exp!]
+  _not: product_bool_exp
+  _or: [product_bool_exp!]
+  category: category_bool_exp
+  categoryid: Int_comparison_exp
+  code: String_comparison_exp
+  id: Int_comparison_exp
+  name: String_comparison_exp
+  orderdetails: orderdetail_bool_exp
+  origin: String_comparison_exp
+  quantity: Int_comparison_exp
+  units: unit_bool_exp
+}
+
+"""
+unique or primary key constraints on table "product"
+"""
+enum product_constraint {
+  """unique or primary key constraint"""
+  product_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "product"
+"""
+input product_inc_input {
+  categoryid: Int
+  id: Int
+  quantity: Int
+}
+
+"""
+input type for inserting data into table "product"
+"""
+input product_insert_input {
+  category: category_obj_rel_insert_input
+  categoryid: Int
+  code: String
+  id: Int
+  name: String
+  orderdetails: orderdetail_arr_rel_insert_input
+  origin: String
+  quantity: Int
+  units: unit_arr_rel_insert_input
+}
+
+"""aggregate max on columns"""
+type product_max_fields {
+  categoryid: Int
+  code: String
+  id: Int
+  name: String
+  origin: String
+  quantity: Int
+}
+
+"""
+order by max() on columns of table "product"
+"""
+input product_max_order_by {
+  categoryid: order_by
+  code: order_by
+  id: order_by
+  name: order_by
+  origin: order_by
+  quantity: order_by
+}
+
+"""aggregate min on columns"""
+type product_min_fields {
+  categoryid: Int
+  code: String
+  id: Int
+  name: String
+  origin: String
+  quantity: Int
+}
+
+"""
+order by min() on columns of table "product"
+"""
+input product_min_order_by {
+  categoryid: order_by
+  code: order_by
+  id: order_by
+  name: order_by
+  origin: order_by
+  quantity: order_by
+}
+
+"""
+response of any mutation on the table "product"
+"""
+type product_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [product!]!
+}
+
+"""
+input type for inserting object relation for remote table "product"
+"""
+input product_obj_rel_insert_input {
+  data: product_insert_input!
+
+  """upsert condition"""
+  on_conflict: product_on_conflict
+}
+
+"""
+on_conflict condition type for table "product"
+"""
+input product_on_conflict {
+  constraint: product_constraint!
+  update_columns: [product_update_column!]! = []
+  where: product_bool_exp
+}
+
+"""Ordering options when selecting data from "product"."""
+input product_order_by {
+  category: category_order_by
+  categoryid: order_by
+  code: order_by
+  id: order_by
+  name: order_by
+  orderdetails_aggregate: orderdetail_aggregate_order_by
+  origin: order_by
+  quantity: order_by
+  units_aggregate: unit_aggregate_order_by
+}
+
+"""primary key columns input for table: product"""
+input product_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "product"
+"""
+enum product_select_column {
+  """column name"""
+  categoryid
+
+  """column name"""
+  code
+
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  origin
+
+  """column name"""
+  quantity
+}
+
+"""
+input type for updating data in table "product"
+"""
+input product_set_input {
+  categoryid: Int
+  code: String
+  id: Int
+  name: String
+  origin: String
+  quantity: Int
+}
+
+"""aggregate stddev on columns"""
+type product_stddev_fields {
+  categoryid: Float
+  id: Float
+  quantity: Float
+}
+
+"""
+order by stddev() on columns of table "product"
+"""
+input product_stddev_order_by {
+  categoryid: order_by
+  id: order_by
+  quantity: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type product_stddev_pop_fields {
+  categoryid: Float
+  id: Float
+  quantity: Float
+}
+
+"""
+order by stddev_pop() on columns of table "product"
+"""
+input product_stddev_pop_order_by {
+  categoryid: order_by
+  id: order_by
+  quantity: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type product_stddev_samp_fields {
+  categoryid: Float
+  id: Float
+  quantity: Float
+}
+
+"""
+order by stddev_samp() on columns of table "product"
+"""
+input product_stddev_samp_order_by {
+  categoryid: order_by
+  id: order_by
+  quantity: order_by
+}
+
+"""aggregate sum on columns"""
+type product_sum_fields {
+  categoryid: Int
+  id: Int
+  quantity: Int
+}
+
+"""
+order by sum() on columns of table "product"
+"""
+input product_sum_order_by {
+  categoryid: order_by
+  id: order_by
+  quantity: order_by
+}
+
+"""
+update columns of table "product"
+"""
+enum product_update_column {
+  """column name"""
+  categoryid
+
+  """column name"""
+  code
+
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  origin
+
+  """column name"""
+  quantity
+}
+
+"""aggregate var_pop on columns"""
+type product_var_pop_fields {
+  categoryid: Float
+  id: Float
+  quantity: Float
+}
+
+"""
+order by var_pop() on columns of table "product"
+"""
+input product_var_pop_order_by {
+  categoryid: order_by
+  id: order_by
+  quantity: order_by
+}
+
+"""aggregate var_samp on columns"""
+type product_var_samp_fields {
+  categoryid: Float
+  id: Float
+  quantity: Float
+}
+
+"""
+order by var_samp() on columns of table "product"
+"""
+input product_var_samp_order_by {
+  categoryid: order_by
+  id: order_by
+  quantity: order_by
+}
+
+"""aggregate variance on columns"""
+type product_variance_fields {
+  categoryid: Float
+  id: Float
+  quantity: Float
+}
+
+"""
+order by variance() on columns of table "product"
+"""
+input product_variance_order_by {
+  categoryid: order_by
+  id: order_by
+  quantity: order_by
+}
+
+type query_root {
+  """
+  fetch data from the table: "Order"
+  """
+  Order(
+    """distinct select on columns"""
+    distinct_on: [Order_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [Order_order_by!]
+
+    """filter the rows returned"""
+    where: Order_bool_exp
+  ): [Order!]!
+
+  """
+  fetch aggregated fields from the table: "Order"
+  """
+  Order_aggregate(
+    """distinct select on columns"""
+    distinct_on: [Order_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [Order_order_by!]
+
+    """filter the rows returned"""
+    where: Order_bool_exp
+  ): Order_aggregate!
+
+  """fetch data from the table: "Order" using primary key columns"""
+  Order_by_pk(id: Int!): Order
+
+  """
+  fetch data from the table: "account"
+  """
+  account(
+    """distinct select on columns"""
+    distinct_on: [account_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [account_order_by!]
+
+    """filter the rows returned"""
+    where: account_bool_exp
+  ): [account!]!
+
+  """
+  fetch aggregated fields from the table: "account"
+  """
+  account_aggregate(
+    """distinct select on columns"""
+    distinct_on: [account_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [account_order_by!]
+
+    """filter the rows returned"""
+    where: account_bool_exp
+  ): account_aggregate!
+
+  """fetch data from the table: "account" using primary key columns"""
+  account_by_pk(id: Int!): account
+
+  """
+  fetch data from the table: "category"
+  """
+  category(
+    """distinct select on columns"""
+    distinct_on: [category_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [category_order_by!]
+
+    """filter the rows returned"""
+    where: category_bool_exp
+  ): [category!]!
+
+  """
+  fetch aggregated fields from the table: "category"
+  """
+  category_aggregate(
+    """distinct select on columns"""
+    distinct_on: [category_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [category_order_by!]
+
+    """filter the rows returned"""
+    where: category_bool_exp
+  ): category_aggregate!
+
+  """fetch data from the table: "category" using primary key columns"""
+  category_by_pk(id: Int!): category
+
+  """
+  fetch data from the table: "customer"
+  """
+  customer(
+    """distinct select on columns"""
+    distinct_on: [customer_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [customer_order_by!]
+
+    """filter the rows returned"""
+    where: customer_bool_exp
+  ): [customer!]!
+
+  """
+  fetch aggregated fields from the table: "customer"
+  """
+  customer_aggregate(
+    """distinct select on columns"""
+    distinct_on: [customer_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [customer_order_by!]
+
+    """filter the rows returned"""
+    where: customer_bool_exp
+  ): customer_aggregate!
+
+  """fetch data from the table: "customer" using primary key columns"""
+  customer_by_pk(id: Int!): customer
+
+  """
+  fetch data from the table: "orderdetail"
+  """
+  orderdetail(
+    """distinct select on columns"""
+    distinct_on: [orderdetail_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [orderdetail_order_by!]
+
+    """filter the rows returned"""
+    where: orderdetail_bool_exp
+  ): [orderdetail!]!
+
+  """
+  fetch aggregated fields from the table: "orderdetail"
+  """
+  orderdetail_aggregate(
+    """distinct select on columns"""
+    distinct_on: [orderdetail_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [orderdetail_order_by!]
+
+    """filter the rows returned"""
+    where: orderdetail_bool_exp
+  ): orderdetail_aggregate!
+
+  """fetch data from the table: "orderdetail" using primary key columns"""
+  orderdetail_by_pk(id: Int!): orderdetail
+
+  """
+  fetch data from the table: "product"
+  """
+  product(
+    """distinct select on columns"""
+    distinct_on: [product_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_order_by!]
+
+    """filter the rows returned"""
+    where: product_bool_exp
+  ): [product!]!
+
+  """
+  fetch aggregated fields from the table: "product"
+  """
+  product_aggregate(
+    """distinct select on columns"""
+    distinct_on: [product_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_order_by!]
+
+    """filter the rows returned"""
+    where: product_bool_exp
+  ): product_aggregate!
+
+  """fetch data from the table: "product" using primary key columns"""
+  product_by_pk(id: Int!): product
+
+  """
+  fetch data from the table: "supplier"
+  """
+  supplier(
+    """distinct select on columns"""
+    distinct_on: [supplier_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [supplier_order_by!]
+
+    """filter the rows returned"""
+    where: supplier_bool_exp
+  ): [supplier!]!
+
+  """
+  fetch aggregated fields from the table: "supplier"
+  """
+  supplier_aggregate(
+    """distinct select on columns"""
+    distinct_on: [supplier_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [supplier_order_by!]
+
+    """filter the rows returned"""
+    where: supplier_bool_exp
+  ): supplier_aggregate!
+
+  """fetch data from the table: "supplier" using primary key columns"""
+  supplier_by_pk(id: Int!): supplier
+
+  """
+  fetch data from the table: "unit"
+  """
+  unit(
+    """distinct select on columns"""
+    distinct_on: [unit_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [unit_order_by!]
+
+    """filter the rows returned"""
+    where: unit_bool_exp
+  ): [unit!]!
+
+  """
+  fetch aggregated fields from the table: "unit"
+  """
+  unit_aggregate(
+    """distinct select on columns"""
+    distinct_on: [unit_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [unit_order_by!]
+
+    """filter the rows returned"""
+    where: unit_bool_exp
+  ): unit_aggregate!
+
+  """fetch data from the table: "unit" using primary key columns"""
+  unit_by_pk(id: Int!): unit
+}
+
+"""
+Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
+"""
+input String_comparison_exp {
+  _eq: String
+  _gt: String
+  _gte: String
+
+  """does the column match the given case-insensitive pattern"""
+  _ilike: String
+  _in: [String!]
+
+  """
+  does the column match the given POSIX regular expression, case insensitive
+  """
+  _iregex: String
+  _is_null: Boolean
+
+  """does the column match the given pattern"""
+  _like: String
+  _lt: String
+  _lte: String
+  _neq: String
+
+  """does the column NOT match the given case-insensitive pattern"""
+  _nilike: String
+  _nin: [String!]
+
+  """
+  does the column NOT match the given POSIX regular expression, case insensitive
+  """
+  _niregex: String
+
+  """does the column NOT match the given pattern"""
+  _nlike: String
+
+  """
+  does the column NOT match the given POSIX regular expression, case sensitive
+  """
+  _nregex: String
+
+  """does the column NOT match the given SQL regular expression"""
+  _nsimilar: String
+
+  """
+  does the column match the given POSIX regular expression, case sensitive
+  """
+  _regex: String
+
+  """does the column match the given SQL regular expression"""
+  _similar: String
+}
+
+type subscription_root {
+  """
+  fetch data from the table: "Order"
+  """
+  Order(
+    """distinct select on columns"""
+    distinct_on: [Order_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [Order_order_by!]
+
+    """filter the rows returned"""
+    where: Order_bool_exp
+  ): [Order!]!
+
+  """
+  fetch aggregated fields from the table: "Order"
+  """
+  Order_aggregate(
+    """distinct select on columns"""
+    distinct_on: [Order_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [Order_order_by!]
+
+    """filter the rows returned"""
+    where: Order_bool_exp
+  ): Order_aggregate!
+
+  """fetch data from the table: "Order" using primary key columns"""
+  Order_by_pk(id: Int!): Order
+
+  """
+  fetch data from the table: "account"
+  """
+  account(
+    """distinct select on columns"""
+    distinct_on: [account_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [account_order_by!]
+
+    """filter the rows returned"""
+    where: account_bool_exp
+  ): [account!]!
+
+  """
+  fetch aggregated fields from the table: "account"
+  """
+  account_aggregate(
+    """distinct select on columns"""
+    distinct_on: [account_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [account_order_by!]
+
+    """filter the rows returned"""
+    where: account_bool_exp
+  ): account_aggregate!
+
+  """fetch data from the table: "account" using primary key columns"""
+  account_by_pk(id: Int!): account
+
+  """
+  fetch data from the table: "category"
+  """
+  category(
+    """distinct select on columns"""
+    distinct_on: [category_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [category_order_by!]
+
+    """filter the rows returned"""
+    where: category_bool_exp
+  ): [category!]!
+
+  """
+  fetch aggregated fields from the table: "category"
+  """
+  category_aggregate(
+    """distinct select on columns"""
+    distinct_on: [category_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [category_order_by!]
+
+    """filter the rows returned"""
+    where: category_bool_exp
+  ): category_aggregate!
+
+  """fetch data from the table: "category" using primary key columns"""
+  category_by_pk(id: Int!): category
+
+  """
+  fetch data from the table: "customer"
+  """
+  customer(
+    """distinct select on columns"""
+    distinct_on: [customer_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [customer_order_by!]
+
+    """filter the rows returned"""
+    where: customer_bool_exp
+  ): [customer!]!
+
+  """
+  fetch aggregated fields from the table: "customer"
+  """
+  customer_aggregate(
+    """distinct select on columns"""
+    distinct_on: [customer_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [customer_order_by!]
+
+    """filter the rows returned"""
+    where: customer_bool_exp
+  ): customer_aggregate!
+
+  """fetch data from the table: "customer" using primary key columns"""
+  customer_by_pk(id: Int!): customer
+
+  """
+  fetch data from the table: "orderdetail"
+  """
+  orderdetail(
+    """distinct select on columns"""
+    distinct_on: [orderdetail_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [orderdetail_order_by!]
+
+    """filter the rows returned"""
+    where: orderdetail_bool_exp
+  ): [orderdetail!]!
+
+  """
+  fetch aggregated fields from the table: "orderdetail"
+  """
+  orderdetail_aggregate(
+    """distinct select on columns"""
+    distinct_on: [orderdetail_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [orderdetail_order_by!]
+
+    """filter the rows returned"""
+    where: orderdetail_bool_exp
+  ): orderdetail_aggregate!
+
+  """fetch data from the table: "orderdetail" using primary key columns"""
+  orderdetail_by_pk(id: Int!): orderdetail
+
+  """
+  fetch data from the table: "product"
+  """
+  product(
+    """distinct select on columns"""
+    distinct_on: [product_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_order_by!]
+
+    """filter the rows returned"""
+    where: product_bool_exp
+  ): [product!]!
+
+  """
+  fetch aggregated fields from the table: "product"
+  """
+  product_aggregate(
+    """distinct select on columns"""
+    distinct_on: [product_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [product_order_by!]
+
+    """filter the rows returned"""
+    where: product_bool_exp
+  ): product_aggregate!
+
+  """fetch data from the table: "product" using primary key columns"""
+  product_by_pk(id: Int!): product
+
+  """
+  fetch data from the table: "supplier"
+  """
+  supplier(
+    """distinct select on columns"""
+    distinct_on: [supplier_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [supplier_order_by!]
+
+    """filter the rows returned"""
+    where: supplier_bool_exp
+  ): [supplier!]!
+
+  """
+  fetch aggregated fields from the table: "supplier"
+  """
+  supplier_aggregate(
+    """distinct select on columns"""
+    distinct_on: [supplier_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [supplier_order_by!]
+
+    """filter the rows returned"""
+    where: supplier_bool_exp
+  ): supplier_aggregate!
+
+  """fetch data from the table: "supplier" using primary key columns"""
+  supplier_by_pk(id: Int!): supplier
+
+  """
+  fetch data from the table: "unit"
+  """
+  unit(
+    """distinct select on columns"""
+    distinct_on: [unit_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [unit_order_by!]
+
+    """filter the rows returned"""
+    where: unit_bool_exp
+  ): [unit!]!
+
+  """
+  fetch aggregated fields from the table: "unit"
+  """
+  unit_aggregate(
+    """distinct select on columns"""
+    distinct_on: [unit_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [unit_order_by!]
+
+    """filter the rows returned"""
+    where: unit_bool_exp
+  ): unit_aggregate!
+
+  """fetch data from the table: "unit" using primary key columns"""
+  unit_by_pk(id: Int!): unit
+}
+
+"""
+columns and relationships of "supplier"
+"""
+type supplier {
+  id: Int!
+  name: String!
+  phone: String!
+}
+
+"""
+aggregated selection of "supplier"
+"""
+type supplier_aggregate {
+  aggregate: supplier_aggregate_fields
+  nodes: [supplier!]!
+}
+
+"""
+aggregate fields of "supplier"
+"""
+type supplier_aggregate_fields {
+  avg: supplier_avg_fields
+  count(columns: [supplier_select_column!], distinct: Boolean): Int!
+  max: supplier_max_fields
+  min: supplier_min_fields
+  stddev: supplier_stddev_fields
+  stddev_pop: supplier_stddev_pop_fields
+  stddev_samp: supplier_stddev_samp_fields
+  sum: supplier_sum_fields
+  var_pop: supplier_var_pop_fields
+  var_samp: supplier_var_samp_fields
+  variance: supplier_variance_fields
+}
+
+"""aggregate avg on columns"""
+type supplier_avg_fields {
+  id: Float
+}
+
+"""
+Boolean expression to filter rows from the table "supplier". All fields are combined with a logical 'AND'.
+"""
+input supplier_bool_exp {
+  _and: [supplier_bool_exp!]
+  _not: supplier_bool_exp
+  _or: [supplier_bool_exp!]
+  id: Int_comparison_exp
+  name: String_comparison_exp
+  phone: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "supplier"
+"""
+enum supplier_constraint {
+  """unique or primary key constraint"""
+  supplier_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "supplier"
+"""
+input supplier_inc_input {
+  id: Int
+}
+
+"""
+input type for inserting data into table "supplier"
+"""
+input supplier_insert_input {
+  id: Int
+  name: String
+  phone: String
+}
+
+"""aggregate max on columns"""
+type supplier_max_fields {
+  id: Int
+  name: String
+  phone: String
+}
+
+"""aggregate min on columns"""
+type supplier_min_fields {
+  id: Int
+  name: String
+  phone: String
+}
+
+"""
+response of any mutation on the table "supplier"
+"""
+type supplier_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [supplier!]!
+}
+
+"""
+on_conflict condition type for table "supplier"
+"""
+input supplier_on_conflict {
+  constraint: supplier_constraint!
+  update_columns: [supplier_update_column!]! = []
+  where: supplier_bool_exp
+}
+
+"""Ordering options when selecting data from "supplier"."""
+input supplier_order_by {
+  id: order_by
+  name: order_by
+  phone: order_by
+}
+
+"""primary key columns input for table: supplier"""
+input supplier_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "supplier"
+"""
+enum supplier_select_column {
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  phone
+}
+
+"""
+input type for updating data in table "supplier"
+"""
+input supplier_set_input {
+  id: Int
+  name: String
+  phone: String
+}
+
+"""aggregate stddev on columns"""
+type supplier_stddev_fields {
+  id: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type supplier_stddev_pop_fields {
+  id: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type supplier_stddev_samp_fields {
+  id: Float
+}
+
+"""aggregate sum on columns"""
+type supplier_sum_fields {
+  id: Int
+}
+
+"""
+update columns of table "supplier"
+"""
+enum supplier_update_column {
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  phone
+}
+
+"""aggregate var_pop on columns"""
+type supplier_var_pop_fields {
+  id: Float
+}
+
+"""aggregate var_samp on columns"""
+type supplier_var_samp_fields {
+  id: Float
+}
+
+"""aggregate variance on columns"""
+type supplier_variance_fields {
+  id: Float
+}
+
+"""
+columns and relationships of "unit"
+"""
+type unit {
+  id: Int!
+  name: String!
+  price: Int!
+
+  """An object relationship"""
+  product: product
+  productid: Int
+  ratio: Int!
+}
+
+"""
+aggregated selection of "unit"
+"""
+type unit_aggregate {
+  aggregate: unit_aggregate_fields
+  nodes: [unit!]!
+}
+
+"""
+aggregate fields of "unit"
+"""
+type unit_aggregate_fields {
+  avg: unit_avg_fields
+  count(columns: [unit_select_column!], distinct: Boolean): Int!
+  max: unit_max_fields
+  min: unit_min_fields
+  stddev: unit_stddev_fields
+  stddev_pop: unit_stddev_pop_fields
+  stddev_samp: unit_stddev_samp_fields
+  sum: unit_sum_fields
+  var_pop: unit_var_pop_fields
+  var_samp: unit_var_samp_fields
+  variance: unit_variance_fields
+}
+
+"""
+order by aggregate values of table "unit"
+"""
+input unit_aggregate_order_by {
+  avg: unit_avg_order_by
+  count: order_by
+  max: unit_max_order_by
+  min: unit_min_order_by
+  stddev: unit_stddev_order_by
+  stddev_pop: unit_stddev_pop_order_by
+  stddev_samp: unit_stddev_samp_order_by
+  sum: unit_sum_order_by
+  var_pop: unit_var_pop_order_by
+  var_samp: unit_var_samp_order_by
+  variance: unit_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "unit"
+"""
+input unit_arr_rel_insert_input {
+  data: [unit_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: unit_on_conflict
+}
+
+"""aggregate avg on columns"""
+type unit_avg_fields {
+  id: Float
+  price: Float
+  productid: Float
+  ratio: Float
+}
+
+"""
+order by avg() on columns of table "unit"
+"""
+input unit_avg_order_by {
+  id: order_by
+  price: order_by
+  productid: order_by
+  ratio: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "unit". All fields are combined with a logical 'AND'.
+"""
+input unit_bool_exp {
+  _and: [unit_bool_exp!]
+  _not: unit_bool_exp
+  _or: [unit_bool_exp!]
+  id: Int_comparison_exp
+  name: String_comparison_exp
+  price: Int_comparison_exp
+  product: product_bool_exp
+  productid: Int_comparison_exp
+  ratio: Int_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "unit"
+"""
+enum unit_constraint {
+  """unique or primary key constraint"""
+  unit_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "unit"
+"""
+input unit_inc_input {
+  id: Int
+  price: Int
+  productid: Int
+  ratio: Int
+}
+
+"""
+input type for inserting data into table "unit"
+"""
+input unit_insert_input {
+  id: Int
+  name: String
+  price: Int
+  product: product_obj_rel_insert_input
+  productid: Int
+  ratio: Int
+}
+
+"""aggregate max on columns"""
+type unit_max_fields {
+  id: Int
+  name: String
+  price: Int
+  productid: Int
+  ratio: Int
+}
+
+"""
+order by max() on columns of table "unit"
+"""
+input unit_max_order_by {
+  id: order_by
+  name: order_by
+  price: order_by
+  productid: order_by
+  ratio: order_by
+}
+
+"""aggregate min on columns"""
+type unit_min_fields {
+  id: Int
+  name: String
+  price: Int
+  productid: Int
+  ratio: Int
+}
+
+"""
+order by min() on columns of table "unit"
+"""
+input unit_min_order_by {
+  id: order_by
+  name: order_by
+  price: order_by
+  productid: order_by
+  ratio: order_by
+}
+
+"""
+response of any mutation on the table "unit"
+"""
+type unit_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [unit!]!
+}
+
+"""
+on_conflict condition type for table "unit"
+"""
+input unit_on_conflict {
+  constraint: unit_constraint!
+  update_columns: [unit_update_column!]! = []
+  where: unit_bool_exp
+}
+
+"""Ordering options when selecting data from "unit"."""
+input unit_order_by {
+  id: order_by
+  name: order_by
+  price: order_by
+  product: product_order_by
+  productid: order_by
+  ratio: order_by
+}
+
+"""primary key columns input for table: unit"""
+input unit_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "unit"
+"""
+enum unit_select_column {
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  price
+
+  """column name"""
+  productid
+
+  """column name"""
+  ratio
+}
+
+"""
+input type for updating data in table "unit"
+"""
+input unit_set_input {
+  id: Int
+  name: String
+  price: Int
+  productid: Int
+  ratio: Int
+}
+
+"""aggregate stddev on columns"""
+type unit_stddev_fields {
+  id: Float
+  price: Float
+  productid: Float
+  ratio: Float
+}
+
+"""
+order by stddev() on columns of table "unit"
+"""
+input unit_stddev_order_by {
+  id: order_by
+  price: order_by
+  productid: order_by
+  ratio: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type unit_stddev_pop_fields {
+  id: Float
+  price: Float
+  productid: Float
+  ratio: Float
+}
+
+"""
+order by stddev_pop() on columns of table "unit"
+"""
+input unit_stddev_pop_order_by {
+  id: order_by
+  price: order_by
+  productid: order_by
+  ratio: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type unit_stddev_samp_fields {
+  id: Float
+  price: Float
+  productid: Float
+  ratio: Float
+}
+
+"""
+order by stddev_samp() on columns of table "unit"
+"""
+input unit_stddev_samp_order_by {
+  id: order_by
+  price: order_by
+  productid: order_by
+  ratio: order_by
+}
+
+"""aggregate sum on columns"""
+type unit_sum_fields {
+  id: Int
+  price: Int
+  productid: Int
+  ratio: Int
+}
+
+"""
+order by sum() on columns of table "unit"
+"""
+input unit_sum_order_by {
+  id: order_by
+  price: order_by
+  productid: order_by
+  ratio: order_by
+}
+
+"""
+update columns of table "unit"
+"""
+enum unit_update_column {
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  price
+
+  """column name"""
+  productid
+
+  """column name"""
+  ratio
+}
+
+"""aggregate var_pop on columns"""
+type unit_var_pop_fields {
+  id: Float
+  price: Float
+  productid: Float
+  ratio: Float
+}
+
+"""
+order by var_pop() on columns of table "unit"
+"""
+input unit_var_pop_order_by {
+  id: order_by
+  price: order_by
+  productid: order_by
+  ratio: order_by
+}
+
+"""aggregate var_samp on columns"""
+type unit_var_samp_fields {
+  id: Float
+  price: Float
+  productid: Float
+  ratio: Float
+}
+
+"""
+order by var_samp() on columns of table "unit"
+"""
+input unit_var_samp_order_by {
+  id: order_by
+  price: order_by
+  productid: order_by
+  ratio: order_by
+}
+
+"""aggregate variance on columns"""
+type unit_variance_fields {
+  id: Float
+  price: Float
+  productid: Float
+  ratio: Float
+}
+
+"""
+order by variance() on columns of table "unit"
+"""
+input unit_variance_order_by {
+  id: order_by
+  price: order_by
+  productid: order_by
+  ratio: order_by
+}
+
