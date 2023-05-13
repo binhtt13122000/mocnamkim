@@ -37,6 +37,7 @@ export interface ICustomizeAuto<
     defaultId?: number;
     conditionField: string;
     required?: boolean;
+    extra?: string;
     type?: "object" | "key";
 }
 
@@ -54,11 +55,12 @@ const CustomizeAutocomplete = <T extends {}>(props: ICustomizeAuto<T>) => {
         onGetConditionState,
         required,
         type,
+        extra,
         ...rest
     } = props;
 
     const [search, setSearch] = useState("");
-    const { data, isLoading } = useGetListEntity(entity, displayField, search);
+    const { data, isLoading } = useGetListEntity(entity, displayField, search, extra || "");
 
     const [autoCompleteKey, setAutoCompleteKey] = useState(
         defaultId !== undefined && !!defaultId ? defaultId : 0
@@ -100,6 +102,7 @@ const CustomizeAutocomplete = <T extends {}>(props: ICustomizeAuto<T>) => {
             name={name}
             rules={rules}
             render={({ field: { value: currentValue, ref, onChange }, fieldState: { error } }) => {
+                setAutoCompleteKey(currentValue);
                 return (
                     <Autocomplete<{ key: number; value: string; conditionField: boolean }>
                         {...rest}

@@ -1,5 +1,7 @@
 import React, { useCallback, useState } from "react";
 
+import BwipJs from "bwip-js";
+
 import CellTableTypography from "src/components/CellTableTypography";
 import ProductForm, { ProductMutationType } from "src/components/ProductForm";
 import useSnackbar from "src/components/Snackbar/useSnackbar";
@@ -146,27 +148,66 @@ const Product = () => {
             width: "40px",
         },
         {
+            field: "code",
+            title: "Mã vạch",
+            index: 2,
+            type: "string",
+            width: "100px",
+            disableFilter: true,
+            disableSort: true,
+            render: (data) => {
+                return (
+                    <a
+                        style={{ color: "green", cursor: "pointer" }}
+                        onClick={(event) => {
+                            let canvas = document.createElement("canvas");
+                            try {
+                                BwipJs.toCanvas(canvas, {
+                                    bcid: "code128", // Barcode type
+                                    text: String(data), // Text to encode
+                                    scale: 3, // 3x scaling factor
+                                    height: 10, // Bar height, in millimeters
+                                    includetext: true, // Show human-readable text
+                                    textxalign: "center", // Always good to set this
+                                });
+                                if (canvas && canvas.toDataURL("image/png") && String(data)) {
+                                    let link = event.currentTarget;
+                                    link.setAttribute("download", String(data) + ".png");
+                                    let image = canvas.toDataURL("image/png");
+                                    link.setAttribute("href", image);
+                                }
+                            } catch (e) {
+                                // `e` may be a string or Error object
+                            }
+                        }}
+                    >
+                        IN MÃ
+                    </a>
+                );
+            },
+        },
+        {
             field: "name",
             title: "Tên sản phẩm",
-            index: 2,
+            index: 3,
             type: "string",
         },
         {
             field: "code",
             title: "Mã sản phẩm",
-            index: 3,
+            index: 4,
             type: "string",
         },
         {
             field: "origin",
             title: "Nguồn Gốc",
-            index: 4,
+            index: 5,
             type: "string",
         },
         {
             field: "category",
             title: "Danh mục",
-            index: 5,
+            index: 6,
             type: "object",
             subField: "name",
             subFieldType: "string",
@@ -174,14 +215,14 @@ const Product = () => {
         {
             field: "categoryid",
             title: "",
-            index: 6,
+            index: 7,
             type: "number",
             disable: true,
         },
         {
             field: "quantity",
             title: "Số lượng (so với đơn vị gốc)",
-            index: 7,
+            index: 8,
             type: "number",
         },
     ];

@@ -1212,6 +1212,9 @@ type mutation_root {
 columns and relationships of "Order"
 """
 type Order {
+  backMoney: Int
+  createTime: timestamptz
+
   """An object relationship"""
   customer: customer
   customerid: Int
@@ -1252,6 +1255,8 @@ type Order {
     """filter the rows returned"""
     where: orderdetail_bool_exp
   ): orderdetail_aggregate!
+  pay: Int
+  paymentTime: timestamptz
   status: String!
   total: Int!
 }
@@ -1310,8 +1315,10 @@ input Order_arr_rel_insert_input {
 
 """aggregate avg on columns"""
 type Order_avg_fields {
+  backMoney: Float
   customerid: Float
   id: Float
+  pay: Float
   total: Float
 }
 
@@ -1319,8 +1326,10 @@ type Order_avg_fields {
 order by avg() on columns of table "Order"
 """
 input Order_avg_order_by {
+  backMoney: order_by
   customerid: order_by
   id: order_by
+  pay: order_by
   total: order_by
 }
 
@@ -1331,10 +1340,14 @@ input Order_bool_exp {
   _and: [Order_bool_exp!]
   _not: Order_bool_exp
   _or: [Order_bool_exp!]
+  backMoney: Int_comparison_exp
+  createTime: timestamptz_comparison_exp
   customer: customer_bool_exp
   customerid: Int_comparison_exp
   id: Int_comparison_exp
   orderdetails: orderdetail_bool_exp
+  pay: Int_comparison_exp
+  paymentTime: timestamptz_comparison_exp
   status: String_comparison_exp
   total: Int_comparison_exp
 }
@@ -1372,8 +1385,10 @@ enum Order_constraint {
 input type for incrementing numeric columns in table "Order"
 """
 input Order_inc_input {
+  backMoney: Int
   customerid: Int
   id: Int
+  pay: Int
   total: Int
 }
 
@@ -1381,18 +1396,26 @@ input Order_inc_input {
 input type for inserting data into table "Order"
 """
 input Order_insert_input {
+  backMoney: Int
+  createTime: timestamptz
   customer: customer_obj_rel_insert_input
   customerid: Int
   id: Int
   orderdetails: orderdetail_arr_rel_insert_input
+  pay: Int
+  paymentTime: timestamptz
   status: String
   total: Int
 }
 
 """aggregate max on columns"""
 type Order_max_fields {
+  backMoney: Int
+  createTime: timestamptz
   customerid: Int
   id: Int
+  pay: Int
+  paymentTime: timestamptz
   status: String
   total: Int
 }
@@ -1401,16 +1424,24 @@ type Order_max_fields {
 order by max() on columns of table "Order"
 """
 input Order_max_order_by {
+  backMoney: order_by
+  createTime: order_by
   customerid: order_by
   id: order_by
+  pay: order_by
+  paymentTime: order_by
   status: order_by
   total: order_by
 }
 
 """aggregate min on columns"""
 type Order_min_fields {
+  backMoney: Int
+  createTime: timestamptz
   customerid: Int
   id: Int
+  pay: Int
+  paymentTime: timestamptz
   status: String
   total: Int
 }
@@ -1419,8 +1450,12 @@ type Order_min_fields {
 order by min() on columns of table "Order"
 """
 input Order_min_order_by {
+  backMoney: order_by
+  createTime: order_by
   customerid: order_by
   id: order_by
+  pay: order_by
+  paymentTime: order_by
   status: order_by
   total: order_by
 }
@@ -1457,10 +1492,14 @@ input Order_on_conflict {
 
 """Ordering options when selecting data from "Order"."""
 input Order_order_by {
+  backMoney: order_by
+  createTime: order_by
   customer: customer_order_by
   customerid: order_by
   id: order_by
   orderdetails_aggregate: orderdetail_aggregate_order_by
+  pay: order_by
+  paymentTime: order_by
   status: order_by
   total: order_by
 }
@@ -1475,10 +1514,22 @@ select columns of table "Order"
 """
 enum Order_select_column {
   """column name"""
+  backMoney
+
+  """column name"""
+  createTime
+
+  """column name"""
   customerid
 
   """column name"""
   id
+
+  """column name"""
+  pay
+
+  """column name"""
+  paymentTime
 
   """column name"""
   status
@@ -1491,16 +1542,22 @@ enum Order_select_column {
 input type for updating data in table "Order"
 """
 input Order_set_input {
+  backMoney: Int
+  createTime: timestamptz
   customerid: Int
   id: Int
+  pay: Int
+  paymentTime: timestamptz
   status: String
   total: Int
 }
 
 """aggregate stddev on columns"""
 type Order_stddev_fields {
+  backMoney: Float
   customerid: Float
   id: Float
+  pay: Float
   total: Float
 }
 
@@ -1508,15 +1565,19 @@ type Order_stddev_fields {
 order by stddev() on columns of table "Order"
 """
 input Order_stddev_order_by {
+  backMoney: order_by
   customerid: order_by
   id: order_by
+  pay: order_by
   total: order_by
 }
 
 """aggregate stddev_pop on columns"""
 type Order_stddev_pop_fields {
+  backMoney: Float
   customerid: Float
   id: Float
+  pay: Float
   total: Float
 }
 
@@ -1524,15 +1585,19 @@ type Order_stddev_pop_fields {
 order by stddev_pop() on columns of table "Order"
 """
 input Order_stddev_pop_order_by {
+  backMoney: order_by
   customerid: order_by
   id: order_by
+  pay: order_by
   total: order_by
 }
 
 """aggregate stddev_samp on columns"""
 type Order_stddev_samp_fields {
+  backMoney: Float
   customerid: Float
   id: Float
+  pay: Float
   total: Float
 }
 
@@ -1540,15 +1605,19 @@ type Order_stddev_samp_fields {
 order by stddev_samp() on columns of table "Order"
 """
 input Order_stddev_samp_order_by {
+  backMoney: order_by
   customerid: order_by
   id: order_by
+  pay: order_by
   total: order_by
 }
 
 """aggregate sum on columns"""
 type Order_sum_fields {
+  backMoney: Int
   customerid: Int
   id: Int
+  pay: Int
   total: Int
 }
 
@@ -1556,8 +1625,10 @@ type Order_sum_fields {
 order by sum() on columns of table "Order"
 """
 input Order_sum_order_by {
+  backMoney: order_by
   customerid: order_by
   id: order_by
+  pay: order_by
   total: order_by
 }
 
@@ -1566,10 +1637,22 @@ update columns of table "Order"
 """
 enum Order_update_column {
   """column name"""
+  backMoney
+
+  """column name"""
+  createTime
+
+  """column name"""
   customerid
 
   """column name"""
   id
+
+  """column name"""
+  pay
+
+  """column name"""
+  paymentTime
 
   """column name"""
   status
@@ -1580,8 +1663,10 @@ enum Order_update_column {
 
 """aggregate var_pop on columns"""
 type Order_var_pop_fields {
+  backMoney: Float
   customerid: Float
   id: Float
+  pay: Float
   total: Float
 }
 
@@ -1589,15 +1674,19 @@ type Order_var_pop_fields {
 order by var_pop() on columns of table "Order"
 """
 input Order_var_pop_order_by {
+  backMoney: order_by
   customerid: order_by
   id: order_by
+  pay: order_by
   total: order_by
 }
 
 """aggregate var_samp on columns"""
 type Order_var_samp_fields {
+  backMoney: Float
   customerid: Float
   id: Float
+  pay: Float
   total: Float
 }
 
@@ -1605,15 +1694,19 @@ type Order_var_samp_fields {
 order by var_samp() on columns of table "Order"
 """
 input Order_var_samp_order_by {
+  backMoney: order_by
   customerid: order_by
   id: order_by
+  pay: order_by
   total: order_by
 }
 
 """aggregate variance on columns"""
 type Order_variance_fields {
+  backMoney: Float
   customerid: Float
   id: Float
+  pay: Float
   total: Float
 }
 
@@ -1621,8 +1714,10 @@ type Order_variance_fields {
 order by variance() on columns of table "Order"
 """
 input Order_variance_order_by {
+  backMoney: order_by
   customerid: order_by
   id: order_by
+  pay: order_by
   total: order_by
 }
 
@@ -1641,6 +1736,10 @@ type orderdetail {
   productid: Int
   quantity: Int!
   total: Int!
+
+  """An object relationship"""
+  unit: unit
+  unitid: Int
 }
 
 """
@@ -1703,6 +1802,7 @@ type orderdetail_avg_fields {
   productid: Float
   quantity: Float
   total: Float
+  unitid: Float
 }
 
 """
@@ -1715,6 +1815,7 @@ input orderdetail_avg_order_by {
   productid: order_by
   quantity: order_by
   total: order_by
+  unitid: order_by
 }
 
 """
@@ -1732,6 +1833,8 @@ input orderdetail_bool_exp {
   productid: Int_comparison_exp
   quantity: Int_comparison_exp
   total: Int_comparison_exp
+  unit: unit_bool_exp
+  unitid: Int_comparison_exp
 }
 
 """
@@ -1752,6 +1855,7 @@ input orderdetail_inc_input {
   productid: Int
   quantity: Int
   total: Int
+  unitid: Int
 }
 
 """
@@ -1766,6 +1870,8 @@ input orderdetail_insert_input {
   productid: Int
   quantity: Int
   total: Int
+  unit: unit_obj_rel_insert_input
+  unitid: Int
 }
 
 """aggregate max on columns"""
@@ -1776,6 +1882,7 @@ type orderdetail_max_fields {
   productid: Int
   quantity: Int
   total: Int
+  unitid: Int
 }
 
 """
@@ -1788,6 +1895,7 @@ input orderdetail_max_order_by {
   productid: order_by
   quantity: order_by
   total: order_by
+  unitid: order_by
 }
 
 """aggregate min on columns"""
@@ -1798,6 +1906,7 @@ type orderdetail_min_fields {
   productid: Int
   quantity: Int
   total: Int
+  unitid: Int
 }
 
 """
@@ -1810,6 +1919,7 @@ input orderdetail_min_order_by {
   productid: order_by
   quantity: order_by
   total: order_by
+  unitid: order_by
 }
 
 """
@@ -1842,6 +1952,8 @@ input orderdetail_order_by {
   productid: order_by
   quantity: order_by
   total: order_by
+  unit: unit_order_by
+  unitid: order_by
 }
 
 """primary key columns input for table: orderdetail"""
@@ -1870,6 +1982,9 @@ enum orderdetail_select_column {
 
   """column name"""
   total
+
+  """column name"""
+  unitid
 }
 
 """
@@ -1882,6 +1997,7 @@ input orderdetail_set_input {
   productid: Int
   quantity: Int
   total: Int
+  unitid: Int
 }
 
 """aggregate stddev on columns"""
@@ -1892,6 +2008,7 @@ type orderdetail_stddev_fields {
   productid: Float
   quantity: Float
   total: Float
+  unitid: Float
 }
 
 """
@@ -1904,6 +2021,7 @@ input orderdetail_stddev_order_by {
   productid: order_by
   quantity: order_by
   total: order_by
+  unitid: order_by
 }
 
 """aggregate stddev_pop on columns"""
@@ -1914,6 +2032,7 @@ type orderdetail_stddev_pop_fields {
   productid: Float
   quantity: Float
   total: Float
+  unitid: Float
 }
 
 """
@@ -1926,6 +2045,7 @@ input orderdetail_stddev_pop_order_by {
   productid: order_by
   quantity: order_by
   total: order_by
+  unitid: order_by
 }
 
 """aggregate stddev_samp on columns"""
@@ -1936,6 +2056,7 @@ type orderdetail_stddev_samp_fields {
   productid: Float
   quantity: Float
   total: Float
+  unitid: Float
 }
 
 """
@@ -1948,6 +2069,7 @@ input orderdetail_stddev_samp_order_by {
   productid: order_by
   quantity: order_by
   total: order_by
+  unitid: order_by
 }
 
 """aggregate sum on columns"""
@@ -1958,6 +2080,7 @@ type orderdetail_sum_fields {
   productid: Int
   quantity: Int
   total: Int
+  unitid: Int
 }
 
 """
@@ -1970,6 +2093,7 @@ input orderdetail_sum_order_by {
   productid: order_by
   quantity: order_by
   total: order_by
+  unitid: order_by
 }
 
 """
@@ -1993,6 +2117,9 @@ enum orderdetail_update_column {
 
   """column name"""
   total
+
+  """column name"""
+  unitid
 }
 
 """aggregate var_pop on columns"""
@@ -2003,6 +2130,7 @@ type orderdetail_var_pop_fields {
   productid: Float
   quantity: Float
   total: Float
+  unitid: Float
 }
 
 """
@@ -2015,6 +2143,7 @@ input orderdetail_var_pop_order_by {
   productid: order_by
   quantity: order_by
   total: order_by
+  unitid: order_by
 }
 
 """aggregate var_samp on columns"""
@@ -2025,6 +2154,7 @@ type orderdetail_var_samp_fields {
   productid: Float
   quantity: Float
   total: Float
+  unitid: Float
 }
 
 """
@@ -2037,6 +2167,7 @@ input orderdetail_var_samp_order_by {
   productid: order_by
   quantity: order_by
   total: order_by
+  unitid: order_by
 }
 
 """aggregate variance on columns"""
@@ -2047,6 +2178,7 @@ type orderdetail_variance_fields {
   productid: Float
   quantity: Float
   total: Float
+  unitid: Float
 }
 
 """
@@ -2059,6 +2191,7 @@ input orderdetail_variance_order_by {
   productid: order_by
   quantity: order_by
   total: order_by
+  unitid: order_by
 }
 
 """
@@ -3465,12 +3598,65 @@ type supplier_variance_fields {
   id: Float
 }
 
+scalar timestamptz
+
+"""
+Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'.
+"""
+input timestamptz_comparison_exp {
+  _eq: timestamptz
+  _gt: timestamptz
+  _gte: timestamptz
+  _in: [timestamptz!]
+  _is_null: Boolean
+  _lt: timestamptz
+  _lte: timestamptz
+  _neq: timestamptz
+  _nin: [timestamptz!]
+}
+
 """
 columns and relationships of "unit"
 """
 type unit {
   id: Int!
   name: String!
+
+  """An array relationship"""
+  orderdetails(
+    """distinct select on columns"""
+    distinct_on: [orderdetail_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [orderdetail_order_by!]
+
+    """filter the rows returned"""
+    where: orderdetail_bool_exp
+  ): [orderdetail!]!
+
+  """An aggregate relationship"""
+  orderdetails_aggregate(
+    """distinct select on columns"""
+    distinct_on: [orderdetail_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [orderdetail_order_by!]
+
+    """filter the rows returned"""
+    where: orderdetail_bool_exp
+  ): orderdetail_aggregate!
   price: Int!
 
   """An object relationship"""
@@ -3558,6 +3744,7 @@ input unit_bool_exp {
   _or: [unit_bool_exp!]
   id: Int_comparison_exp
   name: String_comparison_exp
+  orderdetails: orderdetail_bool_exp
   price: Int_comparison_exp
   product: product_bool_exp
   productid: Int_comparison_exp
@@ -3588,6 +3775,7 @@ input type for inserting data into table "unit"
 input unit_insert_input {
   id: Int
   name: String
+  orderdetails: orderdetail_arr_rel_insert_input
   price: Int
   product: product_obj_rel_insert_input
   productid: Int
@@ -3646,6 +3834,16 @@ type unit_mutation_response {
 }
 
 """
+input type for inserting object relation for remote table "unit"
+"""
+input unit_obj_rel_insert_input {
+  data: unit_insert_input!
+
+  """upsert condition"""
+  on_conflict: unit_on_conflict
+}
+
+"""
 on_conflict condition type for table "unit"
 """
 input unit_on_conflict {
@@ -3658,6 +3856,7 @@ input unit_on_conflict {
 input unit_order_by {
   id: order_by
   name: order_by
+  orderdetails_aggregate: orderdetail_aggregate_order_by
   price: order_by
   product: product_order_by
   productid: order_by

@@ -1,6 +1,9 @@
 import { format } from "date-fns";
 
 export const getTimeFromStringDate = (dateText: string) => {
+    if (dateText == null) {
+        return null;
+    }
     try {
         let dateConvert = new Date(dateText);
         let timeText = format(dateConvert, "MM/dd/yyyy HH:mm:ss");

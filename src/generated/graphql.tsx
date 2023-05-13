@@ -10,6 +10,7 @@ export type Scalars = {
     Boolean: boolean;
     Int: number;
     Float: number;
+    timestamptz: any;
 };
 
 /** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
@@ -28,6 +29,8 @@ export type Int_Comparison_Exp = {
 /** columns and relationships of "Order" */
 export type Order = {
     __typename?: "Order";
+    backMoney?: Maybe<Scalars["Int"]>;
+    createTime?: Maybe<Scalars["timestamptz"]>;
     /** An object relationship */
     customer?: Maybe<Customer>;
     customerid?: Maybe<Scalars["Int"]>;
@@ -36,6 +39,8 @@ export type Order = {
     orderdetails: Array<Orderdetail>;
     /** An aggregate relationship */
     orderdetails_aggregate: Orderdetail_Aggregate;
+    pay?: Maybe<Scalars["Int"]>;
+    paymentTime?: Maybe<Scalars["timestamptz"]>;
     status: Scalars["String"];
     total: Scalars["Int"];
 };
@@ -112,15 +117,19 @@ export type Order_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type Order_Avg_Fields = {
     __typename?: "Order_avg_fields";
+    backMoney?: Maybe<Scalars["Float"]>;
     customerid?: Maybe<Scalars["Float"]>;
     id?: Maybe<Scalars["Float"]>;
+    pay?: Maybe<Scalars["Float"]>;
     total?: Maybe<Scalars["Float"]>;
 };
 
 /** order by avg() on columns of table "Order" */
 export type Order_Avg_Order_By = {
+    backMoney?: InputMaybe<Order_By>;
     customerid?: InputMaybe<Order_By>;
     id?: InputMaybe<Order_By>;
+    pay?: InputMaybe<Order_By>;
     total?: InputMaybe<Order_By>;
 };
 
@@ -129,10 +138,14 @@ export type Order_Bool_Exp = {
     _and?: InputMaybe<Array<Order_Bool_Exp>>;
     _not?: InputMaybe<Order_Bool_Exp>;
     _or?: InputMaybe<Array<Order_Bool_Exp>>;
+    backMoney?: InputMaybe<Int_Comparison_Exp>;
+    createTime?: InputMaybe<Timestamptz_Comparison_Exp>;
     customer?: InputMaybe<Customer_Bool_Exp>;
     customerid?: InputMaybe<Int_Comparison_Exp>;
     id?: InputMaybe<Int_Comparison_Exp>;
     orderdetails?: InputMaybe<Orderdetail_Bool_Exp>;
+    pay?: InputMaybe<Int_Comparison_Exp>;
+    paymentTime?: InputMaybe<Timestamptz_Comparison_Exp>;
     status?: InputMaybe<String_Comparison_Exp>;
     total?: InputMaybe<Int_Comparison_Exp>;
 };
@@ -145,17 +158,23 @@ export enum Order_Constraint {
 
 /** input type for incrementing numeric columns in table "Order" */
 export type Order_Inc_Input = {
+    backMoney?: InputMaybe<Scalars["Int"]>;
     customerid?: InputMaybe<Scalars["Int"]>;
     id?: InputMaybe<Scalars["Int"]>;
+    pay?: InputMaybe<Scalars["Int"]>;
     total?: InputMaybe<Scalars["Int"]>;
 };
 
 /** input type for inserting data into table "Order" */
 export type Order_Insert_Input = {
+    backMoney?: InputMaybe<Scalars["Int"]>;
+    createTime?: InputMaybe<Scalars["timestamptz"]>;
     customer?: InputMaybe<Customer_Obj_Rel_Insert_Input>;
     customerid?: InputMaybe<Scalars["Int"]>;
     id?: InputMaybe<Scalars["Int"]>;
     orderdetails?: InputMaybe<Orderdetail_Arr_Rel_Insert_Input>;
+    pay?: InputMaybe<Scalars["Int"]>;
+    paymentTime?: InputMaybe<Scalars["timestamptz"]>;
     status?: InputMaybe<Scalars["String"]>;
     total?: InputMaybe<Scalars["Int"]>;
 };
@@ -163,16 +182,24 @@ export type Order_Insert_Input = {
 /** aggregate max on columns */
 export type Order_Max_Fields = {
     __typename?: "Order_max_fields";
+    backMoney?: Maybe<Scalars["Int"]>;
+    createTime?: Maybe<Scalars["timestamptz"]>;
     customerid?: Maybe<Scalars["Int"]>;
     id?: Maybe<Scalars["Int"]>;
+    pay?: Maybe<Scalars["Int"]>;
+    paymentTime?: Maybe<Scalars["timestamptz"]>;
     status?: Maybe<Scalars["String"]>;
     total?: Maybe<Scalars["Int"]>;
 };
 
 /** order by max() on columns of table "Order" */
 export type Order_Max_Order_By = {
+    backMoney?: InputMaybe<Order_By>;
+    createTime?: InputMaybe<Order_By>;
     customerid?: InputMaybe<Order_By>;
     id?: InputMaybe<Order_By>;
+    pay?: InputMaybe<Order_By>;
+    paymentTime?: InputMaybe<Order_By>;
     status?: InputMaybe<Order_By>;
     total?: InputMaybe<Order_By>;
 };
@@ -180,16 +207,24 @@ export type Order_Max_Order_By = {
 /** aggregate min on columns */
 export type Order_Min_Fields = {
     __typename?: "Order_min_fields";
+    backMoney?: Maybe<Scalars["Int"]>;
+    createTime?: Maybe<Scalars["timestamptz"]>;
     customerid?: Maybe<Scalars["Int"]>;
     id?: Maybe<Scalars["Int"]>;
+    pay?: Maybe<Scalars["Int"]>;
+    paymentTime?: Maybe<Scalars["timestamptz"]>;
     status?: Maybe<Scalars["String"]>;
     total?: Maybe<Scalars["Int"]>;
 };
 
 /** order by min() on columns of table "Order" */
 export type Order_Min_Order_By = {
+    backMoney?: InputMaybe<Order_By>;
+    createTime?: InputMaybe<Order_By>;
     customerid?: InputMaybe<Order_By>;
     id?: InputMaybe<Order_By>;
+    pay?: InputMaybe<Order_By>;
+    paymentTime?: InputMaybe<Order_By>;
     status?: InputMaybe<Order_By>;
     total?: InputMaybe<Order_By>;
 };
@@ -219,10 +254,14 @@ export type Order_On_Conflict = {
 
 /** Ordering options when selecting data from "Order". */
 export type Order_Order_By = {
+    backMoney?: InputMaybe<Order_By>;
+    createTime?: InputMaybe<Order_By>;
     customer?: InputMaybe<Customer_Order_By>;
     customerid?: InputMaybe<Order_By>;
     id?: InputMaybe<Order_By>;
     orderdetails_aggregate?: InputMaybe<Orderdetail_Aggregate_Order_By>;
+    pay?: InputMaybe<Order_By>;
+    paymentTime?: InputMaybe<Order_By>;
     status?: InputMaybe<Order_By>;
     total?: InputMaybe<Order_By>;
 };
@@ -235,9 +274,17 @@ export type Order_Pk_Columns_Input = {
 /** select columns of table "Order" */
 export enum Order_Select_Column {
     /** column name */
+    BackMoney = "backMoney",
+    /** column name */
+    CreateTime = "createTime",
+    /** column name */
     Customerid = "customerid",
     /** column name */
     Id = "id",
+    /** column name */
+    Pay = "pay",
+    /** column name */
+    PaymentTime = "paymentTime",
     /** column name */
     Status = "status",
     /** column name */
@@ -246,8 +293,12 @@ export enum Order_Select_Column {
 
 /** input type for updating data in table "Order" */
 export type Order_Set_Input = {
+    backMoney?: InputMaybe<Scalars["Int"]>;
+    createTime?: InputMaybe<Scalars["timestamptz"]>;
     customerid?: InputMaybe<Scalars["Int"]>;
     id?: InputMaybe<Scalars["Int"]>;
+    pay?: InputMaybe<Scalars["Int"]>;
+    paymentTime?: InputMaybe<Scalars["timestamptz"]>;
     status?: InputMaybe<Scalars["String"]>;
     total?: InputMaybe<Scalars["Int"]>;
 };
@@ -255,69 +306,93 @@ export type Order_Set_Input = {
 /** aggregate stddev on columns */
 export type Order_Stddev_Fields = {
     __typename?: "Order_stddev_fields";
+    backMoney?: Maybe<Scalars["Float"]>;
     customerid?: Maybe<Scalars["Float"]>;
     id?: Maybe<Scalars["Float"]>;
+    pay?: Maybe<Scalars["Float"]>;
     total?: Maybe<Scalars["Float"]>;
 };
 
 /** order by stddev() on columns of table "Order" */
 export type Order_Stddev_Order_By = {
+    backMoney?: InputMaybe<Order_By>;
     customerid?: InputMaybe<Order_By>;
     id?: InputMaybe<Order_By>;
+    pay?: InputMaybe<Order_By>;
     total?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Order_Stddev_Pop_Fields = {
     __typename?: "Order_stddev_pop_fields";
+    backMoney?: Maybe<Scalars["Float"]>;
     customerid?: Maybe<Scalars["Float"]>;
     id?: Maybe<Scalars["Float"]>;
+    pay?: Maybe<Scalars["Float"]>;
     total?: Maybe<Scalars["Float"]>;
 };
 
 /** order by stddev_pop() on columns of table "Order" */
 export type Order_Stddev_Pop_Order_By = {
+    backMoney?: InputMaybe<Order_By>;
     customerid?: InputMaybe<Order_By>;
     id?: InputMaybe<Order_By>;
+    pay?: InputMaybe<Order_By>;
     total?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Order_Stddev_Samp_Fields = {
     __typename?: "Order_stddev_samp_fields";
+    backMoney?: Maybe<Scalars["Float"]>;
     customerid?: Maybe<Scalars["Float"]>;
     id?: Maybe<Scalars["Float"]>;
+    pay?: Maybe<Scalars["Float"]>;
     total?: Maybe<Scalars["Float"]>;
 };
 
 /** order by stddev_samp() on columns of table "Order" */
 export type Order_Stddev_Samp_Order_By = {
+    backMoney?: InputMaybe<Order_By>;
     customerid?: InputMaybe<Order_By>;
     id?: InputMaybe<Order_By>;
+    pay?: InputMaybe<Order_By>;
     total?: InputMaybe<Order_By>;
 };
 
 /** aggregate sum on columns */
 export type Order_Sum_Fields = {
     __typename?: "Order_sum_fields";
+    backMoney?: Maybe<Scalars["Int"]>;
     customerid?: Maybe<Scalars["Int"]>;
     id?: Maybe<Scalars["Int"]>;
+    pay?: Maybe<Scalars["Int"]>;
     total?: Maybe<Scalars["Int"]>;
 };
 
 /** order by sum() on columns of table "Order" */
 export type Order_Sum_Order_By = {
+    backMoney?: InputMaybe<Order_By>;
     customerid?: InputMaybe<Order_By>;
     id?: InputMaybe<Order_By>;
+    pay?: InputMaybe<Order_By>;
     total?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "Order" */
 export enum Order_Update_Column {
     /** column name */
+    BackMoney = "backMoney",
+    /** column name */
+    CreateTime = "createTime",
+    /** column name */
     Customerid = "customerid",
     /** column name */
     Id = "id",
+    /** column name */
+    Pay = "pay",
+    /** column name */
+    PaymentTime = "paymentTime",
     /** column name */
     Status = "status",
     /** column name */
@@ -327,45 +402,57 @@ export enum Order_Update_Column {
 /** aggregate var_pop on columns */
 export type Order_Var_Pop_Fields = {
     __typename?: "Order_var_pop_fields";
+    backMoney?: Maybe<Scalars["Float"]>;
     customerid?: Maybe<Scalars["Float"]>;
     id?: Maybe<Scalars["Float"]>;
+    pay?: Maybe<Scalars["Float"]>;
     total?: Maybe<Scalars["Float"]>;
 };
 
 /** order by var_pop() on columns of table "Order" */
 export type Order_Var_Pop_Order_By = {
+    backMoney?: InputMaybe<Order_By>;
     customerid?: InputMaybe<Order_By>;
     id?: InputMaybe<Order_By>;
+    pay?: InputMaybe<Order_By>;
     total?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Order_Var_Samp_Fields = {
     __typename?: "Order_var_samp_fields";
+    backMoney?: Maybe<Scalars["Float"]>;
     customerid?: Maybe<Scalars["Float"]>;
     id?: Maybe<Scalars["Float"]>;
+    pay?: Maybe<Scalars["Float"]>;
     total?: Maybe<Scalars["Float"]>;
 };
 
 /** order by var_samp() on columns of table "Order" */
 export type Order_Var_Samp_Order_By = {
+    backMoney?: InputMaybe<Order_By>;
     customerid?: InputMaybe<Order_By>;
     id?: InputMaybe<Order_By>;
+    pay?: InputMaybe<Order_By>;
     total?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Order_Variance_Fields = {
     __typename?: "Order_variance_fields";
+    backMoney?: Maybe<Scalars["Float"]>;
     customerid?: Maybe<Scalars["Float"]>;
     id?: Maybe<Scalars["Float"]>;
+    pay?: Maybe<Scalars["Float"]>;
     total?: Maybe<Scalars["Float"]>;
 };
 
 /** order by variance() on columns of table "Order" */
 export type Order_Variance_Order_By = {
+    backMoney?: InputMaybe<Order_By>;
     customerid?: InputMaybe<Order_By>;
     id?: InputMaybe<Order_By>;
+    pay?: InputMaybe<Order_By>;
     total?: InputMaybe<Order_By>;
 };
 
@@ -1447,6 +1534,9 @@ export type Orderdetail = {
     productid?: Maybe<Scalars["Int"]>;
     quantity: Scalars["Int"];
     total: Scalars["Int"];
+    /** An object relationship */
+    unit?: Maybe<Unit>;
+    unitid?: Maybe<Scalars["Int"]>;
 };
 
 /** aggregated selection of "orderdetail" */
@@ -1509,6 +1599,7 @@ export type Orderdetail_Avg_Fields = {
     productid?: Maybe<Scalars["Float"]>;
     quantity?: Maybe<Scalars["Float"]>;
     total?: Maybe<Scalars["Float"]>;
+    unitid?: Maybe<Scalars["Float"]>;
 };
 
 /** order by avg() on columns of table "orderdetail" */
@@ -1519,6 +1610,7 @@ export type Orderdetail_Avg_Order_By = {
     productid?: InputMaybe<Order_By>;
     quantity?: InputMaybe<Order_By>;
     total?: InputMaybe<Order_By>;
+    unitid?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "orderdetail". All fields are combined with a logical 'AND'. */
@@ -1534,6 +1626,8 @@ export type Orderdetail_Bool_Exp = {
     productid?: InputMaybe<Int_Comparison_Exp>;
     quantity?: InputMaybe<Int_Comparison_Exp>;
     total?: InputMaybe<Int_Comparison_Exp>;
+    unit?: InputMaybe<Unit_Bool_Exp>;
+    unitid?: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "orderdetail" */
@@ -1550,6 +1644,7 @@ export type Orderdetail_Inc_Input = {
     productid?: InputMaybe<Scalars["Int"]>;
     quantity?: InputMaybe<Scalars["Int"]>;
     total?: InputMaybe<Scalars["Int"]>;
+    unitid?: InputMaybe<Scalars["Int"]>;
 };
 
 /** input type for inserting data into table "orderdetail" */
@@ -1562,6 +1657,8 @@ export type Orderdetail_Insert_Input = {
     productid?: InputMaybe<Scalars["Int"]>;
     quantity?: InputMaybe<Scalars["Int"]>;
     total?: InputMaybe<Scalars["Int"]>;
+    unit?: InputMaybe<Unit_Obj_Rel_Insert_Input>;
+    unitid?: InputMaybe<Scalars["Int"]>;
 };
 
 /** aggregate max on columns */
@@ -1573,6 +1670,7 @@ export type Orderdetail_Max_Fields = {
     productid?: Maybe<Scalars["Int"]>;
     quantity?: Maybe<Scalars["Int"]>;
     total?: Maybe<Scalars["Int"]>;
+    unitid?: Maybe<Scalars["Int"]>;
 };
 
 /** order by max() on columns of table "orderdetail" */
@@ -1583,6 +1681,7 @@ export type Orderdetail_Max_Order_By = {
     productid?: InputMaybe<Order_By>;
     quantity?: InputMaybe<Order_By>;
     total?: InputMaybe<Order_By>;
+    unitid?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
@@ -1594,6 +1693,7 @@ export type Orderdetail_Min_Fields = {
     productid?: Maybe<Scalars["Int"]>;
     quantity?: Maybe<Scalars["Int"]>;
     total?: Maybe<Scalars["Int"]>;
+    unitid?: Maybe<Scalars["Int"]>;
 };
 
 /** order by min() on columns of table "orderdetail" */
@@ -1604,6 +1704,7 @@ export type Orderdetail_Min_Order_By = {
     productid?: InputMaybe<Order_By>;
     quantity?: InputMaybe<Order_By>;
     total?: InputMaybe<Order_By>;
+    unitid?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "orderdetail" */
@@ -1632,6 +1733,8 @@ export type Orderdetail_Order_By = {
     productid?: InputMaybe<Order_By>;
     quantity?: InputMaybe<Order_By>;
     total?: InputMaybe<Order_By>;
+    unit?: InputMaybe<Unit_Order_By>;
+    unitid?: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: orderdetail */
@@ -1653,6 +1756,8 @@ export enum Orderdetail_Select_Column {
     Quantity = "quantity",
     /** column name */
     Total = "total",
+    /** column name */
+    Unitid = "unitid",
 }
 
 /** input type for updating data in table "orderdetail" */
@@ -1663,6 +1768,7 @@ export type Orderdetail_Set_Input = {
     productid?: InputMaybe<Scalars["Int"]>;
     quantity?: InputMaybe<Scalars["Int"]>;
     total?: InputMaybe<Scalars["Int"]>;
+    unitid?: InputMaybe<Scalars["Int"]>;
 };
 
 /** aggregate stddev on columns */
@@ -1674,6 +1780,7 @@ export type Orderdetail_Stddev_Fields = {
     productid?: Maybe<Scalars["Float"]>;
     quantity?: Maybe<Scalars["Float"]>;
     total?: Maybe<Scalars["Float"]>;
+    unitid?: Maybe<Scalars["Float"]>;
 };
 
 /** order by stddev() on columns of table "orderdetail" */
@@ -1684,6 +1791,7 @@ export type Orderdetail_Stddev_Order_By = {
     productid?: InputMaybe<Order_By>;
     quantity?: InputMaybe<Order_By>;
     total?: InputMaybe<Order_By>;
+    unitid?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
@@ -1695,6 +1803,7 @@ export type Orderdetail_Stddev_Pop_Fields = {
     productid?: Maybe<Scalars["Float"]>;
     quantity?: Maybe<Scalars["Float"]>;
     total?: Maybe<Scalars["Float"]>;
+    unitid?: Maybe<Scalars["Float"]>;
 };
 
 /** order by stddev_pop() on columns of table "orderdetail" */
@@ -1705,6 +1814,7 @@ export type Orderdetail_Stddev_Pop_Order_By = {
     productid?: InputMaybe<Order_By>;
     quantity?: InputMaybe<Order_By>;
     total?: InputMaybe<Order_By>;
+    unitid?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -1716,6 +1826,7 @@ export type Orderdetail_Stddev_Samp_Fields = {
     productid?: Maybe<Scalars["Float"]>;
     quantity?: Maybe<Scalars["Float"]>;
     total?: Maybe<Scalars["Float"]>;
+    unitid?: Maybe<Scalars["Float"]>;
 };
 
 /** order by stddev_samp() on columns of table "orderdetail" */
@@ -1726,6 +1837,7 @@ export type Orderdetail_Stddev_Samp_Order_By = {
     productid?: InputMaybe<Order_By>;
     quantity?: InputMaybe<Order_By>;
     total?: InputMaybe<Order_By>;
+    unitid?: InputMaybe<Order_By>;
 };
 
 /** aggregate sum on columns */
@@ -1737,6 +1849,7 @@ export type Orderdetail_Sum_Fields = {
     productid?: Maybe<Scalars["Int"]>;
     quantity?: Maybe<Scalars["Int"]>;
     total?: Maybe<Scalars["Int"]>;
+    unitid?: Maybe<Scalars["Int"]>;
 };
 
 /** order by sum() on columns of table "orderdetail" */
@@ -1747,6 +1860,7 @@ export type Orderdetail_Sum_Order_By = {
     productid?: InputMaybe<Order_By>;
     quantity?: InputMaybe<Order_By>;
     total?: InputMaybe<Order_By>;
+    unitid?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "orderdetail" */
@@ -1763,6 +1877,8 @@ export enum Orderdetail_Update_Column {
     Quantity = "quantity",
     /** column name */
     Total = "total",
+    /** column name */
+    Unitid = "unitid",
 }
 
 /** aggregate var_pop on columns */
@@ -1774,6 +1890,7 @@ export type Orderdetail_Var_Pop_Fields = {
     productid?: Maybe<Scalars["Float"]>;
     quantity?: Maybe<Scalars["Float"]>;
     total?: Maybe<Scalars["Float"]>;
+    unitid?: Maybe<Scalars["Float"]>;
 };
 
 /** order by var_pop() on columns of table "orderdetail" */
@@ -1784,6 +1901,7 @@ export type Orderdetail_Var_Pop_Order_By = {
     productid?: InputMaybe<Order_By>;
     quantity?: InputMaybe<Order_By>;
     total?: InputMaybe<Order_By>;
+    unitid?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
@@ -1795,6 +1913,7 @@ export type Orderdetail_Var_Samp_Fields = {
     productid?: Maybe<Scalars["Float"]>;
     quantity?: Maybe<Scalars["Float"]>;
     total?: Maybe<Scalars["Float"]>;
+    unitid?: Maybe<Scalars["Float"]>;
 };
 
 /** order by var_samp() on columns of table "orderdetail" */
@@ -1805,6 +1924,7 @@ export type Orderdetail_Var_Samp_Order_By = {
     productid?: InputMaybe<Order_By>;
     quantity?: InputMaybe<Order_By>;
     total?: InputMaybe<Order_By>;
+    unitid?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
@@ -1816,6 +1936,7 @@ export type Orderdetail_Variance_Fields = {
     productid?: Maybe<Scalars["Float"]>;
     quantity?: Maybe<Scalars["Float"]>;
     total?: Maybe<Scalars["Float"]>;
+    unitid?: Maybe<Scalars["Float"]>;
 };
 
 /** order by variance() on columns of table "orderdetail" */
@@ -1826,6 +1947,7 @@ export type Orderdetail_Variance_Order_By = {
     productid?: InputMaybe<Order_By>;
     quantity?: InputMaybe<Order_By>;
     total?: InputMaybe<Order_By>;
+    unitid?: InputMaybe<Order_By>;
 };
 
 /** columns and relationships of "product" */
@@ -2831,16 +2953,51 @@ export type Supplier_Variance_Fields = {
     id?: Maybe<Scalars["Float"]>;
 };
 
+/** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
+export type Timestamptz_Comparison_Exp = {
+    _eq?: InputMaybe<Scalars["timestamptz"]>;
+    _gt?: InputMaybe<Scalars["timestamptz"]>;
+    _gte?: InputMaybe<Scalars["timestamptz"]>;
+    _in?: InputMaybe<Array<Scalars["timestamptz"]>>;
+    _is_null?: InputMaybe<Scalars["Boolean"]>;
+    _lt?: InputMaybe<Scalars["timestamptz"]>;
+    _lte?: InputMaybe<Scalars["timestamptz"]>;
+    _neq?: InputMaybe<Scalars["timestamptz"]>;
+    _nin?: InputMaybe<Array<Scalars["timestamptz"]>>;
+};
+
 /** columns and relationships of "unit" */
 export type Unit = {
     __typename?: "unit";
     id: Scalars["Int"];
     name: Scalars["String"];
+    /** An array relationship */
+    orderdetails: Array<Orderdetail>;
+    /** An aggregate relationship */
+    orderdetails_aggregate: Orderdetail_Aggregate;
     price: Scalars["Int"];
     /** An object relationship */
     product?: Maybe<Product>;
     productid?: Maybe<Scalars["Int"]>;
     ratio: Scalars["Int"];
+};
+
+/** columns and relationships of "unit" */
+export type UnitOrderdetailsArgs = {
+    distinct_on?: InputMaybe<Array<Orderdetail_Select_Column>>;
+    limit?: InputMaybe<Scalars["Int"]>;
+    offset?: InputMaybe<Scalars["Int"]>;
+    order_by?: InputMaybe<Array<Orderdetail_Order_By>>;
+    where?: InputMaybe<Orderdetail_Bool_Exp>;
+};
+
+/** columns and relationships of "unit" */
+export type UnitOrderdetails_AggregateArgs = {
+    distinct_on?: InputMaybe<Array<Orderdetail_Select_Column>>;
+    limit?: InputMaybe<Scalars["Int"]>;
+    offset?: InputMaybe<Scalars["Int"]>;
+    order_by?: InputMaybe<Array<Orderdetail_Order_By>>;
+    where?: InputMaybe<Orderdetail_Bool_Exp>;
 };
 
 /** aggregated selection of "unit" */
@@ -2918,6 +3075,7 @@ export type Unit_Bool_Exp = {
     _or?: InputMaybe<Array<Unit_Bool_Exp>>;
     id?: InputMaybe<Int_Comparison_Exp>;
     name?: InputMaybe<String_Comparison_Exp>;
+    orderdetails?: InputMaybe<Orderdetail_Bool_Exp>;
     price?: InputMaybe<Int_Comparison_Exp>;
     product?: InputMaybe<Product_Bool_Exp>;
     productid?: InputMaybe<Int_Comparison_Exp>;
@@ -2942,6 +3100,7 @@ export type Unit_Inc_Input = {
 export type Unit_Insert_Input = {
     id?: InputMaybe<Scalars["Int"]>;
     name?: InputMaybe<Scalars["String"]>;
+    orderdetails?: InputMaybe<Orderdetail_Arr_Rel_Insert_Input>;
     price?: InputMaybe<Scalars["Int"]>;
     product?: InputMaybe<Product_Obj_Rel_Insert_Input>;
     productid?: InputMaybe<Scalars["Int"]>;
@@ -2995,6 +3154,13 @@ export type Unit_Mutation_Response = {
     returning: Array<Unit>;
 };
 
+/** input type for inserting object relation for remote table "unit" */
+export type Unit_Obj_Rel_Insert_Input = {
+    data: Unit_Insert_Input;
+    /** upsert condition */
+    on_conflict?: InputMaybe<Unit_On_Conflict>;
+};
+
 /** on_conflict condition type for table "unit" */
 export type Unit_On_Conflict = {
     constraint: Unit_Constraint;
@@ -3006,6 +3172,7 @@ export type Unit_On_Conflict = {
 export type Unit_Order_By = {
     id?: InputMaybe<Order_By>;
     name?: InputMaybe<Order_By>;
+    orderdetails_aggregate?: InputMaybe<Orderdetail_Aggregate_Order_By>;
     price?: InputMaybe<Order_By>;
     product?: InputMaybe<Product_Order_By>;
     productid?: InputMaybe<Order_By>;
@@ -3223,6 +3390,44 @@ export type UpdateCustomerMutation = {
     update_customer_by_pk?: { __typename?: "customer"; id: number } | null;
 };
 
+export type CreateOrderMutationVariables = Exact<{
+    object?: InputMaybe<Order_Insert_Input>;
+}>;
+
+export type CreateOrderMutation = {
+    __typename?: "mutation_root";
+    insert_Order_one?: { __typename?: "Order"; id: number } | null;
+};
+
+export type GetOrderDetailByOrderQueryVariables = Exact<{
+    _eq?: InputMaybe<Scalars["Int"]>;
+}>;
+
+export type GetOrderDetailByOrderQuery = {
+    __typename?: "query_root";
+    orderdetail: Array<{
+        __typename?: "orderdetail";
+        id: number;
+        productid?: number | null;
+        quantity: number;
+        price: number;
+        total: number;
+        unitid?: number | null;
+        unit?: { __typename?: "unit"; name: string } | null;
+        product?: { __typename?: "product"; name: string } | null;
+    }>;
+};
+
+export type UpdateOrderMutationVariables = Exact<{
+    id?: InputMaybe<Scalars["Int"]>;
+    _set?: InputMaybe<Order_Set_Input>;
+}>;
+
+export type UpdateOrderMutation = {
+    __typename?: "mutation_root";
+    update_Order_by_pk?: { __typename?: "Order"; id: number } | null;
+};
+
 export type CreateProductMutationVariables = Exact<{
     object?: InputMaybe<Product_Insert_Input>;
 }>;
@@ -3230,6 +3435,15 @@ export type CreateProductMutationVariables = Exact<{
 export type CreateProductMutation = {
     __typename?: "mutation_root";
     insert_product_one?: { __typename?: "product"; id: number } | null;
+};
+
+export type GetProductByPkQueryVariables = Exact<{
+    id?: InputMaybe<Scalars["Int"]>;
+}>;
+
+export type GetProductByPkQuery = {
+    __typename?: "query_root";
+    product_by_pk?: { __typename?: "product"; id: number; quantity: number; name: string } | null;
 };
 
 export type UpdateProductMutationVariables = Exact<{
@@ -3268,6 +3482,15 @@ export type CreateUnitMutationVariables = Exact<{
 export type CreateUnitMutation = {
     __typename?: "mutation_root";
     insert_unit_one?: { __typename?: "unit"; id: number } | null;
+};
+
+export type GetUnitByPkQueryVariables = Exact<{
+    id?: InputMaybe<Scalars["Int"]>;
+}>;
+
+export type GetUnitByPkQuery = {
+    __typename?: "query_root";
+    unit_by_pk?: { __typename?: "unit"; ratio: number; price: number; name: string } | null;
 };
 
 export type GetUnitByProductQueryVariables = Exact<{
