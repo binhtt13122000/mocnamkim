@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { Order } from "src/generated/graphql";
+import { Import } from "src/generated/graphql";
 import { v4 as uuidv4 } from "uuid";
 
 import {
@@ -18,46 +18,43 @@ import {
     TableRow,
     Typography,
 } from "@mui/material";
-import TextfieldBase from "src/components/BaseTextField";
-import CustomerForm, { CustomerMutationType } from "src/components/CustomerForm";
 import CustomizeAutocomplete from "src/components/CustomizedAutocomplete";
 import { CurrencyFormatInput, NumberFormatInput } from "src/components/NumberInput";
+import ProductForm, { ProductMutationType } from "src/components/ProductForm";
 import useSnackbar from "src/components/Snackbar/useSnackbar";
+import SupplierForm, { SupplierMutationType } from "src/components/SupplierForm";
 
-import useCreateCustomer from "src/hooks/customer/useCreateCustomer";
-import useCreateOrder from "src/hooks/order/useCreateOrder";
+import useCreateImport from "src/hooks/import/useCreateImport";
+import useCreateProduct from "src/hooks/product/useCreateProduct";
 import useGetProductByPk from "src/hooks/product/useGetProductByPk";
 import useUpdateManyProduct from "src/hooks/product/useUpdateManyProduct";
-import useGetUnitByPk from "src/hooks/unit/useGetUnitByPk";
+import useCreateSupplier from "src/hooks/supplier/useCreateSupplier";
 
-export interface SellDto {
-    customerid: Order["customerid"];
-    status: Order["status"];
-    total: Order["total"];
-    pay: Order["pay"];
-    backMoney: Order["backMoney"];
-    createTime: Order["createTime"];
-    paymentTime: Order["paymentTime"];
+export interface ImportDto {
+    supplierid: Import["supplierid"];
+    status: Import["status"];
+    total: Import["total"];
+    pay: Import["pay"];
+    backMoney: Import["backMoney"];
+    createTime: Import["createTime"];
+    paymentTime: Import["paymentTime"];
     phone: number;
     name: number;
     productName: number;
     productCode: number;
-    unit: number;
     price: number;
-    ratio: number;
     quantity: number;
-    buyQuantity: number;
+    buyTotal: number;
     nameOfProduct: string;
-    nameOfUnit: string;
 }
 
-const Sell = () => {
+const ImportForm = () => {
     const navigate = useNavigate();
-    const { mutate } = useCreateOrder("OrderQuery");
-    const { mutate: updateMany } = useUpdateManyProduct("OrderQuery");
-    const initData: SellDto = {
+    const { mutate } = useCreateImport("ImportQuery");
+    const { mutate: updateMany } = useUpdateManyProduct("ImportQuery");
+    const initData: ImportDto = {
         status: "",
-        customerid: 0,
+        supplierid: 0,
         total: 0,
         backMoney: 0,
         pay: 0,
@@ -69,37 +66,30 @@ const Sell = () => {
         productName: 0,
         quantity: 0,
         nameOfProduct: "",
-        nameOfUnit: "",
-        unit: 0,
         price: 0,
-        ratio: 1,
-        buyQuantity: 0,
+        buyTotal: 0,
     };
 
-    const { mutate: mutateUnit } = useGetUnitByPk();
+    const { mutate: mutateCreate } = useCreateSupplier("SupplierQuery");
+    const { mutate: mutateCreateProduct } = useCreateProduct("ProductQuery");
     const { mutate: mutateProduct } = useGetProductByPk();
 
-    const { mutate: mutateCreate } = useCreateCustomer("CustomerQuery");
-
     const [isOpenForm, setIsOpenForm] = useState<boolean>(false);
+    const [isOpenProductForm, setIsOpenProductForm] = useState<boolean>(false);
     const showSnackbar = useSnackbar();
 
-    const [orderDetails, setOrderDetails] = useState<
+    const [importDetails, setimportDetails] = useState<
         Array<{
-            orderid: string;
             productid: number;
-            unitid: number;
             quantity: number;
             price: number;
             total: number;
             name: string;
-            unitName: string;
-            ratio: number;
-            rootQuantity: number;
+            importid: string;
         }>
     >([]);
 
-    const { setValue, watch, getValues, control, reset } = useForm<SellDto>({
+    const { setValue, watch, getValues, control, reset } = useForm<ImportDto>({
         defaultValues: initData,
     });
 
@@ -107,19 +97,36 @@ const Sell = () => {
     const watchPhone = watch("phone");
     const watchProductCode = watch("productCode");
     const watchProductName = watch("productName");
-    const watchUnit = watch("unit");
     const watchMoney = watch("pay");
+    const watchQuantity = watch("quantity");
+    const watchPrice = watch("price");
+
+    useEffect(() => {
+        if (!watchQuantity) {
+            setValue("buyTotal", 0);
+        } else {
+            setValue("buyTotal", getValues("price") * getValues("quantity"));
+        }
+    }, [watchQuantity, setValue, getValues]);
+
+    useEffect(() => {
+        if (!watchPrice) {
+            setValue("buyTotal", 0);
+        } else {
+            setValue("buyTotal", 0 || getValues("price") * getValues("quantity"));
+        }
+    }, [watchPrice, setValue, getValues]);
 
     useEffect(() => {
         if (!watchMoney) {
             setValue("backMoney", 0);
         } else {
-            setValue("backMoney", (watchMoney ? watchMoney : 0) - getValues("total"));
+            setValue("backMoney", (watchMoney ? watchMoney : 0) - (getValues("total") || 0));
         }
     }, [watchMoney, setValue, getValues]);
 
     const handleClose = useCallback(
-        (type: "SAVE" | "CANCEL", data?: CustomerMutationType, clearErrors?: Function) => {
+        (type: "SAVE" | "CANCEL", data?: SupplierMutationType, clearErrors?: Function) => {
             if (type === "SAVE") {
                 if (data) {
                     if (!data.id) {
@@ -133,7 +140,7 @@ const Sell = () => {
                             },
                             {
                                 onSuccess: (data) => {
-                                    setValue("name", data.insert_customer_one?.id || 0);
+                                    setValue("name", data.insert_supplier_one?.id || 0);
                                     showSnackbar({
                                         children: "Thêm mới thành công",
                                         severity: "success",
@@ -159,33 +166,49 @@ const Sell = () => {
         []
     );
 
-    useEffect(() => {
-        if (watchUnit && watchProductCode) {
-            mutateUnit(
-                {
-                    id: watchUnit,
-                },
-                {
-                    onSuccess: (data) => {
-                        mutateProduct(
+    const handleCloseProduct = useCallback(
+        (type: "SAVE" | "CANCEL", data?: ProductMutationType, clearErrors?: Function) => {
+            if (type === "SAVE") {
+                if (data) {
+                    if (!data.id) {
+                        data.id = undefined;
+                        mutateCreateProduct(
                             {
-                                id: watchProductCode,
+                                object: {
+                                    name: data.name,
+                                    categoryid: data.categoryid,
+                                    code: data.code,
+                                    origin: data.origin,
+                                    quantity: 0,
+                                },
                             },
                             {
                                 onSuccess: (data) => {
-                                    setValue("quantity", data?.product_by_pk?.quantity || 0);
-                                    setValue("nameOfProduct", data?.product_by_pk?.name || "");
+                                    setValue("productName", data.insert_product_one?.id || 0);
+                                    showSnackbar({
+                                        children: "Thêm mới thành công",
+                                        severity: "success",
+                                    });
+                                },
+                                onError: () => {
+                                    showSnackbar({
+                                        children: "Thêm mới thất bại",
+                                        severity: "error",
+                                    });
                                 },
                             }
                         );
-                        setValue("nameOfUnit", data?.unit_by_pk?.name || "");
-                        setValue("price", data?.unit_by_pk?.price || 0);
-                        setValue("ratio", data?.unit_by_pk?.ratio || 0);
-                    },
+                    }
                 }
-            );
-        }
-    }, [watchUnit, mutateUnit, setValue, watchProductCode, mutateProduct]);
+            }
+            if (clearErrors) {
+                clearErrors();
+            }
+            setIsOpenProductForm(false);
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        []
+    );
 
     useEffect(() => {
         if (watchName) {
@@ -211,115 +234,108 @@ const Sell = () => {
         }
     }, [watchProductName, setValue]);
 
-    const removeRecord = (orderId: string, total: number) => {
-        setOrderDetails([...orderDetails].filter((x) => x.orderid !== orderId));
+    useEffect(() => {
+        if (watchProductCode) {
+            mutateProduct(
+                {
+                    id: watchProductCode,
+                },
+                {
+                    onSuccess: (data) => {
+                        setValue("nameOfProduct", data?.product_by_pk?.name || "");
+                    },
+                }
+            );
+        }
+    }, [setValue, watchProductCode, mutateProduct]);
+
+    const removeRecord = (importid: string, total: number) => {
+        setimportDetails([...importDetails].filter((x) => x.importid !== importid));
         showSnackbar({
             children: "Xóa thành công",
             severity: "success",
         });
-        setValue("total", getValues("total") - total);
+        setValue("total", (getValues("total") || 0) - total);
     };
 
     const updateRecord = (k: {
-        orderid: string;
         productid: number;
-        unitid: number;
         quantity: number;
         price: number;
         total: number;
         name: string;
-        unitName: string;
-        ratio: number;
-        rootQuantity: number;
+        importid: string;
     }) => {
-        setOrderDetails([...orderDetails].filter((x) => x.orderid !== k.orderid));
-        setValue("total", getValues("total") - k.total);
+        setimportDetails([...importDetails].filter((x) => x.importid !== k.importid));
+        setValue("total", (getValues("total") || 0) - k.total);
         setValue("productCode", k.productid);
         setValue("productName", k.productid);
-        setValue("buyQuantity", k.quantity);
+        setValue("buyTotal", k.total);
         setValue("price", k.price);
-        setValue("unit", k.unitid);
-        setValue("ratio", k.ratio);
-        setValue("quantity", k.rootQuantity);
+        setValue("quantity", k.quantity);
         setValue("nameOfProduct", k.name);
-        setValue("nameOfUnit", k.unitName);
     };
 
     const addToOder = () => {
-        if (!getValues("buyQuantity")) {
+        if (!getValues("quantity")) {
             showSnackbar({
                 children: "Vui lòng nhập số lượng",
                 severity: "error",
             });
             return;
         }
-        if (getValues("buyQuantity") < 1) {
+        if (getValues("quantity") < 1) {
             showSnackbar({
                 children: "Số lượng từ 1 trở lên",
                 severity: "error",
             });
             return;
         }
-        if (getValues("buyQuantity") > Math.floor(getValues("quantity") / getValues("ratio"))) {
+        if (!getValues("price")) {
             showSnackbar({
-                children: "Số lượng lớn hơn tồn kho",
+                children: "Vui lòng nhập giá tiền",
                 severity: "error",
             });
             return;
         }
-        const listOrderDetailWithSameProduct = orderDetails.filter(
-            (x) => x.productid === getValues("productCode")
-        );
-        if (listOrderDetailWithSameProduct.length > 0) {
-            const count = listOrderDetailWithSameProduct
-                .map((x) => x.quantity * x.ratio)
-                .reduce((a, b) => a + b, 0);
-            if (count + getValues("buyQuantity") * getValues("ratio") > getValues("quantity")) {
-                showSnackbar({
-                    children: "Số lượng lớn hơn tồn kho",
-                    severity: "error",
-                });
-                return;
-            }
+        if (getValues("price") < 1) {
+            showSnackbar({
+                children: "Giá tiền nhỏ nhất là 1VND",
+                severity: "error",
+            });
+            return;
         }
-        const indexOrderDetailWithSameProductAndUnit = orderDetails.findIndex(
-            (x) => x.productid === getValues("productCode") && x.unitid === getValues("unit")
+
+        const listOrderDetailWithSameProductIndex = importDetails.findIndex(
+            (x) => x.productid === getValues("productCode") && x.price === getValues("price")
         );
-        if (indexOrderDetailWithSameProductAndUnit !== -1) {
-            orderDetails[indexOrderDetailWithSameProductAndUnit].quantity =
-                orderDetails[indexOrderDetailWithSameProductAndUnit].quantity +
-                getValues("buyQuantity");
-            orderDetails[indexOrderDetailWithSameProductAndUnit].total =
-                orderDetails[indexOrderDetailWithSameProductAndUnit].total +
-                getValues("price") * getValues("buyQuantity");
-            setOrderDetails([...orderDetails]);
+        if (listOrderDetailWithSameProductIndex !== -1) {
+            importDetails[listOrderDetailWithSameProductIndex].quantity =
+                importDetails[listOrderDetailWithSameProductIndex].quantity + getValues("quantity");
+            importDetails[listOrderDetailWithSameProductIndex].total =
+                importDetails[listOrderDetailWithSameProductIndex].total +
+                (getValues("buyTotal") || 0);
+            setimportDetails([...importDetails]);
         } else {
-            setOrderDetails([
-                ...orderDetails,
+            setimportDetails([
+                ...importDetails,
                 {
                     productid: getValues("productCode"),
-                    quantity: getValues("buyQuantity"),
+                    quantity: getValues("quantity"),
                     price: getValues("price"),
-                    total: getValues("price") * getValues("buyQuantity"),
-                    unitid: getValues("unit"),
+                    total: getValues("buyTotal"),
                     name: getValues("nameOfProduct"),
-                    unitName: getValues("nameOfUnit"),
-                    ratio: getValues("ratio"),
-                    rootQuantity: getValues("quantity"),
-                    orderid: uuidv4(),
+                    importid: uuidv4(),
                 },
             ]);
         }
-        setValue("total", getValues("total") + getValues("price") * getValues("buyQuantity"));
+        setValue("total", (getValues("total") || 0) + getValues("buyTotal"));
         setValue("productCode", 0);
         setValue("productName", 0);
-        setValue("buyQuantity", 0);
+        setValue("buyTotal", 0);
         setValue("price", 0);
-        setValue("unit", 0);
-        setValue("ratio", 1);
         setValue("quantity", 0);
         setValue("nameOfProduct", "");
-        setValue("nameOfUnit", "");
         showSnackbar({
             children: "Thêm thành công",
             severity: "success",
@@ -328,7 +344,7 @@ const Sell = () => {
 
     return (
         <Container sx={{ mt: 3 }}>
-            <CustomerForm
+            <SupplierForm
                 opened={isOpenForm}
                 isView={false}
                 data={{
@@ -338,8 +354,21 @@ const Sell = () => {
                 }}
                 handleClose={handleClose}
             />
+            <ProductForm
+                opened={isOpenProductForm}
+                isView={false}
+                data={{
+                    id: 0,
+                    name: "",
+                    categoryid: 0,
+                    code: "",
+                    origin: "",
+                    quantity: 0,
+                }}
+                handleClose={handleCloseProduct}
+            />
             <Typography align="center" variant="h5">
-                TẠO MỚI ĐƠN HÀNG
+                TẠO MỚI ĐƠN NHẬP
             </Typography>
             <Grid
                 component="form"
@@ -357,7 +386,7 @@ const Sell = () => {
                         justifyContent: "space-between",
                     }}
                 >
-                    <Typography variant="h6">KHÁCH HÀNG</Typography>
+                    <Typography variant="h6">NHÀ CUNG CẤP</Typography>
                     <Button variant="contained" onClick={() => setIsOpenForm(true)}>
                         Tạo mới
                     </Button>
@@ -375,15 +404,15 @@ const Sell = () => {
                         control={control}
                         defaultId={watchName || 0}
                         name="name"
-                        entity="customer"
+                        entity="supplier"
                         rules={{
                             min: {
                                 value: 1,
-                                message: "Khách hàng là bắt buộc",
+                                message: "Nhà cung cấp là bắt buộc",
                             },
                         }}
                         displayField="name"
-                        label={"Tên khách hàng"}
+                        label={"Tên nhà cung cấp"}
                         fullWidth
                         required
                     />
@@ -392,9 +421,9 @@ const Sell = () => {
                         defaultId={watchPhone || 0}
                         rules={{}}
                         name="phone"
-                        entity="customer"
+                        entity="supplier"
                         displayField="phone"
-                        label={"Số điện thoại"}
+                        label={"Số điện thoại nhà cung cấp"}
                         fullWidth
                     />
                 </Grid>
@@ -405,7 +434,10 @@ const Sell = () => {
                         justifyContent: "space-between",
                     }}
                 >
-                    <Typography variant="h6">ĐƠN HÀNG</Typography>
+                    <Typography variant="h6">ĐƠN NHẬP</Typography>
+                    <Button variant="contained" onClick={() => setIsOpenProductForm(true)}>
+                        Tạo mới
+                    </Button>
                 </Box>
                 <Grid
                     item
@@ -461,25 +493,6 @@ const Sell = () => {
                     }}
                 >
                     {watchProductCode ? (
-                        <CustomizeAutocomplete
-                            defaultId={watchUnit || 0}
-                            control={control}
-                            rules={{
-                                min: {
-                                    value: 1,
-                                    message: "Đơn vị là bắt buộc",
-                                },
-                            }}
-                            extra={`productid: {_eq: ${watchProductCode}}`}
-                            name="unit"
-                            entity="unit"
-                            displayField="name"
-                            label={"Đơn vị"}
-                            fullWidth
-                            required
-                        />
-                    ) : null}
-                    {watchProductCode ? (
                         <CurrencyFormatInput
                             control={control}
                             required
@@ -488,38 +501,25 @@ const Sell = () => {
                             rules={{
                                 required: {
                                     value: true,
-                                    message: "Giá theo đơn vị là bắt buộc",
+                                    message: "Giá theo sản phẩm là bắt buộc",
                                 },
                                 min: {
-                                    value: 500,
-                                    message: "Giá nhỏ nhất là 500VNĐ",
+                                    value: 1,
+                                    message: "Giá nhỏ nhất là 1VNĐ",
                                 },
                                 max: {
                                     value: 100000000,
                                     message: "Giá lớn nhất là 100.000.000VNĐ",
                                 },
                             }}
-                            readOnly
                             fullWidth
-                        />
-                    ) : null}
-                    {watchProductCode ? (
-                        <TextfieldBase
-                            label={"Số lượng tồn"}
-                            variant="outlined"
-                            InputProps={{
-                                readOnly: true,
-                            }}
-                            required
-                            fullWidth
-                            value={Math.floor(getValues("quantity") / getValues("ratio"))}
                         />
                     ) : null}
                     {watchProductCode ? (
                         <NumberFormatInput
                             control={control}
                             required
-                            name="buyQuantity"
+                            name="quantity"
                             label="Số lượng mua"
                             rules={{
                                 required: {
@@ -528,15 +528,29 @@ const Sell = () => {
                                 },
                                 min: {
                                     value: 1,
-                                    message: "Số lượng mua nhỏ nhất là 1",
+                                    message: "Số lượng nhỏ nhất là 1",
                                 },
                                 max: {
-                                    value: Math.floor(getValues("quantity") / getValues("ratio")),
-                                    message:
-                                        "Số lượng mua lớn nhất là " +
-                                        Math.floor(getValues("quantity") / getValues("ratio")),
+                                    value: 100000000,
+                                    message: "Số lượng lớn nhất là 100.000.000",
                                 },
                             }}
+                            fullWidth
+                        />
+                    ) : null}
+                    {watchProductCode ? (
+                        <CurrencyFormatInput
+                            control={control}
+                            required
+                            name="buyTotal"
+                            label="Thành tiền"
+                            rules={{
+                                required: {
+                                    value: true,
+                                    message: "Thành tiền là bắt buộc",
+                                },
+                            }}
+                            readOnly
                             fullWidth
                         />
                     ) : null}
@@ -550,15 +564,14 @@ const Sell = () => {
                                 <TableCell>Tên sản phẩm</TableCell>
                                 <TableCell align="right">Giá</TableCell>
                                 <TableCell align="right">Số lượng</TableCell>
-                                <TableCell>Đơn vị</TableCell>
                                 <TableCell align="right">Thành tiền</TableCell>
                                 <TableCell>Thao tác</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {orderDetails?.map((x, i) => {
+                            {importDetails?.map((x, i) => {
                                 return (
-                                    <TableRow key={x.orderid}>
+                                    <TableRow key={x.importid}>
                                         <TableCell>{i + 1}</TableCell>
                                         <TableCell>{x.name}</TableCell>
                                         <TableCell align="right">
@@ -568,7 +581,6 @@ const Sell = () => {
                                             }).format(x.price || 0)}
                                         </TableCell>
                                         <TableCell align="right">{x.quantity}</TableCell>
-                                        <TableCell>{x.unitName}</TableCell>
                                         <TableCell align="right">
                                             {new Intl.NumberFormat("vi-VN", {
                                                 style: "currency",
@@ -579,7 +591,7 @@ const Sell = () => {
                                             <Button
                                                 size="small"
                                                 color="error"
-                                                onClick={() => removeRecord(x.orderid, x.total)}
+                                                onClick={() => removeRecord(x.importid, x.total)}
                                             >
                                                 Xóa
                                             </Button>
@@ -595,13 +607,13 @@ const Sell = () => {
                                 );
                             })}
                             <TableRow>
-                                <TableCell colSpan={5}>Tổng tiền</TableCell>
+                                <TableCell colSpan={4}>Tổng tiền</TableCell>
                                 <TableCell align="right">
                                     {new Intl.NumberFormat("vi-VN", {
                                         style: "currency",
                                         currency: "VND",
                                     }).format(
-                                        orderDetails
+                                        importDetails
                                             .map((x) => x.total)
                                             .reduce((a, b) => a + b, 0) || 0
                                     )}
@@ -640,7 +652,7 @@ const Sell = () => {
                     rules={{
                         required: {
                             value: true,
-                            message: "Giá theo đơn vị là bắt buộc",
+                            message: "Thành tiền là bắt buộc",
                         },
                         min: {
                             value: 500,
@@ -657,11 +669,11 @@ const Sell = () => {
                     control={control}
                     required
                     name="pay"
-                    label="Khách hàng thanh toán"
+                    label="Số tiền thanh toán"
                     rules={{
                         required: {
                             value: true,
-                            message: "Khách hàng thanh toán là bắt buộc",
+                            message: "Số tiền thanh toán là bắt buộc",
                         },
                         min: {
                             value: 500,
@@ -712,24 +724,23 @@ const Sell = () => {
                     variant="outlined"
                     onClick={() => {
                         reset();
-                        setOrderDetails([]);
+                        setimportDetails([]);
                     }}
                 >
                     {"Xóa dữ liệu"}
                 </Button>
                 <Button
-                    disabled={orderDetails.length === 0 || watchPhone === 0}
+                    disabled={importDetails.length === 0 || watchPhone === 0}
                     variant="contained"
                     onClick={() => {
-                        if (watchPhone > 0 && orderDetails.length > 0) {
-                            const result = orderDetails.reduce((res, obj) => {
+                        if (watchPhone > 0 && importDetails.length > 0) {
+                            const result = importDetails.reduce((res, obj) => {
                                 (res as any)[obj.productid] = {
                                     quan:
                                         (obj.productid in res
                                             ? (res as any)[obj.productid].quan
-                                            : 0) +
-                                        obj.quantity * obj.ratio,
-                                    root: obj.rootQuantity,
+                                            : 0) + obj.quantity,
+                                    // root: obj.rootQuantity,
                                 };
                                 return res;
                             }, {});
@@ -737,7 +748,6 @@ const Sell = () => {
                                 return {
                                     productid: Number(key),
                                     quan: (result as any)[key].quan,
-                                    root: (result as any)[key].root,
                                 };
                             });
                             mutate(
@@ -745,22 +755,21 @@ const Sell = () => {
                                     object: {
                                         createTime: new Date().toISOString(),
                                         paymentTime: null,
-                                        customerid: watchPhone,
+                                        supplierid: watchPhone,
+                                        status: "Chưa thanh toán",
                                         backMoney: getValues("backMoney"),
                                         pay: getValues("pay"),
-                                        status: "Chưa thanh toán",
                                         total:
-                                            orderDetails
+                                            importDetails
                                                 .map((x) => x.total)
                                                 .reduce((a, b) => a + b, 0) || 0,
-                                        orderdetails: {
-                                            data: orderDetails.map((x) => {
+                                        importdetails: {
+                                            data: importDetails.map((x) => {
                                                 return {
                                                     price: x.price,
                                                     productid: x.productid,
                                                     quantity: x.quantity,
                                                     total: x.total,
-                                                    unitid: x.unitid,
                                                 };
                                             }),
                                         },
@@ -777,7 +786,7 @@ const Sell = () => {
                                                         },
                                                     },
                                                     _set: {
-                                                        quantity: x.root - x.quan,
+                                                        quantity: x.quan,
                                                     },
                                                 };
                                             }),
@@ -786,7 +795,7 @@ const Sell = () => {
                                             children: "Tạo thành công",
                                             severity: "success",
                                         });
-                                        navigate("/bill-out", { replace: true });
+                                        navigate("/bill-in", { replace: true });
                                     },
                                 }
                             );
@@ -798,22 +807,21 @@ const Sell = () => {
                 <Button
                     variant="contained"
                     disabled={
-                        orderDetails.length === 0 ||
+                        importDetails.length === 0 ||
                         watchPhone === 0 ||
                         !watchMoney ||
-                        watchMoney < getValues("total")
+                        watchMoney < (getValues("total") || 0)
                     }
                     color="success"
                     onClick={() => {
-                        if (watchPhone > 0 && orderDetails.length > 0) {
-                            const result = orderDetails.reduce((res, obj) => {
+                        if (watchPhone > 0 && importDetails.length > 0) {
+                            const result = importDetails.reduce((res, obj) => {
                                 (res as any)[obj.productid] = {
                                     quan:
                                         (obj.productid in res
                                             ? (res as any)[obj.productid].quan
-                                            : 0) +
-                                        obj.quantity * obj.ratio,
-                                    root: obj.rootQuantity,
+                                            : 0) + obj.quantity,
+                                    // root: obj.rootQuantity,
                                 };
                                 return res;
                             }, {});
@@ -821,59 +829,59 @@ const Sell = () => {
                                 return {
                                     productid: Number(key),
                                     quan: (result as any)[key].quan,
-                                    root: (result as any)[key].root,
                                 };
                             });
-                            mutate(
-                                {
-                                    object: {
-                                        createTime: new Date().toISOString(),
-                                        paymentTime: new Date().toISOString(),
-                                        backMoney: getValues("backMoney"),
-                                        pay: getValues("pay"),
-                                        customerid: watchPhone,
-                                        status: "Đã thanh toán",
-                                        total:
-                                            orderDetails
-                                                .map((x) => x.total)
-                                                .reduce((a, b) => a + b, 0) || 0,
-                                        orderdetails: {
-                                            data: orderDetails.map((x) => {
-                                                return {
-                                                    price: x.price,
-                                                    productid: x.productid,
-                                                    quantity: x.quantity,
-                                                    total: x.total,
-                                                    unitid: x.unitid,
-                                                };
-                                            }),
+                            if (newArr.length) {
+                                mutate(
+                                    {
+                                        object: {
+                                            createTime: new Date().toISOString(),
+                                            paymentTime: new Date().toISOString(),
+                                            backMoney: getValues("backMoney"),
+                                            pay: getValues("pay"),
+                                            supplierid: watchPhone,
+                                            status: "Đã thanh toán",
+                                            total:
+                                                importDetails
+                                                    .map((x) => x.total)
+                                                    .reduce((a, b) => a + b, 0) || 0,
+                                            importdetails: {
+                                                data: importDetails.map((x) => {
+                                                    return {
+                                                        price: x.price,
+                                                        productid: x.productid,
+                                                        quantity: x.quantity,
+                                                        total: x.total,
+                                                    };
+                                                }),
+                                            },
                                         },
                                     },
-                                },
-                                {
-                                    onSuccess: () => {
-                                        updateMany({
-                                            updates: newArr?.map((x) => {
-                                                return {
-                                                    where: {
-                                                        id: {
-                                                            _eq: x.productid,
+                                    {
+                                        onSuccess: () => {
+                                            updateMany({
+                                                updates: newArr?.map((x) => {
+                                                    return {
+                                                        where: {
+                                                            id: {
+                                                                _eq: x.productid,
+                                                            },
                                                         },
-                                                    },
-                                                    _set: {
-                                                        quantity: x.root - x.quan,
-                                                    },
-                                                };
-                                            }),
-                                        });
-                                        showSnackbar({
-                                            children: "Tạo thành công",
-                                            severity: "success",
-                                        });
-                                        navigate("/bill-out", { replace: true });
-                                    },
-                                }
-                            );
+                                                        _set: {
+                                                            quantity: x.quan,
+                                                        },
+                                                    };
+                                                }),
+                                            });
+                                            showSnackbar({
+                                                children: "Tạo thành công",
+                                                severity: "success",
+                                            });
+                                            navigate("/bill-in", { replace: true });
+                                        },
+                                    }
+                                );
+                            }
                         }
                     }}
                 >
@@ -884,4 +892,4 @@ const Sell = () => {
     );
 };
 
-export default Sell;
+export default ImportForm;

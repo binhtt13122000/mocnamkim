@@ -150,7 +150,7 @@ const AppBarWithDrawer: React.FC<IAppBarWithDrawer> = ({ appbarHeight, handleDra
                     alignItems="center"
                 >
                     <img src={logo} width={60} height={60} alt="logo" />
-                    <Typography variant="h5">Quản lý nhà hàng</Typography>
+                    <Typography variant="h5">Quản lý cửa hàng</Typography>
                 </Box>
                 <IconButton
                     size="large"

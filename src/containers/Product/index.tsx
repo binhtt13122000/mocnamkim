@@ -14,6 +14,31 @@ import useUpdateProduct from "src/hooks/product/useUpdateProduct";
 import useCreateUnit from "src/hooks/unit/useCreateUnit";
 import useUpdateUnit from "src/hooks/unit/useUpdateUnit";
 
+function removeAccents(str: string) {
+    var AccentsMap = [
+        "aàảãáạăằẳẵắặâầẩẫấậ",
+        "AÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬ",
+        "dđ",
+        "DĐ",
+        "eèẻẽéẹêềểễếệ",
+        "EÈẺẼÉẸÊỀỂỄẾỆ",
+        "iìỉĩíị",
+        "IÌỈĨÍỊ",
+        "oòỏõóọôồổỗốộơờởỡớợ",
+        "OÒỎÕÓỌÔỒỔỖỐỘƠỜỞỠỚỢ",
+        "uùủũúụưừửữứự",
+        "UÙỦŨÚỤƯỪỬỮỨỰ",
+        "yỳỷỹýỵ",
+        "YỲỶỸÝỴ",
+    ];
+    for (var i = 0; i < AccentsMap.length; i++) {
+        var re = new RegExp("[" + AccentsMap[i].substr(1) + "]", "g");
+        var char = AccentsMap[i][0];
+        str = str.replace(re, char);
+    }
+    return str;
+}
+
 const Product = () => {
     const initData: ProductMutationType = {
         id: 0,
@@ -95,21 +120,78 @@ const Product = () => {
             width: "40px",
         },
         {
+            field: "price",
+            title: "Mã vạch",
+            index: 2,
+            type: "string",
+            width: "100px",
+            disableFilter: true,
+            disableSort: true,
+            // eslint-disable-next-line unused-imports/no-unused-vars
+            render: (data, _, all) => {
+                return (
+                    <a
+                        style={{ color: "green", cursor: "pointer" }}
+                        onClick={(event) => {
+                            let canvas = document.createElement("canvas");
+                            let val = new Intl.NumberFormat("vi-VN", {
+                                style: "currency",
+                                currency: "VND",
+                            }).format(data || 0);
+                            try {
+                                BwipJs.toCanvas(canvas, {
+                                    bcid: "code128", // Barcode type
+                                    text: String(
+                                        `${product.code} - 1 ${removeAccents(all.name)} - ${String(
+                                            val
+                                        ).slice(0, val.length - 2)} VND`
+                                    ), // Text to encode
+                                    scale: 3, // 3x scaling factor
+                                    // height: 10, // Bar height, in millimeters
+                                    width: 15,
+                                    includetext: true, // Show human-readable text
+                                    textxalign: "center", // Always good to set this
+                                });
+                                if (canvas && canvas.toDataURL("image/png") && String(data)) {
+                                    let link = event.currentTarget;
+                                    link.setAttribute(
+                                        "download",
+                                        String(
+                                            `${product.code} - 1 ${all.name} - ${String(val).slice(
+                                                0,
+                                                val.length - 2
+                                            )} VND`
+                                        ) + ".png"
+                                    );
+                                    let image = canvas.toDataURL("image/png");
+                                    link.setAttribute("href", image);
+                                }
+                            } catch (e) {
+                                // `e` may be a string or Error object
+                            }
+                        }}
+                    >
+                        IN MÃ
+                    </a>
+                );
+            },
+        },
+        {
             field: "name",
             title: "Tên đơn vị",
-            index: 2,
+            index: 3,
             type: "string",
         },
         {
             field: "ratio",
             title: "Quy đổi",
-            index: 3,
+            index: 4,
             type: "number",
         },
         {
             field: "ratio",
             title: "Số lượng/Đơn Vị",
-            index: 4,
+            index: 5,
             disableFilter: true,
             disableSort: true,
             type: "number",
@@ -122,7 +204,7 @@ const Product = () => {
         {
             field: "price",
             title: "Giá tiền",
-            index: 5,
+            index: 6,
             type: "number",
             render: (data) => {
                 return (
@@ -148,66 +230,27 @@ const Product = () => {
             width: "40px",
         },
         {
-            field: "code",
-            title: "Mã vạch",
-            index: 2,
-            type: "string",
-            width: "100px",
-            disableFilter: true,
-            disableSort: true,
-            render: (data) => {
-                return (
-                    <a
-                        style={{ color: "green", cursor: "pointer" }}
-                        onClick={(event) => {
-                            let canvas = document.createElement("canvas");
-                            try {
-                                BwipJs.toCanvas(canvas, {
-                                    bcid: "code128", // Barcode type
-                                    text: String(data), // Text to encode
-                                    scale: 3, // 3x scaling factor
-                                    height: 10, // Bar height, in millimeters
-                                    includetext: true, // Show human-readable text
-                                    textxalign: "center", // Always good to set this
-                                });
-                                if (canvas && canvas.toDataURL("image/png") && String(data)) {
-                                    let link = event.currentTarget;
-                                    link.setAttribute("download", String(data) + ".png");
-                                    let image = canvas.toDataURL("image/png");
-                                    link.setAttribute("href", image);
-                                }
-                            } catch (e) {
-                                // `e` may be a string or Error object
-                            }
-                        }}
-                    >
-                        IN MÃ
-                    </a>
-                );
-            },
-        },
-        {
             field: "name",
             title: "Tên sản phẩm",
-            index: 3,
+            index: 2,
             type: "string",
         },
         {
             field: "code",
             title: "Mã sản phẩm",
-            index: 4,
+            index: 3,
             type: "string",
         },
         {
             field: "origin",
             title: "Nguồn Gốc",
-            index: 5,
+            index: 4,
             type: "string",
         },
         {
             field: "category",
             title: "Danh mục",
-            index: 6,
+            index: 5,
             type: "object",
             subField: "name",
             subFieldType: "string",
@@ -215,14 +258,14 @@ const Product = () => {
         {
             field: "categoryid",
             title: "",
-            index: 7,
+            index: 6,
             type: "number",
             disable: true,
         },
         {
             field: "quantity",
             title: "Số lượng (so với đơn vị gốc)",
-            index: 8,
+            index: 7,
             type: "number",
         },
     ];

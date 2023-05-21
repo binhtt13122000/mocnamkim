@@ -72,7 +72,9 @@ input account_bool_exp {
 unique or primary key constraints on table "account"
 """
 enum account_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "id"
+  """
   account_pkey
 }
 
@@ -192,6 +194,26 @@ type account_stddev_samp_fields {
   id: Float
 }
 
+"""
+Streaming cursor of the table "account"
+"""
+input account_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: account_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input account_stream_cursor_value_input {
+  id: Int
+  name: String
+  password: String
+  role: String
+  username: String
+}
+
 """aggregate sum on columns"""
 type account_sum_fields {
   id: Int
@@ -215,6 +237,17 @@ enum account_update_column {
 
   """column name"""
   username
+}
+
+input account_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: account_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: account_set_input
+
+  """filter the rows which have to be updated"""
+  where: account_bool_exp!
 }
 
 """aggregate var_pop on columns"""
@@ -316,13 +349,16 @@ input category_bool_exp {
   id: Int_comparison_exp
   name: String_comparison_exp
   products: product_bool_exp
+  products_aggregate: product_aggregate_bool_exp
 }
 
 """
 unique or primary key constraints on table "category"
 """
 enum category_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "id"
+  """
   category_pkey
 }
 
@@ -430,6 +466,23 @@ type category_stddev_samp_fields {
   id: Float
 }
 
+"""
+Streaming cursor of the table "category"
+"""
+input category_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: category_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input category_stream_cursor_value_input {
+  id: Int
+  name: String
+}
+
 """aggregate sum on columns"""
 type category_sum_fields {
   id: Int
@@ -446,6 +499,17 @@ enum category_update_column {
   name
 }
 
+input category_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: category_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: category_set_input
+
+  """filter the rows which have to be updated"""
+  where: category_bool_exp!
+}
+
 """aggregate var_pop on columns"""
 type category_var_pop_fields {
   id: Float
@@ -459,6 +523,15 @@ type category_var_samp_fields {
 """aggregate variance on columns"""
 type category_variance_fields {
   id: Float
+}
+
+"""ordering argument of a cursor"""
+enum cursor_ordering {
+  """ascending ordering of the cursor"""
+  ASC
+
+  """descending ordering of the cursor"""
+  DESC
 }
 
 """
@@ -540,6 +613,7 @@ Boolean expression to filter rows from the table "customer". All fields are comb
 """
 input customer_bool_exp {
   Orders: Order_bool_exp
+  Orders_aggregate: Order_aggregate_bool_exp
   _and: [customer_bool_exp!]
   _not: customer_bool_exp
   _or: [customer_bool_exp!]
@@ -552,7 +626,9 @@ input customer_bool_exp {
 unique or primary key constraints on table "customer"
 """
 enum customer_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "id"
+  """
   customer_pkey
 }
 
@@ -668,6 +744,24 @@ type customer_stddev_samp_fields {
   id: Float
 }
 
+"""
+Streaming cursor of the table "customer"
+"""
+input customer_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: customer_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input customer_stream_cursor_value_input {
+  id: Int
+  name: String
+  phone: String
+}
+
 """aggregate sum on columns"""
 type customer_sum_fields {
   id: Int
@@ -687,6 +781,17 @@ enum customer_update_column {
   phone
 }
 
+input customer_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: customer_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: customer_set_input
+
+  """filter the rows which have to be updated"""
+  where: customer_bool_exp!
+}
+
 """aggregate var_pop on columns"""
 type customer_var_pop_fields {
   id: Float
@@ -700,6 +805,1027 @@ type customer_var_samp_fields {
 """aggregate variance on columns"""
 type customer_variance_fields {
   id: Float
+}
+
+"""
+columns and relationships of "import"
+"""
+type import {
+  backMoney: Int
+  createTime: timestamptz
+  id: Int!
+
+  """An array relationship"""
+  importdetails(
+    """distinct select on columns"""
+    distinct_on: [importdetail_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [importdetail_order_by!]
+
+    """filter the rows returned"""
+    where: importdetail_bool_exp
+  ): [importdetail!]!
+
+  """An aggregate relationship"""
+  importdetails_aggregate(
+    """distinct select on columns"""
+    distinct_on: [importdetail_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [importdetail_order_by!]
+
+    """filter the rows returned"""
+    where: importdetail_bool_exp
+  ): importdetail_aggregate!
+  pay: Int
+  paymentTime: timestamptz
+  status: String
+
+  """An object relationship"""
+  supplier: supplier
+  supplierid: Int
+  total: Int
+}
+
+"""
+aggregated selection of "import"
+"""
+type import_aggregate {
+  aggregate: import_aggregate_fields
+  nodes: [import!]!
+}
+
+input import_aggregate_bool_exp {
+  count: import_aggregate_bool_exp_count
+}
+
+input import_aggregate_bool_exp_count {
+  arguments: [import_select_column!]
+  distinct: Boolean
+  filter: import_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "import"
+"""
+type import_aggregate_fields {
+  avg: import_avg_fields
+  count(columns: [import_select_column!], distinct: Boolean): Int!
+  max: import_max_fields
+  min: import_min_fields
+  stddev: import_stddev_fields
+  stddev_pop: import_stddev_pop_fields
+  stddev_samp: import_stddev_samp_fields
+  sum: import_sum_fields
+  var_pop: import_var_pop_fields
+  var_samp: import_var_samp_fields
+  variance: import_variance_fields
+}
+
+"""
+order by aggregate values of table "import"
+"""
+input import_aggregate_order_by {
+  avg: import_avg_order_by
+  count: order_by
+  max: import_max_order_by
+  min: import_min_order_by
+  stddev: import_stddev_order_by
+  stddev_pop: import_stddev_pop_order_by
+  stddev_samp: import_stddev_samp_order_by
+  sum: import_sum_order_by
+  var_pop: import_var_pop_order_by
+  var_samp: import_var_samp_order_by
+  variance: import_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "import"
+"""
+input import_arr_rel_insert_input {
+  data: [import_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: import_on_conflict
+}
+
+"""aggregate avg on columns"""
+type import_avg_fields {
+  backMoney: Float
+  id: Float
+  pay: Float
+  supplierid: Float
+  total: Float
+}
+
+"""
+order by avg() on columns of table "import"
+"""
+input import_avg_order_by {
+  backMoney: order_by
+  id: order_by
+  pay: order_by
+  supplierid: order_by
+  total: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "import". All fields are combined with a logical 'AND'.
+"""
+input import_bool_exp {
+  _and: [import_bool_exp!]
+  _not: import_bool_exp
+  _or: [import_bool_exp!]
+  backMoney: Int_comparison_exp
+  createTime: timestamptz_comparison_exp
+  id: Int_comparison_exp
+  importdetails: importdetail_bool_exp
+  importdetails_aggregate: importdetail_aggregate_bool_exp
+  pay: Int_comparison_exp
+  paymentTime: timestamptz_comparison_exp
+  status: String_comparison_exp
+  supplier: supplier_bool_exp
+  supplierid: Int_comparison_exp
+  total: Int_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "import"
+"""
+enum import_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  import_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "import"
+"""
+input import_inc_input {
+  backMoney: Int
+  id: Int
+  pay: Int
+  supplierid: Int
+  total: Int
+}
+
+"""
+input type for inserting data into table "import"
+"""
+input import_insert_input {
+  backMoney: Int
+  createTime: timestamptz
+  id: Int
+  importdetails: importdetail_arr_rel_insert_input
+  pay: Int
+  paymentTime: timestamptz
+  status: String
+  supplier: supplier_obj_rel_insert_input
+  supplierid: Int
+  total: Int
+}
+
+"""aggregate max on columns"""
+type import_max_fields {
+  backMoney: Int
+  createTime: timestamptz
+  id: Int
+  pay: Int
+  paymentTime: timestamptz
+  status: String
+  supplierid: Int
+  total: Int
+}
+
+"""
+order by max() on columns of table "import"
+"""
+input import_max_order_by {
+  backMoney: order_by
+  createTime: order_by
+  id: order_by
+  pay: order_by
+  paymentTime: order_by
+  status: order_by
+  supplierid: order_by
+  total: order_by
+}
+
+"""aggregate min on columns"""
+type import_min_fields {
+  backMoney: Int
+  createTime: timestamptz
+  id: Int
+  pay: Int
+  paymentTime: timestamptz
+  status: String
+  supplierid: Int
+  total: Int
+}
+
+"""
+order by min() on columns of table "import"
+"""
+input import_min_order_by {
+  backMoney: order_by
+  createTime: order_by
+  id: order_by
+  pay: order_by
+  paymentTime: order_by
+  status: order_by
+  supplierid: order_by
+  total: order_by
+}
+
+"""
+response of any mutation on the table "import"
+"""
+type import_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [import!]!
+}
+
+"""
+input type for inserting object relation for remote table "import"
+"""
+input import_obj_rel_insert_input {
+  data: import_insert_input!
+
+  """upsert condition"""
+  on_conflict: import_on_conflict
+}
+
+"""
+on_conflict condition type for table "import"
+"""
+input import_on_conflict {
+  constraint: import_constraint!
+  update_columns: [import_update_column!]! = []
+  where: import_bool_exp
+}
+
+"""Ordering options when selecting data from "import"."""
+input import_order_by {
+  backMoney: order_by
+  createTime: order_by
+  id: order_by
+  importdetails_aggregate: importdetail_aggregate_order_by
+  pay: order_by
+  paymentTime: order_by
+  status: order_by
+  supplier: supplier_order_by
+  supplierid: order_by
+  total: order_by
+}
+
+"""primary key columns input for table: import"""
+input import_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "import"
+"""
+enum import_select_column {
+  """column name"""
+  backMoney
+
+  """column name"""
+  createTime
+
+  """column name"""
+  id
+
+  """column name"""
+  pay
+
+  """column name"""
+  paymentTime
+
+  """column name"""
+  status
+
+  """column name"""
+  supplierid
+
+  """column name"""
+  total
+}
+
+"""
+input type for updating data in table "import"
+"""
+input import_set_input {
+  backMoney: Int
+  createTime: timestamptz
+  id: Int
+  pay: Int
+  paymentTime: timestamptz
+  status: String
+  supplierid: Int
+  total: Int
+}
+
+"""aggregate stddev on columns"""
+type import_stddev_fields {
+  backMoney: Float
+  id: Float
+  pay: Float
+  supplierid: Float
+  total: Float
+}
+
+"""
+order by stddev() on columns of table "import"
+"""
+input import_stddev_order_by {
+  backMoney: order_by
+  id: order_by
+  pay: order_by
+  supplierid: order_by
+  total: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type import_stddev_pop_fields {
+  backMoney: Float
+  id: Float
+  pay: Float
+  supplierid: Float
+  total: Float
+}
+
+"""
+order by stddev_pop() on columns of table "import"
+"""
+input import_stddev_pop_order_by {
+  backMoney: order_by
+  id: order_by
+  pay: order_by
+  supplierid: order_by
+  total: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type import_stddev_samp_fields {
+  backMoney: Float
+  id: Float
+  pay: Float
+  supplierid: Float
+  total: Float
+}
+
+"""
+order by stddev_samp() on columns of table "import"
+"""
+input import_stddev_samp_order_by {
+  backMoney: order_by
+  id: order_by
+  pay: order_by
+  supplierid: order_by
+  total: order_by
+}
+
+"""
+Streaming cursor of the table "import"
+"""
+input import_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: import_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input import_stream_cursor_value_input {
+  backMoney: Int
+  createTime: timestamptz
+  id: Int
+  pay: Int
+  paymentTime: timestamptz
+  status: String
+  supplierid: Int
+  total: Int
+}
+
+"""aggregate sum on columns"""
+type import_sum_fields {
+  backMoney: Int
+  id: Int
+  pay: Int
+  supplierid: Int
+  total: Int
+}
+
+"""
+order by sum() on columns of table "import"
+"""
+input import_sum_order_by {
+  backMoney: order_by
+  id: order_by
+  pay: order_by
+  supplierid: order_by
+  total: order_by
+}
+
+"""
+update columns of table "import"
+"""
+enum import_update_column {
+  """column name"""
+  backMoney
+
+  """column name"""
+  createTime
+
+  """column name"""
+  id
+
+  """column name"""
+  pay
+
+  """column name"""
+  paymentTime
+
+  """column name"""
+  status
+
+  """column name"""
+  supplierid
+
+  """column name"""
+  total
+}
+
+input import_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: import_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: import_set_input
+
+  """filter the rows which have to be updated"""
+  where: import_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type import_var_pop_fields {
+  backMoney: Float
+  id: Float
+  pay: Float
+  supplierid: Float
+  total: Float
+}
+
+"""
+order by var_pop() on columns of table "import"
+"""
+input import_var_pop_order_by {
+  backMoney: order_by
+  id: order_by
+  pay: order_by
+  supplierid: order_by
+  total: order_by
+}
+
+"""aggregate var_samp on columns"""
+type import_var_samp_fields {
+  backMoney: Float
+  id: Float
+  pay: Float
+  supplierid: Float
+  total: Float
+}
+
+"""
+order by var_samp() on columns of table "import"
+"""
+input import_var_samp_order_by {
+  backMoney: order_by
+  id: order_by
+  pay: order_by
+  supplierid: order_by
+  total: order_by
+}
+
+"""aggregate variance on columns"""
+type import_variance_fields {
+  backMoney: Float
+  id: Float
+  pay: Float
+  supplierid: Float
+  total: Float
+}
+
+"""
+order by variance() on columns of table "import"
+"""
+input import_variance_order_by {
+  backMoney: order_by
+  id: order_by
+  pay: order_by
+  supplierid: order_by
+  total: order_by
+}
+
+"""
+columns and relationships of "importdetail"
+"""
+type importdetail {
+  id: Int!
+
+  """An object relationship"""
+  import: import!
+  importid: Int!
+  price: Int
+
+  """An object relationship"""
+  product: product!
+  productid: Int!
+  quantity: Int
+  total: Int
+}
+
+"""
+aggregated selection of "importdetail"
+"""
+type importdetail_aggregate {
+  aggregate: importdetail_aggregate_fields
+  nodes: [importdetail!]!
+}
+
+input importdetail_aggregate_bool_exp {
+  count: importdetail_aggregate_bool_exp_count
+}
+
+input importdetail_aggregate_bool_exp_count {
+  arguments: [importdetail_select_column!]
+  distinct: Boolean
+  filter: importdetail_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "importdetail"
+"""
+type importdetail_aggregate_fields {
+  avg: importdetail_avg_fields
+  count(columns: [importdetail_select_column!], distinct: Boolean): Int!
+  max: importdetail_max_fields
+  min: importdetail_min_fields
+  stddev: importdetail_stddev_fields
+  stddev_pop: importdetail_stddev_pop_fields
+  stddev_samp: importdetail_stddev_samp_fields
+  sum: importdetail_sum_fields
+  var_pop: importdetail_var_pop_fields
+  var_samp: importdetail_var_samp_fields
+  variance: importdetail_variance_fields
+}
+
+"""
+order by aggregate values of table "importdetail"
+"""
+input importdetail_aggregate_order_by {
+  avg: importdetail_avg_order_by
+  count: order_by
+  max: importdetail_max_order_by
+  min: importdetail_min_order_by
+  stddev: importdetail_stddev_order_by
+  stddev_pop: importdetail_stddev_pop_order_by
+  stddev_samp: importdetail_stddev_samp_order_by
+  sum: importdetail_sum_order_by
+  var_pop: importdetail_var_pop_order_by
+  var_samp: importdetail_var_samp_order_by
+  variance: importdetail_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "importdetail"
+"""
+input importdetail_arr_rel_insert_input {
+  data: [importdetail_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: importdetail_on_conflict
+}
+
+"""aggregate avg on columns"""
+type importdetail_avg_fields {
+  id: Float
+  importid: Float
+  price: Float
+  productid: Float
+  quantity: Float
+  total: Float
+}
+
+"""
+order by avg() on columns of table "importdetail"
+"""
+input importdetail_avg_order_by {
+  id: order_by
+  importid: order_by
+  price: order_by
+  productid: order_by
+  quantity: order_by
+  total: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "importdetail". All fields are combined with a logical 'AND'.
+"""
+input importdetail_bool_exp {
+  _and: [importdetail_bool_exp!]
+  _not: importdetail_bool_exp
+  _or: [importdetail_bool_exp!]
+  id: Int_comparison_exp
+  import: import_bool_exp
+  importid: Int_comparison_exp
+  price: Int_comparison_exp
+  product: product_bool_exp
+  productid: Int_comparison_exp
+  quantity: Int_comparison_exp
+  total: Int_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "importdetail"
+"""
+enum importdetail_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  importdetail_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "importdetail"
+"""
+input importdetail_inc_input {
+  id: Int
+  importid: Int
+  price: Int
+  productid: Int
+  quantity: Int
+  total: Int
+}
+
+"""
+input type for inserting data into table "importdetail"
+"""
+input importdetail_insert_input {
+  id: Int
+  import: import_obj_rel_insert_input
+  importid: Int
+  price: Int
+  product: product_obj_rel_insert_input
+  productid: Int
+  quantity: Int
+  total: Int
+}
+
+"""aggregate max on columns"""
+type importdetail_max_fields {
+  id: Int
+  importid: Int
+  price: Int
+  productid: Int
+  quantity: Int
+  total: Int
+}
+
+"""
+order by max() on columns of table "importdetail"
+"""
+input importdetail_max_order_by {
+  id: order_by
+  importid: order_by
+  price: order_by
+  productid: order_by
+  quantity: order_by
+  total: order_by
+}
+
+"""aggregate min on columns"""
+type importdetail_min_fields {
+  id: Int
+  importid: Int
+  price: Int
+  productid: Int
+  quantity: Int
+  total: Int
+}
+
+"""
+order by min() on columns of table "importdetail"
+"""
+input importdetail_min_order_by {
+  id: order_by
+  importid: order_by
+  price: order_by
+  productid: order_by
+  quantity: order_by
+  total: order_by
+}
+
+"""
+response of any mutation on the table "importdetail"
+"""
+type importdetail_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [importdetail!]!
+}
+
+"""
+on_conflict condition type for table "importdetail"
+"""
+input importdetail_on_conflict {
+  constraint: importdetail_constraint!
+  update_columns: [importdetail_update_column!]! = []
+  where: importdetail_bool_exp
+}
+
+"""Ordering options when selecting data from "importdetail"."""
+input importdetail_order_by {
+  id: order_by
+  import: import_order_by
+  importid: order_by
+  price: order_by
+  product: product_order_by
+  productid: order_by
+  quantity: order_by
+  total: order_by
+}
+
+"""primary key columns input for table: importdetail"""
+input importdetail_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "importdetail"
+"""
+enum importdetail_select_column {
+  """column name"""
+  id
+
+  """column name"""
+  importid
+
+  """column name"""
+  price
+
+  """column name"""
+  productid
+
+  """column name"""
+  quantity
+
+  """column name"""
+  total
+}
+
+"""
+input type for updating data in table "importdetail"
+"""
+input importdetail_set_input {
+  id: Int
+  importid: Int
+  price: Int
+  productid: Int
+  quantity: Int
+  total: Int
+}
+
+"""aggregate stddev on columns"""
+type importdetail_stddev_fields {
+  id: Float
+  importid: Float
+  price: Float
+  productid: Float
+  quantity: Float
+  total: Float
+}
+
+"""
+order by stddev() on columns of table "importdetail"
+"""
+input importdetail_stddev_order_by {
+  id: order_by
+  importid: order_by
+  price: order_by
+  productid: order_by
+  quantity: order_by
+  total: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type importdetail_stddev_pop_fields {
+  id: Float
+  importid: Float
+  price: Float
+  productid: Float
+  quantity: Float
+  total: Float
+}
+
+"""
+order by stddev_pop() on columns of table "importdetail"
+"""
+input importdetail_stddev_pop_order_by {
+  id: order_by
+  importid: order_by
+  price: order_by
+  productid: order_by
+  quantity: order_by
+  total: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type importdetail_stddev_samp_fields {
+  id: Float
+  importid: Float
+  price: Float
+  productid: Float
+  quantity: Float
+  total: Float
+}
+
+"""
+order by stddev_samp() on columns of table "importdetail"
+"""
+input importdetail_stddev_samp_order_by {
+  id: order_by
+  importid: order_by
+  price: order_by
+  productid: order_by
+  quantity: order_by
+  total: order_by
+}
+
+"""
+Streaming cursor of the table "importdetail"
+"""
+input importdetail_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: importdetail_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input importdetail_stream_cursor_value_input {
+  id: Int
+  importid: Int
+  price: Int
+  productid: Int
+  quantity: Int
+  total: Int
+}
+
+"""aggregate sum on columns"""
+type importdetail_sum_fields {
+  id: Int
+  importid: Int
+  price: Int
+  productid: Int
+  quantity: Int
+  total: Int
+}
+
+"""
+order by sum() on columns of table "importdetail"
+"""
+input importdetail_sum_order_by {
+  id: order_by
+  importid: order_by
+  price: order_by
+  productid: order_by
+  quantity: order_by
+  total: order_by
+}
+
+"""
+update columns of table "importdetail"
+"""
+enum importdetail_update_column {
+  """column name"""
+  id
+
+  """column name"""
+  importid
+
+  """column name"""
+  price
+
+  """column name"""
+  productid
+
+  """column name"""
+  quantity
+
+  """column name"""
+  total
+}
+
+input importdetail_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: importdetail_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: importdetail_set_input
+
+  """filter the rows which have to be updated"""
+  where: importdetail_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type importdetail_var_pop_fields {
+  id: Float
+  importid: Float
+  price: Float
+  productid: Float
+  quantity: Float
+  total: Float
+}
+
+"""
+order by var_pop() on columns of table "importdetail"
+"""
+input importdetail_var_pop_order_by {
+  id: order_by
+  importid: order_by
+  price: order_by
+  productid: order_by
+  quantity: order_by
+  total: order_by
+}
+
+"""aggregate var_samp on columns"""
+type importdetail_var_samp_fields {
+  id: Float
+  importid: Float
+  price: Float
+  productid: Float
+  quantity: Float
+  total: Float
+}
+
+"""
+order by var_samp() on columns of table "importdetail"
+"""
+input importdetail_var_samp_order_by {
+  id: order_by
+  importid: order_by
+  price: order_by
+  productid: order_by
+  quantity: order_by
+  total: order_by
+}
+
+"""aggregate variance on columns"""
+type importdetail_variance_fields {
+  id: Float
+  importid: Float
+  price: Float
+  productid: Float
+  quantity: Float
+  total: Float
+}
+
+"""
+order by variance() on columns of table "importdetail"
+"""
+input importdetail_variance_order_by {
+  id: order_by
+  importid: order_by
+  price: order_by
+  productid: order_by
+  quantity: order_by
+  total: order_by
 }
 
 """
@@ -770,6 +1896,32 @@ type mutation_root {
   delete single row from the table: "customer"
   """
   delete_customer_by_pk(id: Int!): customer
+
+  """
+  delete data from the table: "import"
+  """
+  delete_import(
+    """filter the rows which have to be deleted"""
+    where: import_bool_exp!
+  ): import_mutation_response
+
+  """
+  delete single row from the table: "import"
+  """
+  delete_import_by_pk(id: Int!): import
+
+  """
+  delete data from the table: "importdetail"
+  """
+  delete_importdetail(
+    """filter the rows which have to be deleted"""
+    where: importdetail_bool_exp!
+  ): importdetail_mutation_response
+
+  """
+  delete single row from the table: "importdetail"
+  """
+  delete_importdetail_by_pk(id: Int!): importdetail
 
   """
   delete data from the table: "orderdetail"
@@ -912,6 +2064,50 @@ type mutation_root {
   ): customer
 
   """
+  insert data into the table: "import"
+  """
+  insert_import(
+    """the rows to be inserted"""
+    objects: [import_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: import_on_conflict
+  ): import_mutation_response
+
+  """
+  insert a single row into the table: "import"
+  """
+  insert_import_one(
+    """the row to be inserted"""
+    object: import_insert_input!
+
+    """upsert condition"""
+    on_conflict: import_on_conflict
+  ): import
+
+  """
+  insert data into the table: "importdetail"
+  """
+  insert_importdetail(
+    """the rows to be inserted"""
+    objects: [importdetail_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: importdetail_on_conflict
+  ): importdetail_mutation_response
+
+  """
+  insert a single row into the table: "importdetail"
+  """
+  insert_importdetail_one(
+    """the row to be inserted"""
+    object: importdetail_insert_input!
+
+    """upsert condition"""
+    on_conflict: importdetail_on_conflict
+  ): importdetail
+
+  """
   insert data into the table: "orderdetail"
   """
   insert_orderdetail(
@@ -1026,6 +2222,14 @@ type mutation_root {
   ): Order
 
   """
+  update multiples rows of table: "Order"
+  """
+  update_Order_many(
+    """updates to execute, in order"""
+    updates: [Order_updates!]!
+  ): [Order_mutation_response]
+
+  """
   update data of the table: "account"
   """
   update_account(
@@ -1050,6 +2254,14 @@ type mutation_root {
     _set: account_set_input
     pk_columns: account_pk_columns_input!
   ): account
+
+  """
+  update multiples rows of table: "account"
+  """
+  update_account_many(
+    """updates to execute, in order"""
+    updates: [account_updates!]!
+  ): [account_mutation_response]
 
   """
   update data of the table: "category"
@@ -1078,6 +2290,14 @@ type mutation_root {
   ): category
 
   """
+  update multiples rows of table: "category"
+  """
+  update_category_many(
+    """updates to execute, in order"""
+    updates: [category_updates!]!
+  ): [category_mutation_response]
+
+  """
   update data of the table: "customer"
   """
   update_customer(
@@ -1102,6 +2322,82 @@ type mutation_root {
     _set: customer_set_input
     pk_columns: customer_pk_columns_input!
   ): customer
+
+  """
+  update multiples rows of table: "customer"
+  """
+  update_customer_many(
+    """updates to execute, in order"""
+    updates: [customer_updates!]!
+  ): [customer_mutation_response]
+
+  """
+  update data of the table: "import"
+  """
+  update_import(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: import_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: import_set_input
+
+    """filter the rows which have to be updated"""
+    where: import_bool_exp!
+  ): import_mutation_response
+
+  """
+  update single row of the table: "import"
+  """
+  update_import_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: import_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: import_set_input
+    pk_columns: import_pk_columns_input!
+  ): import
+
+  """
+  update multiples rows of table: "import"
+  """
+  update_import_many(
+    """updates to execute, in order"""
+    updates: [import_updates!]!
+  ): [import_mutation_response]
+
+  """
+  update data of the table: "importdetail"
+  """
+  update_importdetail(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: importdetail_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: importdetail_set_input
+
+    """filter the rows which have to be updated"""
+    where: importdetail_bool_exp!
+  ): importdetail_mutation_response
+
+  """
+  update single row of the table: "importdetail"
+  """
+  update_importdetail_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: importdetail_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: importdetail_set_input
+    pk_columns: importdetail_pk_columns_input!
+  ): importdetail
+
+  """
+  update multiples rows of table: "importdetail"
+  """
+  update_importdetail_many(
+    """updates to execute, in order"""
+    updates: [importdetail_updates!]!
+  ): [importdetail_mutation_response]
 
   """
   update data of the table: "orderdetail"
@@ -1130,6 +2426,14 @@ type mutation_root {
   ): orderdetail
 
   """
+  update multiples rows of table: "orderdetail"
+  """
+  update_orderdetail_many(
+    """updates to execute, in order"""
+    updates: [orderdetail_updates!]!
+  ): [orderdetail_mutation_response]
+
+  """
   update data of the table: "product"
   """
   update_product(
@@ -1154,6 +2458,14 @@ type mutation_root {
     _set: product_set_input
     pk_columns: product_pk_columns_input!
   ): product
+
+  """
+  update multiples rows of table: "product"
+  """
+  update_product_many(
+    """updates to execute, in order"""
+    updates: [product_updates!]!
+  ): [product_mutation_response]
 
   """
   update data of the table: "supplier"
@@ -1182,6 +2494,14 @@ type mutation_root {
   ): supplier
 
   """
+  update multiples rows of table: "supplier"
+  """
+  update_supplier_many(
+    """updates to execute, in order"""
+    updates: [supplier_updates!]!
+  ): [supplier_mutation_response]
+
+  """
   update data of the table: "unit"
   """
   update_unit(
@@ -1206,6 +2526,14 @@ type mutation_root {
     _set: unit_set_input
     pk_columns: unit_pk_columns_input!
   ): unit
+
+  """
+  update multiples rows of table: "unit"
+  """
+  update_unit_many(
+    """updates to execute, in order"""
+    updates: [unit_updates!]!
+  ): [unit_mutation_response]
 }
 
 """
@@ -1267,6 +2595,17 @@ aggregated selection of "Order"
 type Order_aggregate {
   aggregate: Order_aggregate_fields
   nodes: [Order!]!
+}
+
+input Order_aggregate_bool_exp {
+  count: Order_aggregate_bool_exp_count
+}
+
+input Order_aggregate_bool_exp_count {
+  arguments: [Order_select_column!]
+  distinct: Boolean
+  filter: Order_bool_exp
+  predicate: Int_comparison_exp!
 }
 
 """
@@ -1346,6 +2685,7 @@ input Order_bool_exp {
   customerid: Int_comparison_exp
   id: Int_comparison_exp
   orderdetails: orderdetail_bool_exp
+  orderdetails_aggregate: orderdetail_aggregate_bool_exp
   pay: Int_comparison_exp
   paymentTime: timestamptz_comparison_exp
   status: String_comparison_exp
@@ -1377,7 +2717,9 @@ enum order_by {
 unique or primary key constraints on table "Order"
 """
 enum Order_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "id"
+  """
   Order_pkey
 }
 
@@ -1612,6 +2954,29 @@ input Order_stddev_samp_order_by {
   total: order_by
 }
 
+"""
+Streaming cursor of the table "Order"
+"""
+input Order_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: Order_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input Order_stream_cursor_value_input {
+  backMoney: Int
+  createTime: timestamptz
+  customerid: Int
+  id: Int
+  pay: Int
+  paymentTime: timestamptz
+  status: String
+  total: Int
+}
+
 """aggregate sum on columns"""
 type Order_sum_fields {
   backMoney: Int
@@ -1659,6 +3024,17 @@ enum Order_update_column {
 
   """column name"""
   total
+}
+
+input Order_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: Order_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: Order_set_input
+
+  """filter the rows which have to be updated"""
+  where: Order_bool_exp!
 }
 
 """aggregate var_pop on columns"""
@@ -1748,6 +3124,17 @@ aggregated selection of "orderdetail"
 type orderdetail_aggregate {
   aggregate: orderdetail_aggregate_fields
   nodes: [orderdetail!]!
+}
+
+input orderdetail_aggregate_bool_exp {
+  count: orderdetail_aggregate_bool_exp_count
+}
+
+input orderdetail_aggregate_bool_exp_count {
+  arguments: [orderdetail_select_column!]
+  distinct: Boolean
+  filter: orderdetail_bool_exp
+  predicate: Int_comparison_exp!
 }
 
 """
@@ -1841,7 +3228,9 @@ input orderdetail_bool_exp {
 unique or primary key constraints on table "orderdetail"
 """
 enum orderdetail_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "id"
+  """
   orderdetail_pkey
 }
 
@@ -2072,6 +3461,28 @@ input orderdetail_stddev_samp_order_by {
   unitid: order_by
 }
 
+"""
+Streaming cursor of the table "orderdetail"
+"""
+input orderdetail_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: orderdetail_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input orderdetail_stream_cursor_value_input {
+  id: Int
+  orderid: Int
+  price: Int
+  productid: Int
+  quantity: Int
+  total: Int
+  unitid: Int
+}
+
 """aggregate sum on columns"""
 type orderdetail_sum_fields {
   id: Int
@@ -2120,6 +3531,17 @@ enum orderdetail_update_column {
 
   """column name"""
   unitid
+}
+
+input orderdetail_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: orderdetail_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: orderdetail_set_input
+
+  """filter the rows which have to be updated"""
+  where: orderdetail_bool_exp!
 }
 
 """aggregate var_pop on columns"""
@@ -2203,6 +3625,42 @@ type product {
   categoryid: Int
   code: String!
   id: Int!
+
+  """An array relationship"""
+  importdetails(
+    """distinct select on columns"""
+    distinct_on: [importdetail_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [importdetail_order_by!]
+
+    """filter the rows returned"""
+    where: importdetail_bool_exp
+  ): [importdetail!]!
+
+  """An aggregate relationship"""
+  importdetails_aggregate(
+    """distinct select on columns"""
+    distinct_on: [importdetail_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [importdetail_order_by!]
+
+    """filter the rows returned"""
+    where: importdetail_bool_exp
+  ): importdetail_aggregate!
   name: String!
 
   """An array relationship"""
@@ -2288,6 +3746,17 @@ type product_aggregate {
   nodes: [product!]!
 }
 
+input product_aggregate_bool_exp {
+  count: product_aggregate_bool_exp_count
+}
+
+input product_aggregate_bool_exp_count {
+  arguments: [product_select_column!]
+  distinct: Boolean
+  filter: product_bool_exp
+  predicate: Int_comparison_exp!
+}
+
 """
 aggregate fields of "product"
 """
@@ -2359,18 +3828,24 @@ input product_bool_exp {
   categoryid: Int_comparison_exp
   code: String_comparison_exp
   id: Int_comparison_exp
+  importdetails: importdetail_bool_exp
+  importdetails_aggregate: importdetail_aggregate_bool_exp
   name: String_comparison_exp
   orderdetails: orderdetail_bool_exp
+  orderdetails_aggregate: orderdetail_aggregate_bool_exp
   origin: String_comparison_exp
   quantity: Int_comparison_exp
   units: unit_bool_exp
+  units_aggregate: unit_aggregate_bool_exp
 }
 
 """
 unique or primary key constraints on table "product"
 """
 enum product_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "id"
+  """
   product_pkey
 }
 
@@ -2391,6 +3866,7 @@ input product_insert_input {
   categoryid: Int
   code: String
   id: Int
+  importdetails: importdetail_arr_rel_insert_input
   name: String
   orderdetails: orderdetail_arr_rel_insert_input
   origin: String
@@ -2478,6 +3954,7 @@ input product_order_by {
   categoryid: order_by
   code: order_by
   id: order_by
+  importdetails_aggregate: importdetail_aggregate_order_by
   name: order_by
   orderdetails_aggregate: orderdetail_aggregate_order_by
   origin: order_by
@@ -2573,6 +4050,27 @@ input product_stddev_samp_order_by {
   quantity: order_by
 }
 
+"""
+Streaming cursor of the table "product"
+"""
+input product_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: product_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input product_stream_cursor_value_input {
+  categoryid: Int
+  code: String
+  id: Int
+  name: String
+  origin: String
+  quantity: Int
+}
+
 """aggregate sum on columns"""
 type product_sum_fields {
   categoryid: Int
@@ -2610,6 +4108,17 @@ enum product_update_column {
 
   """column name"""
   quantity
+}
+
+input product_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: product_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: product_set_input
+
+  """filter the rows which have to be updated"""
+  where: product_bool_exp!
 }
 
 """aggregate var_pop on columns"""
@@ -2832,6 +4341,92 @@ type query_root {
 
   """fetch data from the table: "customer" using primary key columns"""
   customer_by_pk(id: Int!): customer
+
+  """
+  fetch data from the table: "import"
+  """
+  import(
+    """distinct select on columns"""
+    distinct_on: [import_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [import_order_by!]
+
+    """filter the rows returned"""
+    where: import_bool_exp
+  ): [import!]!
+
+  """
+  fetch aggregated fields from the table: "import"
+  """
+  import_aggregate(
+    """distinct select on columns"""
+    distinct_on: [import_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [import_order_by!]
+
+    """filter the rows returned"""
+    where: import_bool_exp
+  ): import_aggregate!
+
+  """fetch data from the table: "import" using primary key columns"""
+  import_by_pk(id: Int!): import
+
+  """
+  fetch data from the table: "importdetail"
+  """
+  importdetail(
+    """distinct select on columns"""
+    distinct_on: [importdetail_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [importdetail_order_by!]
+
+    """filter the rows returned"""
+    where: importdetail_bool_exp
+  ): [importdetail!]!
+
+  """
+  fetch aggregated fields from the table: "importdetail"
+  """
+  importdetail_aggregate(
+    """distinct select on columns"""
+    distinct_on: [importdetail_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [importdetail_order_by!]
+
+    """filter the rows returned"""
+    where: importdetail_bool_exp
+  ): importdetail_aggregate!
+
+  """fetch data from the table: "importdetail" using primary key columns"""
+  importdetail_by_pk(id: Int!): importdetail
 
   """
   fetch data from the table: "orderdetail"
@@ -3104,6 +4699,20 @@ type subscription_root {
   Order_by_pk(id: Int!): Order
 
   """
+  fetch data from the table in a streaming manner: "Order"
+  """
+  Order_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [Order_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: Order_bool_exp
+  ): [Order!]!
+
+  """
   fetch data from the table: "account"
   """
   account(
@@ -3145,6 +4754,20 @@ type subscription_root {
 
   """fetch data from the table: "account" using primary key columns"""
   account_by_pk(id: Int!): account
+
+  """
+  fetch data from the table in a streaming manner: "account"
+  """
+  account_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [account_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: account_bool_exp
+  ): [account!]!
 
   """
   fetch data from the table: "category"
@@ -3190,6 +4813,20 @@ type subscription_root {
   category_by_pk(id: Int!): category
 
   """
+  fetch data from the table in a streaming manner: "category"
+  """
+  category_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [category_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: category_bool_exp
+  ): [category!]!
+
+  """
   fetch data from the table: "customer"
   """
   customer(
@@ -3231,6 +4868,134 @@ type subscription_root {
 
   """fetch data from the table: "customer" using primary key columns"""
   customer_by_pk(id: Int!): customer
+
+  """
+  fetch data from the table in a streaming manner: "customer"
+  """
+  customer_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [customer_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: customer_bool_exp
+  ): [customer!]!
+
+  """
+  fetch data from the table: "import"
+  """
+  import(
+    """distinct select on columns"""
+    distinct_on: [import_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [import_order_by!]
+
+    """filter the rows returned"""
+    where: import_bool_exp
+  ): [import!]!
+
+  """
+  fetch aggregated fields from the table: "import"
+  """
+  import_aggregate(
+    """distinct select on columns"""
+    distinct_on: [import_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [import_order_by!]
+
+    """filter the rows returned"""
+    where: import_bool_exp
+  ): import_aggregate!
+
+  """fetch data from the table: "import" using primary key columns"""
+  import_by_pk(id: Int!): import
+
+  """
+  fetch data from the table in a streaming manner: "import"
+  """
+  import_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [import_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: import_bool_exp
+  ): [import!]!
+
+  """
+  fetch data from the table: "importdetail"
+  """
+  importdetail(
+    """distinct select on columns"""
+    distinct_on: [importdetail_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [importdetail_order_by!]
+
+    """filter the rows returned"""
+    where: importdetail_bool_exp
+  ): [importdetail!]!
+
+  """
+  fetch aggregated fields from the table: "importdetail"
+  """
+  importdetail_aggregate(
+    """distinct select on columns"""
+    distinct_on: [importdetail_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [importdetail_order_by!]
+
+    """filter the rows returned"""
+    where: importdetail_bool_exp
+  ): importdetail_aggregate!
+
+  """fetch data from the table: "importdetail" using primary key columns"""
+  importdetail_by_pk(id: Int!): importdetail
+
+  """
+  fetch data from the table in a streaming manner: "importdetail"
+  """
+  importdetail_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [importdetail_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: importdetail_bool_exp
+  ): [importdetail!]!
 
   """
   fetch data from the table: "orderdetail"
@@ -3276,6 +5041,20 @@ type subscription_root {
   orderdetail_by_pk(id: Int!): orderdetail
 
   """
+  fetch data from the table in a streaming manner: "orderdetail"
+  """
+  orderdetail_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [orderdetail_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: orderdetail_bool_exp
+  ): [orderdetail!]!
+
+  """
   fetch data from the table: "product"
   """
   product(
@@ -3317,6 +5096,20 @@ type subscription_root {
 
   """fetch data from the table: "product" using primary key columns"""
   product_by_pk(id: Int!): product
+
+  """
+  fetch data from the table in a streaming manner: "product"
+  """
+  product_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [product_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: product_bool_exp
+  ): [product!]!
 
   """
   fetch data from the table: "supplier"
@@ -3362,6 +5155,20 @@ type subscription_root {
   supplier_by_pk(id: Int!): supplier
 
   """
+  fetch data from the table in a streaming manner: "supplier"
+  """
+  supplier_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [supplier_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: supplier_bool_exp
+  ): [supplier!]!
+
+  """
   fetch data from the table: "unit"
   """
   unit(
@@ -3403,6 +5210,20 @@ type subscription_root {
 
   """fetch data from the table: "unit" using primary key columns"""
   unit_by_pk(id: Int!): unit
+
+  """
+  fetch data from the table in a streaming manner: "unit"
+  """
+  unit_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [unit_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: unit_bool_exp
+  ): [unit!]!
 }
 
 """
@@ -3410,6 +5231,42 @@ columns and relationships of "supplier"
 """
 type supplier {
   id: Int!
+
+  """An array relationship"""
+  imports(
+    """distinct select on columns"""
+    distinct_on: [import_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [import_order_by!]
+
+    """filter the rows returned"""
+    where: import_bool_exp
+  ): [import!]!
+
+  """An aggregate relationship"""
+  imports_aggregate(
+    """distinct select on columns"""
+    distinct_on: [import_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [import_order_by!]
+
+    """filter the rows returned"""
+    where: import_bool_exp
+  ): import_aggregate!
   name: String!
   phone: String!
 }
@@ -3452,6 +5309,8 @@ input supplier_bool_exp {
   _not: supplier_bool_exp
   _or: [supplier_bool_exp!]
   id: Int_comparison_exp
+  imports: import_bool_exp
+  imports_aggregate: import_aggregate_bool_exp
   name: String_comparison_exp
   phone: String_comparison_exp
 }
@@ -3460,7 +5319,9 @@ input supplier_bool_exp {
 unique or primary key constraints on table "supplier"
 """
 enum supplier_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "id"
+  """
   supplier_pkey
 }
 
@@ -3476,6 +5337,7 @@ input type for inserting data into table "supplier"
 """
 input supplier_insert_input {
   id: Int
+  imports: import_arr_rel_insert_input
   name: String
   phone: String
 }
@@ -3506,6 +5368,16 @@ type supplier_mutation_response {
 }
 
 """
+input type for inserting object relation for remote table "supplier"
+"""
+input supplier_obj_rel_insert_input {
+  data: supplier_insert_input!
+
+  """upsert condition"""
+  on_conflict: supplier_on_conflict
+}
+
+"""
 on_conflict condition type for table "supplier"
 """
 input supplier_on_conflict {
@@ -3517,6 +5389,7 @@ input supplier_on_conflict {
 """Ordering options when selecting data from "supplier"."""
 input supplier_order_by {
   id: order_by
+  imports_aggregate: import_aggregate_order_by
   name: order_by
   phone: order_by
 }
@@ -3564,6 +5437,24 @@ type supplier_stddev_samp_fields {
   id: Float
 }
 
+"""
+Streaming cursor of the table "supplier"
+"""
+input supplier_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: supplier_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input supplier_stream_cursor_value_input {
+  id: Int
+  name: String
+  phone: String
+}
+
 """aggregate sum on columns"""
 type supplier_sum_fields {
   id: Int
@@ -3581,6 +5472,17 @@ enum supplier_update_column {
 
   """column name"""
   phone
+}
+
+input supplier_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: supplier_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: supplier_set_input
+
+  """filter the rows which have to be updated"""
+  where: supplier_bool_exp!
 }
 
 """aggregate var_pop on columns"""
@@ -3673,6 +5575,17 @@ type unit_aggregate {
   nodes: [unit!]!
 }
 
+input unit_aggregate_bool_exp {
+  count: unit_aggregate_bool_exp_count
+}
+
+input unit_aggregate_bool_exp_count {
+  arguments: [unit_select_column!]
+  distinct: Boolean
+  filter: unit_bool_exp
+  predicate: Int_comparison_exp!
+}
+
 """
 aggregate fields of "unit"
 """
@@ -3745,6 +5658,7 @@ input unit_bool_exp {
   id: Int_comparison_exp
   name: String_comparison_exp
   orderdetails: orderdetail_bool_exp
+  orderdetails_aggregate: orderdetail_aggregate_bool_exp
   price: Int_comparison_exp
   product: product_bool_exp
   productid: Int_comparison_exp
@@ -3755,7 +5669,9 @@ input unit_bool_exp {
 unique or primary key constraints on table "unit"
 """
 enum unit_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "id"
+  """
   unit_pkey
 }
 
@@ -3953,6 +5869,26 @@ input unit_stddev_samp_order_by {
   ratio: order_by
 }
 
+"""
+Streaming cursor of the table "unit"
+"""
+input unit_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: unit_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input unit_stream_cursor_value_input {
+  id: Int
+  name: String
+  price: Int
+  productid: Int
+  ratio: Int
+}
+
 """aggregate sum on columns"""
 type unit_sum_fields {
   id: Int
@@ -3989,6 +5925,17 @@ enum unit_update_column {
 
   """column name"""
   ratio
+}
+
+input unit_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: unit_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: unit_set_input
+
+  """filter the rows which have to be updated"""
+  where: unit_bool_exp!
 }
 
 """aggregate var_pop on columns"""

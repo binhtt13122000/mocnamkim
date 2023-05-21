@@ -6,9 +6,11 @@ import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import Home from "src/components/Home";
 import GraphQLQueryClientContextProvider from "src/components/Table/context/QueryClientContext";
 
+import BillIn from "../BillIn";
 import BillOut from "../BillOut";
 import Category from "../Categories";
 import Customer from "../Customer";
+import ImportForm from "../Import";
 import Layout from "../Layout";
 import Login from "../Login";
 import Product from "../Product";
@@ -51,8 +53,10 @@ const App = () => {
                                             </Layout>
                                         }
                                     >
+                                        <Route path="/import" element={<ImportForm />} />
                                         <Route path="/sell" element={<Sell />} />
                                         <Route path="/bill-out" element={<BillOut />} />
+                                        <Route path="/bill-in" element={<BillIn />} />
                                         <Route path="/categories" element={<Category />} />
                                         <Route path="/customers" element={<Customer />} />
                                         <Route path="/suppliers" element={<Supplier />} />

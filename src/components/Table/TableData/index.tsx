@@ -97,7 +97,8 @@ export const TableData = <T extends Record<string, any>>(
                                                 row[column.field]
                                                     ? row[column.field][column.subField || ""]
                                                     : "",
-                                                row.id
+                                                row.id,
+                                                row
                                             )}
                                         </StyledTableCell>
                                     );
@@ -108,7 +109,7 @@ export const TableData = <T extends Record<string, any>>(
                                         key={index}
                                         padding={"none"}
                                     >
-                                        {render(row[column.field], row.id)}
+                                        {render(row[column.field], row.id, row)}
                                     </StyledTableCell>
                                 );
                             }

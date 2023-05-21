@@ -70,6 +70,17 @@ export type Order_Aggregate = {
     nodes: Array<Order>;
 };
 
+export type Order_Aggregate_Bool_Exp = {
+    count?: InputMaybe<Order_Aggregate_Bool_Exp_Count>;
+};
+
+export type Order_Aggregate_Bool_Exp_Count = {
+    arguments?: InputMaybe<Array<Order_Select_Column>>;
+    distinct?: InputMaybe<Scalars["Boolean"]>;
+    filter?: InputMaybe<Order_Bool_Exp>;
+    predicate: Int_Comparison_Exp;
+};
+
 /** aggregate fields of "Order" */
 export type Order_Aggregate_Fields = {
     __typename?: "Order_aggregate_fields";
@@ -144,6 +155,7 @@ export type Order_Bool_Exp = {
     customerid?: InputMaybe<Int_Comparison_Exp>;
     id?: InputMaybe<Int_Comparison_Exp>;
     orderdetails?: InputMaybe<Orderdetail_Bool_Exp>;
+    orderdetails_aggregate?: InputMaybe<Orderdetail_Aggregate_Bool_Exp>;
     pay?: InputMaybe<Int_Comparison_Exp>;
     paymentTime?: InputMaybe<Timestamptz_Comparison_Exp>;
     status?: InputMaybe<String_Comparison_Exp>;
@@ -152,7 +164,7 @@ export type Order_Bool_Exp = {
 
 /** unique or primary key constraints on table "Order" */
 export enum Order_Constraint {
-    /** unique or primary key constraint */
+    /** unique or primary key constraint on columns "id" */
     OrderPkey = "Order_pkey",
 }
 
@@ -360,6 +372,26 @@ export type Order_Stddev_Samp_Order_By = {
     total?: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "Order" */
+export type Order_Stream_Cursor_Input = {
+    /** Stream column input with initial value */
+    initial_value: Order_Stream_Cursor_Value_Input;
+    /** cursor ordering */
+    ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Order_Stream_Cursor_Value_Input = {
+    backMoney?: InputMaybe<Scalars["Int"]>;
+    createTime?: InputMaybe<Scalars["timestamptz"]>;
+    customerid?: InputMaybe<Scalars["Int"]>;
+    id?: InputMaybe<Scalars["Int"]>;
+    pay?: InputMaybe<Scalars["Int"]>;
+    paymentTime?: InputMaybe<Scalars["timestamptz"]>;
+    status?: InputMaybe<Scalars["String"]>;
+    total?: InputMaybe<Scalars["Int"]>;
+};
+
 /** aggregate sum on columns */
 export type Order_Sum_Fields = {
     __typename?: "Order_sum_fields";
@@ -398,6 +430,15 @@ export enum Order_Update_Column {
     /** column name */
     Total = "total",
 }
+
+export type Order_Updates = {
+    /** increments the numeric columns with given value of the filtered values */
+    _inc?: InputMaybe<Order_Inc_Input>;
+    /** sets the columns of the filtered rows to the given values */
+    _set?: InputMaybe<Order_Set_Input>;
+    /** filter the rows which have to be updated */
+    where: Order_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Order_Var_Pop_Fields = {
@@ -548,7 +589,7 @@ export type Account_Bool_Exp = {
 
 /** unique or primary key constraints on table "account" */
 export enum Account_Constraint {
-    /** unique or primary key constraint */
+    /** unique or primary key constraint on columns "id" */
     AccountPkey = "account_pkey",
 }
 
@@ -657,6 +698,23 @@ export type Account_Stddev_Samp_Fields = {
     id?: Maybe<Scalars["Float"]>;
 };
 
+/** Streaming cursor of the table "account" */
+export type Account_Stream_Cursor_Input = {
+    /** Stream column input with initial value */
+    initial_value: Account_Stream_Cursor_Value_Input;
+    /** cursor ordering */
+    ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Account_Stream_Cursor_Value_Input = {
+    id?: InputMaybe<Scalars["Int"]>;
+    name?: InputMaybe<Scalars["String"]>;
+    password?: InputMaybe<Scalars["String"]>;
+    role?: InputMaybe<Scalars["String"]>;
+    username?: InputMaybe<Scalars["String"]>;
+};
+
 /** aggregate sum on columns */
 export type Account_Sum_Fields = {
     __typename?: "account_sum_fields";
@@ -676,6 +734,15 @@ export enum Account_Update_Column {
     /** column name */
     Username = "username",
 }
+
+export type Account_Updates = {
+    /** increments the numeric columns with given value of the filtered values */
+    _inc?: InputMaybe<Account_Inc_Input>;
+    /** sets the columns of the filtered rows to the given values */
+    _set?: InputMaybe<Account_Set_Input>;
+    /** filter the rows which have to be updated */
+    where: Account_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Account_Var_Pop_Fields = {
@@ -767,11 +834,12 @@ export type Category_Bool_Exp = {
     id?: InputMaybe<Int_Comparison_Exp>;
     name?: InputMaybe<String_Comparison_Exp>;
     products?: InputMaybe<Product_Bool_Exp>;
+    products_aggregate?: InputMaybe<Product_Aggregate_Bool_Exp>;
 };
 
 /** unique or primary key constraints on table "category" */
 export enum Category_Constraint {
-    /** unique or primary key constraint */
+    /** unique or primary key constraint on columns "id" */
     CategoryPkey = "category_pkey",
 }
 
@@ -868,6 +936,20 @@ export type Category_Stddev_Samp_Fields = {
     id?: Maybe<Scalars["Float"]>;
 };
 
+/** Streaming cursor of the table "category" */
+export type Category_Stream_Cursor_Input = {
+    /** Stream column input with initial value */
+    initial_value: Category_Stream_Cursor_Value_Input;
+    /** cursor ordering */
+    ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Category_Stream_Cursor_Value_Input = {
+    id?: InputMaybe<Scalars["Int"]>;
+    name?: InputMaybe<Scalars["String"]>;
+};
+
 /** aggregate sum on columns */
 export type Category_Sum_Fields = {
     __typename?: "category_sum_fields";
@@ -881,6 +963,15 @@ export enum Category_Update_Column {
     /** column name */
     Name = "name",
 }
+
+export type Category_Updates = {
+    /** increments the numeric columns with given value of the filtered values */
+    _inc?: InputMaybe<Category_Inc_Input>;
+    /** sets the columns of the filtered rows to the given values */
+    _set?: InputMaybe<Category_Set_Input>;
+    /** filter the rows which have to be updated */
+    where: Category_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Category_Var_Pop_Fields = {
@@ -899,6 +990,14 @@ export type Category_Variance_Fields = {
     __typename?: "category_variance_fields";
     id?: Maybe<Scalars["Float"]>;
 };
+
+/** ordering argument of a cursor */
+export enum Cursor_Ordering {
+    /** ascending ordering of the cursor */
+    Asc = "ASC",
+    /** descending ordering of the cursor */
+    Desc = "DESC",
+}
 
 /** columns and relationships of "customer" */
 export type Customer = {
@@ -968,6 +1067,7 @@ export type Customer_Avg_Fields = {
 /** Boolean expression to filter rows from the table "customer". All fields are combined with a logical 'AND'. */
 export type Customer_Bool_Exp = {
     Orders?: InputMaybe<Order_Bool_Exp>;
+    Orders_aggregate?: InputMaybe<Order_Aggregate_Bool_Exp>;
     _and?: InputMaybe<Array<Customer_Bool_Exp>>;
     _not?: InputMaybe<Customer_Bool_Exp>;
     _or?: InputMaybe<Array<Customer_Bool_Exp>>;
@@ -978,7 +1078,7 @@ export type Customer_Bool_Exp = {
 
 /** unique or primary key constraints on table "customer" */
 export enum Customer_Constraint {
-    /** unique or primary key constraint */
+    /** unique or primary key constraint on columns "id" */
     CustomerPkey = "customer_pkey",
 }
 
@@ -1082,6 +1182,21 @@ export type Customer_Stddev_Samp_Fields = {
     id?: Maybe<Scalars["Float"]>;
 };
 
+/** Streaming cursor of the table "customer" */
+export type Customer_Stream_Cursor_Input = {
+    /** Stream column input with initial value */
+    initial_value: Customer_Stream_Cursor_Value_Input;
+    /** cursor ordering */
+    ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Customer_Stream_Cursor_Value_Input = {
+    id?: InputMaybe<Scalars["Int"]>;
+    name?: InputMaybe<Scalars["String"]>;
+    phone?: InputMaybe<Scalars["String"]>;
+};
+
 /** aggregate sum on columns */
 export type Customer_Sum_Fields = {
     __typename?: "customer_sum_fields";
@@ -1097,6 +1212,15 @@ export enum Customer_Update_Column {
     /** column name */
     Phone = "phone",
 }
+
+export type Customer_Updates = {
+    /** increments the numeric columns with given value of the filtered values */
+    _inc?: InputMaybe<Customer_Inc_Input>;
+    /** sets the columns of the filtered rows to the given values */
+    _set?: InputMaybe<Customer_Set_Input>;
+    /** filter the rows which have to be updated */
+    where: Customer_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Customer_Var_Pop_Fields = {
@@ -1114,6 +1238,909 @@ export type Customer_Var_Samp_Fields = {
 export type Customer_Variance_Fields = {
     __typename?: "customer_variance_fields";
     id?: Maybe<Scalars["Float"]>;
+};
+
+/** columns and relationships of "import" */
+export type Import = {
+    __typename?: "import";
+    backMoney?: Maybe<Scalars["Int"]>;
+    createTime?: Maybe<Scalars["timestamptz"]>;
+    id: Scalars["Int"];
+    /** An array relationship */
+    importdetails: Array<Importdetail>;
+    /** An aggregate relationship */
+    importdetails_aggregate: Importdetail_Aggregate;
+    pay?: Maybe<Scalars["Int"]>;
+    paymentTime?: Maybe<Scalars["timestamptz"]>;
+    status?: Maybe<Scalars["String"]>;
+    /** An object relationship */
+    supplier?: Maybe<Supplier>;
+    supplierid?: Maybe<Scalars["Int"]>;
+    total?: Maybe<Scalars["Int"]>;
+};
+
+/** columns and relationships of "import" */
+export type ImportImportdetailsArgs = {
+    distinct_on?: InputMaybe<Array<Importdetail_Select_Column>>;
+    limit?: InputMaybe<Scalars["Int"]>;
+    offset?: InputMaybe<Scalars["Int"]>;
+    order_by?: InputMaybe<Array<Importdetail_Order_By>>;
+    where?: InputMaybe<Importdetail_Bool_Exp>;
+};
+
+/** columns and relationships of "import" */
+export type ImportImportdetails_AggregateArgs = {
+    distinct_on?: InputMaybe<Array<Importdetail_Select_Column>>;
+    limit?: InputMaybe<Scalars["Int"]>;
+    offset?: InputMaybe<Scalars["Int"]>;
+    order_by?: InputMaybe<Array<Importdetail_Order_By>>;
+    where?: InputMaybe<Importdetail_Bool_Exp>;
+};
+
+/** aggregated selection of "import" */
+export type Import_Aggregate = {
+    __typename?: "import_aggregate";
+    aggregate?: Maybe<Import_Aggregate_Fields>;
+    nodes: Array<Import>;
+};
+
+export type Import_Aggregate_Bool_Exp = {
+    count?: InputMaybe<Import_Aggregate_Bool_Exp_Count>;
+};
+
+export type Import_Aggregate_Bool_Exp_Count = {
+    arguments?: InputMaybe<Array<Import_Select_Column>>;
+    distinct?: InputMaybe<Scalars["Boolean"]>;
+    filter?: InputMaybe<Import_Bool_Exp>;
+    predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "import" */
+export type Import_Aggregate_Fields = {
+    __typename?: "import_aggregate_fields";
+    avg?: Maybe<Import_Avg_Fields>;
+    count: Scalars["Int"];
+    max?: Maybe<Import_Max_Fields>;
+    min?: Maybe<Import_Min_Fields>;
+    stddev?: Maybe<Import_Stddev_Fields>;
+    stddev_pop?: Maybe<Import_Stddev_Pop_Fields>;
+    stddev_samp?: Maybe<Import_Stddev_Samp_Fields>;
+    sum?: Maybe<Import_Sum_Fields>;
+    var_pop?: Maybe<Import_Var_Pop_Fields>;
+    var_samp?: Maybe<Import_Var_Samp_Fields>;
+    variance?: Maybe<Import_Variance_Fields>;
+};
+
+/** aggregate fields of "import" */
+export type Import_Aggregate_FieldsCountArgs = {
+    columns?: InputMaybe<Array<Import_Select_Column>>;
+    distinct?: InputMaybe<Scalars["Boolean"]>;
+};
+
+/** order by aggregate values of table "import" */
+export type Import_Aggregate_Order_By = {
+    avg?: InputMaybe<Import_Avg_Order_By>;
+    count?: InputMaybe<Order_By>;
+    max?: InputMaybe<Import_Max_Order_By>;
+    min?: InputMaybe<Import_Min_Order_By>;
+    stddev?: InputMaybe<Import_Stddev_Order_By>;
+    stddev_pop?: InputMaybe<Import_Stddev_Pop_Order_By>;
+    stddev_samp?: InputMaybe<Import_Stddev_Samp_Order_By>;
+    sum?: InputMaybe<Import_Sum_Order_By>;
+    var_pop?: InputMaybe<Import_Var_Pop_Order_By>;
+    var_samp?: InputMaybe<Import_Var_Samp_Order_By>;
+    variance?: InputMaybe<Import_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "import" */
+export type Import_Arr_Rel_Insert_Input = {
+    data: Array<Import_Insert_Input>;
+    /** upsert condition */
+    on_conflict?: InputMaybe<Import_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Import_Avg_Fields = {
+    __typename?: "import_avg_fields";
+    backMoney?: Maybe<Scalars["Float"]>;
+    id?: Maybe<Scalars["Float"]>;
+    pay?: Maybe<Scalars["Float"]>;
+    supplierid?: Maybe<Scalars["Float"]>;
+    total?: Maybe<Scalars["Float"]>;
+};
+
+/** order by avg() on columns of table "import" */
+export type Import_Avg_Order_By = {
+    backMoney?: InputMaybe<Order_By>;
+    id?: InputMaybe<Order_By>;
+    pay?: InputMaybe<Order_By>;
+    supplierid?: InputMaybe<Order_By>;
+    total?: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "import". All fields are combined with a logical 'AND'. */
+export type Import_Bool_Exp = {
+    _and?: InputMaybe<Array<Import_Bool_Exp>>;
+    _not?: InputMaybe<Import_Bool_Exp>;
+    _or?: InputMaybe<Array<Import_Bool_Exp>>;
+    backMoney?: InputMaybe<Int_Comparison_Exp>;
+    createTime?: InputMaybe<Timestamptz_Comparison_Exp>;
+    id?: InputMaybe<Int_Comparison_Exp>;
+    importdetails?: InputMaybe<Importdetail_Bool_Exp>;
+    importdetails_aggregate?: InputMaybe<Importdetail_Aggregate_Bool_Exp>;
+    pay?: InputMaybe<Int_Comparison_Exp>;
+    paymentTime?: InputMaybe<Timestamptz_Comparison_Exp>;
+    status?: InputMaybe<String_Comparison_Exp>;
+    supplier?: InputMaybe<Supplier_Bool_Exp>;
+    supplierid?: InputMaybe<Int_Comparison_Exp>;
+    total?: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "import" */
+export enum Import_Constraint {
+    /** unique or primary key constraint on columns "id" */
+    ImportPkey = "import_pkey",
+}
+
+/** input type for incrementing numeric columns in table "import" */
+export type Import_Inc_Input = {
+    backMoney?: InputMaybe<Scalars["Int"]>;
+    id?: InputMaybe<Scalars["Int"]>;
+    pay?: InputMaybe<Scalars["Int"]>;
+    supplierid?: InputMaybe<Scalars["Int"]>;
+    total?: InputMaybe<Scalars["Int"]>;
+};
+
+/** input type for inserting data into table "import" */
+export type Import_Insert_Input = {
+    backMoney?: InputMaybe<Scalars["Int"]>;
+    createTime?: InputMaybe<Scalars["timestamptz"]>;
+    id?: InputMaybe<Scalars["Int"]>;
+    importdetails?: InputMaybe<Importdetail_Arr_Rel_Insert_Input>;
+    pay?: InputMaybe<Scalars["Int"]>;
+    paymentTime?: InputMaybe<Scalars["timestamptz"]>;
+    status?: InputMaybe<Scalars["String"]>;
+    supplier?: InputMaybe<Supplier_Obj_Rel_Insert_Input>;
+    supplierid?: InputMaybe<Scalars["Int"]>;
+    total?: InputMaybe<Scalars["Int"]>;
+};
+
+/** aggregate max on columns */
+export type Import_Max_Fields = {
+    __typename?: "import_max_fields";
+    backMoney?: Maybe<Scalars["Int"]>;
+    createTime?: Maybe<Scalars["timestamptz"]>;
+    id?: Maybe<Scalars["Int"]>;
+    pay?: Maybe<Scalars["Int"]>;
+    paymentTime?: Maybe<Scalars["timestamptz"]>;
+    status?: Maybe<Scalars["String"]>;
+    supplierid?: Maybe<Scalars["Int"]>;
+    total?: Maybe<Scalars["Int"]>;
+};
+
+/** order by max() on columns of table "import" */
+export type Import_Max_Order_By = {
+    backMoney?: InputMaybe<Order_By>;
+    createTime?: InputMaybe<Order_By>;
+    id?: InputMaybe<Order_By>;
+    pay?: InputMaybe<Order_By>;
+    paymentTime?: InputMaybe<Order_By>;
+    status?: InputMaybe<Order_By>;
+    supplierid?: InputMaybe<Order_By>;
+    total?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Import_Min_Fields = {
+    __typename?: "import_min_fields";
+    backMoney?: Maybe<Scalars["Int"]>;
+    createTime?: Maybe<Scalars["timestamptz"]>;
+    id?: Maybe<Scalars["Int"]>;
+    pay?: Maybe<Scalars["Int"]>;
+    paymentTime?: Maybe<Scalars["timestamptz"]>;
+    status?: Maybe<Scalars["String"]>;
+    supplierid?: Maybe<Scalars["Int"]>;
+    total?: Maybe<Scalars["Int"]>;
+};
+
+/** order by min() on columns of table "import" */
+export type Import_Min_Order_By = {
+    backMoney?: InputMaybe<Order_By>;
+    createTime?: InputMaybe<Order_By>;
+    id?: InputMaybe<Order_By>;
+    pay?: InputMaybe<Order_By>;
+    paymentTime?: InputMaybe<Order_By>;
+    status?: InputMaybe<Order_By>;
+    supplierid?: InputMaybe<Order_By>;
+    total?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "import" */
+export type Import_Mutation_Response = {
+    __typename?: "import_mutation_response";
+    /** number of rows affected by the mutation */
+    affected_rows: Scalars["Int"];
+    /** data from the rows affected by the mutation */
+    returning: Array<Import>;
+};
+
+/** input type for inserting object relation for remote table "import" */
+export type Import_Obj_Rel_Insert_Input = {
+    data: Import_Insert_Input;
+    /** upsert condition */
+    on_conflict?: InputMaybe<Import_On_Conflict>;
+};
+
+/** on_conflict condition type for table "import" */
+export type Import_On_Conflict = {
+    constraint: Import_Constraint;
+    update_columns?: Array<Import_Update_Column>;
+    where?: InputMaybe<Import_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "import". */
+export type Import_Order_By = {
+    backMoney?: InputMaybe<Order_By>;
+    createTime?: InputMaybe<Order_By>;
+    id?: InputMaybe<Order_By>;
+    importdetails_aggregate?: InputMaybe<Importdetail_Aggregate_Order_By>;
+    pay?: InputMaybe<Order_By>;
+    paymentTime?: InputMaybe<Order_By>;
+    status?: InputMaybe<Order_By>;
+    supplier?: InputMaybe<Supplier_Order_By>;
+    supplierid?: InputMaybe<Order_By>;
+    total?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: import */
+export type Import_Pk_Columns_Input = {
+    id: Scalars["Int"];
+};
+
+/** select columns of table "import" */
+export enum Import_Select_Column {
+    /** column name */
+    BackMoney = "backMoney",
+    /** column name */
+    CreateTime = "createTime",
+    /** column name */
+    Id = "id",
+    /** column name */
+    Pay = "pay",
+    /** column name */
+    PaymentTime = "paymentTime",
+    /** column name */
+    Status = "status",
+    /** column name */
+    Supplierid = "supplierid",
+    /** column name */
+    Total = "total",
+}
+
+/** input type for updating data in table "import" */
+export type Import_Set_Input = {
+    backMoney?: InputMaybe<Scalars["Int"]>;
+    createTime?: InputMaybe<Scalars["timestamptz"]>;
+    id?: InputMaybe<Scalars["Int"]>;
+    pay?: InputMaybe<Scalars["Int"]>;
+    paymentTime?: InputMaybe<Scalars["timestamptz"]>;
+    status?: InputMaybe<Scalars["String"]>;
+    supplierid?: InputMaybe<Scalars["Int"]>;
+    total?: InputMaybe<Scalars["Int"]>;
+};
+
+/** aggregate stddev on columns */
+export type Import_Stddev_Fields = {
+    __typename?: "import_stddev_fields";
+    backMoney?: Maybe<Scalars["Float"]>;
+    id?: Maybe<Scalars["Float"]>;
+    pay?: Maybe<Scalars["Float"]>;
+    supplierid?: Maybe<Scalars["Float"]>;
+    total?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev() on columns of table "import" */
+export type Import_Stddev_Order_By = {
+    backMoney?: InputMaybe<Order_By>;
+    id?: InputMaybe<Order_By>;
+    pay?: InputMaybe<Order_By>;
+    supplierid?: InputMaybe<Order_By>;
+    total?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Import_Stddev_Pop_Fields = {
+    __typename?: "import_stddev_pop_fields";
+    backMoney?: Maybe<Scalars["Float"]>;
+    id?: Maybe<Scalars["Float"]>;
+    pay?: Maybe<Scalars["Float"]>;
+    supplierid?: Maybe<Scalars["Float"]>;
+    total?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_pop() on columns of table "import" */
+export type Import_Stddev_Pop_Order_By = {
+    backMoney?: InputMaybe<Order_By>;
+    id?: InputMaybe<Order_By>;
+    pay?: InputMaybe<Order_By>;
+    supplierid?: InputMaybe<Order_By>;
+    total?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Import_Stddev_Samp_Fields = {
+    __typename?: "import_stddev_samp_fields";
+    backMoney?: Maybe<Scalars["Float"]>;
+    id?: Maybe<Scalars["Float"]>;
+    pay?: Maybe<Scalars["Float"]>;
+    supplierid?: Maybe<Scalars["Float"]>;
+    total?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_samp() on columns of table "import" */
+export type Import_Stddev_Samp_Order_By = {
+    backMoney?: InputMaybe<Order_By>;
+    id?: InputMaybe<Order_By>;
+    pay?: InputMaybe<Order_By>;
+    supplierid?: InputMaybe<Order_By>;
+    total?: InputMaybe<Order_By>;
+};
+
+/** Streaming cursor of the table "import" */
+export type Import_Stream_Cursor_Input = {
+    /** Stream column input with initial value */
+    initial_value: Import_Stream_Cursor_Value_Input;
+    /** cursor ordering */
+    ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Import_Stream_Cursor_Value_Input = {
+    backMoney?: InputMaybe<Scalars["Int"]>;
+    createTime?: InputMaybe<Scalars["timestamptz"]>;
+    id?: InputMaybe<Scalars["Int"]>;
+    pay?: InputMaybe<Scalars["Int"]>;
+    paymentTime?: InputMaybe<Scalars["timestamptz"]>;
+    status?: InputMaybe<Scalars["String"]>;
+    supplierid?: InputMaybe<Scalars["Int"]>;
+    total?: InputMaybe<Scalars["Int"]>;
+};
+
+/** aggregate sum on columns */
+export type Import_Sum_Fields = {
+    __typename?: "import_sum_fields";
+    backMoney?: Maybe<Scalars["Int"]>;
+    id?: Maybe<Scalars["Int"]>;
+    pay?: Maybe<Scalars["Int"]>;
+    supplierid?: Maybe<Scalars["Int"]>;
+    total?: Maybe<Scalars["Int"]>;
+};
+
+/** order by sum() on columns of table "import" */
+export type Import_Sum_Order_By = {
+    backMoney?: InputMaybe<Order_By>;
+    id?: InputMaybe<Order_By>;
+    pay?: InputMaybe<Order_By>;
+    supplierid?: InputMaybe<Order_By>;
+    total?: InputMaybe<Order_By>;
+};
+
+/** update columns of table "import" */
+export enum Import_Update_Column {
+    /** column name */
+    BackMoney = "backMoney",
+    /** column name */
+    CreateTime = "createTime",
+    /** column name */
+    Id = "id",
+    /** column name */
+    Pay = "pay",
+    /** column name */
+    PaymentTime = "paymentTime",
+    /** column name */
+    Status = "status",
+    /** column name */
+    Supplierid = "supplierid",
+    /** column name */
+    Total = "total",
+}
+
+export type Import_Updates = {
+    /** increments the numeric columns with given value of the filtered values */
+    _inc?: InputMaybe<Import_Inc_Input>;
+    /** sets the columns of the filtered rows to the given values */
+    _set?: InputMaybe<Import_Set_Input>;
+    /** filter the rows which have to be updated */
+    where: Import_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Import_Var_Pop_Fields = {
+    __typename?: "import_var_pop_fields";
+    backMoney?: Maybe<Scalars["Float"]>;
+    id?: Maybe<Scalars["Float"]>;
+    pay?: Maybe<Scalars["Float"]>;
+    supplierid?: Maybe<Scalars["Float"]>;
+    total?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_pop() on columns of table "import" */
+export type Import_Var_Pop_Order_By = {
+    backMoney?: InputMaybe<Order_By>;
+    id?: InputMaybe<Order_By>;
+    pay?: InputMaybe<Order_By>;
+    supplierid?: InputMaybe<Order_By>;
+    total?: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Import_Var_Samp_Fields = {
+    __typename?: "import_var_samp_fields";
+    backMoney?: Maybe<Scalars["Float"]>;
+    id?: Maybe<Scalars["Float"]>;
+    pay?: Maybe<Scalars["Float"]>;
+    supplierid?: Maybe<Scalars["Float"]>;
+    total?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_samp() on columns of table "import" */
+export type Import_Var_Samp_Order_By = {
+    backMoney?: InputMaybe<Order_By>;
+    id?: InputMaybe<Order_By>;
+    pay?: InputMaybe<Order_By>;
+    supplierid?: InputMaybe<Order_By>;
+    total?: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Import_Variance_Fields = {
+    __typename?: "import_variance_fields";
+    backMoney?: Maybe<Scalars["Float"]>;
+    id?: Maybe<Scalars["Float"]>;
+    pay?: Maybe<Scalars["Float"]>;
+    supplierid?: Maybe<Scalars["Float"]>;
+    total?: Maybe<Scalars["Float"]>;
+};
+
+/** order by variance() on columns of table "import" */
+export type Import_Variance_Order_By = {
+    backMoney?: InputMaybe<Order_By>;
+    id?: InputMaybe<Order_By>;
+    pay?: InputMaybe<Order_By>;
+    supplierid?: InputMaybe<Order_By>;
+    total?: InputMaybe<Order_By>;
+};
+
+/** columns and relationships of "importdetail" */
+export type Importdetail = {
+    __typename?: "importdetail";
+    id: Scalars["Int"];
+    /** An object relationship */
+    import: Import;
+    importid: Scalars["Int"];
+    price?: Maybe<Scalars["Int"]>;
+    /** An object relationship */
+    product: Product;
+    productid: Scalars["Int"];
+    quantity?: Maybe<Scalars["Int"]>;
+    total?: Maybe<Scalars["Int"]>;
+};
+
+/** aggregated selection of "importdetail" */
+export type Importdetail_Aggregate = {
+    __typename?: "importdetail_aggregate";
+    aggregate?: Maybe<Importdetail_Aggregate_Fields>;
+    nodes: Array<Importdetail>;
+};
+
+export type Importdetail_Aggregate_Bool_Exp = {
+    count?: InputMaybe<Importdetail_Aggregate_Bool_Exp_Count>;
+};
+
+export type Importdetail_Aggregate_Bool_Exp_Count = {
+    arguments?: InputMaybe<Array<Importdetail_Select_Column>>;
+    distinct?: InputMaybe<Scalars["Boolean"]>;
+    filter?: InputMaybe<Importdetail_Bool_Exp>;
+    predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "importdetail" */
+export type Importdetail_Aggregate_Fields = {
+    __typename?: "importdetail_aggregate_fields";
+    avg?: Maybe<Importdetail_Avg_Fields>;
+    count: Scalars["Int"];
+    max?: Maybe<Importdetail_Max_Fields>;
+    min?: Maybe<Importdetail_Min_Fields>;
+    stddev?: Maybe<Importdetail_Stddev_Fields>;
+    stddev_pop?: Maybe<Importdetail_Stddev_Pop_Fields>;
+    stddev_samp?: Maybe<Importdetail_Stddev_Samp_Fields>;
+    sum?: Maybe<Importdetail_Sum_Fields>;
+    var_pop?: Maybe<Importdetail_Var_Pop_Fields>;
+    var_samp?: Maybe<Importdetail_Var_Samp_Fields>;
+    variance?: Maybe<Importdetail_Variance_Fields>;
+};
+
+/** aggregate fields of "importdetail" */
+export type Importdetail_Aggregate_FieldsCountArgs = {
+    columns?: InputMaybe<Array<Importdetail_Select_Column>>;
+    distinct?: InputMaybe<Scalars["Boolean"]>;
+};
+
+/** order by aggregate values of table "importdetail" */
+export type Importdetail_Aggregate_Order_By = {
+    avg?: InputMaybe<Importdetail_Avg_Order_By>;
+    count?: InputMaybe<Order_By>;
+    max?: InputMaybe<Importdetail_Max_Order_By>;
+    min?: InputMaybe<Importdetail_Min_Order_By>;
+    stddev?: InputMaybe<Importdetail_Stddev_Order_By>;
+    stddev_pop?: InputMaybe<Importdetail_Stddev_Pop_Order_By>;
+    stddev_samp?: InputMaybe<Importdetail_Stddev_Samp_Order_By>;
+    sum?: InputMaybe<Importdetail_Sum_Order_By>;
+    var_pop?: InputMaybe<Importdetail_Var_Pop_Order_By>;
+    var_samp?: InputMaybe<Importdetail_Var_Samp_Order_By>;
+    variance?: InputMaybe<Importdetail_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "importdetail" */
+export type Importdetail_Arr_Rel_Insert_Input = {
+    data: Array<Importdetail_Insert_Input>;
+    /** upsert condition */
+    on_conflict?: InputMaybe<Importdetail_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Importdetail_Avg_Fields = {
+    __typename?: "importdetail_avg_fields";
+    id?: Maybe<Scalars["Float"]>;
+    importid?: Maybe<Scalars["Float"]>;
+    price?: Maybe<Scalars["Float"]>;
+    productid?: Maybe<Scalars["Float"]>;
+    quantity?: Maybe<Scalars["Float"]>;
+    total?: Maybe<Scalars["Float"]>;
+};
+
+/** order by avg() on columns of table "importdetail" */
+export type Importdetail_Avg_Order_By = {
+    id?: InputMaybe<Order_By>;
+    importid?: InputMaybe<Order_By>;
+    price?: InputMaybe<Order_By>;
+    productid?: InputMaybe<Order_By>;
+    quantity?: InputMaybe<Order_By>;
+    total?: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "importdetail". All fields are combined with a logical 'AND'. */
+export type Importdetail_Bool_Exp = {
+    _and?: InputMaybe<Array<Importdetail_Bool_Exp>>;
+    _not?: InputMaybe<Importdetail_Bool_Exp>;
+    _or?: InputMaybe<Array<Importdetail_Bool_Exp>>;
+    id?: InputMaybe<Int_Comparison_Exp>;
+    import?: InputMaybe<Import_Bool_Exp>;
+    importid?: InputMaybe<Int_Comparison_Exp>;
+    price?: InputMaybe<Int_Comparison_Exp>;
+    product?: InputMaybe<Product_Bool_Exp>;
+    productid?: InputMaybe<Int_Comparison_Exp>;
+    quantity?: InputMaybe<Int_Comparison_Exp>;
+    total?: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "importdetail" */
+export enum Importdetail_Constraint {
+    /** unique or primary key constraint on columns "id" */
+    ImportdetailPkey = "importdetail_pkey",
+}
+
+/** input type for incrementing numeric columns in table "importdetail" */
+export type Importdetail_Inc_Input = {
+    id?: InputMaybe<Scalars["Int"]>;
+    importid?: InputMaybe<Scalars["Int"]>;
+    price?: InputMaybe<Scalars["Int"]>;
+    productid?: InputMaybe<Scalars["Int"]>;
+    quantity?: InputMaybe<Scalars["Int"]>;
+    total?: InputMaybe<Scalars["Int"]>;
+};
+
+/** input type for inserting data into table "importdetail" */
+export type Importdetail_Insert_Input = {
+    id?: InputMaybe<Scalars["Int"]>;
+    import?: InputMaybe<Import_Obj_Rel_Insert_Input>;
+    importid?: InputMaybe<Scalars["Int"]>;
+    price?: InputMaybe<Scalars["Int"]>;
+    product?: InputMaybe<Product_Obj_Rel_Insert_Input>;
+    productid?: InputMaybe<Scalars["Int"]>;
+    quantity?: InputMaybe<Scalars["Int"]>;
+    total?: InputMaybe<Scalars["Int"]>;
+};
+
+/** aggregate max on columns */
+export type Importdetail_Max_Fields = {
+    __typename?: "importdetail_max_fields";
+    id?: Maybe<Scalars["Int"]>;
+    importid?: Maybe<Scalars["Int"]>;
+    price?: Maybe<Scalars["Int"]>;
+    productid?: Maybe<Scalars["Int"]>;
+    quantity?: Maybe<Scalars["Int"]>;
+    total?: Maybe<Scalars["Int"]>;
+};
+
+/** order by max() on columns of table "importdetail" */
+export type Importdetail_Max_Order_By = {
+    id?: InputMaybe<Order_By>;
+    importid?: InputMaybe<Order_By>;
+    price?: InputMaybe<Order_By>;
+    productid?: InputMaybe<Order_By>;
+    quantity?: InputMaybe<Order_By>;
+    total?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Importdetail_Min_Fields = {
+    __typename?: "importdetail_min_fields";
+    id?: Maybe<Scalars["Int"]>;
+    importid?: Maybe<Scalars["Int"]>;
+    price?: Maybe<Scalars["Int"]>;
+    productid?: Maybe<Scalars["Int"]>;
+    quantity?: Maybe<Scalars["Int"]>;
+    total?: Maybe<Scalars["Int"]>;
+};
+
+/** order by min() on columns of table "importdetail" */
+export type Importdetail_Min_Order_By = {
+    id?: InputMaybe<Order_By>;
+    importid?: InputMaybe<Order_By>;
+    price?: InputMaybe<Order_By>;
+    productid?: InputMaybe<Order_By>;
+    quantity?: InputMaybe<Order_By>;
+    total?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "importdetail" */
+export type Importdetail_Mutation_Response = {
+    __typename?: "importdetail_mutation_response";
+    /** number of rows affected by the mutation */
+    affected_rows: Scalars["Int"];
+    /** data from the rows affected by the mutation */
+    returning: Array<Importdetail>;
+};
+
+/** on_conflict condition type for table "importdetail" */
+export type Importdetail_On_Conflict = {
+    constraint: Importdetail_Constraint;
+    update_columns?: Array<Importdetail_Update_Column>;
+    where?: InputMaybe<Importdetail_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "importdetail". */
+export type Importdetail_Order_By = {
+    id?: InputMaybe<Order_By>;
+    import?: InputMaybe<Import_Order_By>;
+    importid?: InputMaybe<Order_By>;
+    price?: InputMaybe<Order_By>;
+    product?: InputMaybe<Product_Order_By>;
+    productid?: InputMaybe<Order_By>;
+    quantity?: InputMaybe<Order_By>;
+    total?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: importdetail */
+export type Importdetail_Pk_Columns_Input = {
+    id: Scalars["Int"];
+};
+
+/** select columns of table "importdetail" */
+export enum Importdetail_Select_Column {
+    /** column name */
+    Id = "id",
+    /** column name */
+    Importid = "importid",
+    /** column name */
+    Price = "price",
+    /** column name */
+    Productid = "productid",
+    /** column name */
+    Quantity = "quantity",
+    /** column name */
+    Total = "total",
+}
+
+/** input type for updating data in table "importdetail" */
+export type Importdetail_Set_Input = {
+    id?: InputMaybe<Scalars["Int"]>;
+    importid?: InputMaybe<Scalars["Int"]>;
+    price?: InputMaybe<Scalars["Int"]>;
+    productid?: InputMaybe<Scalars["Int"]>;
+    quantity?: InputMaybe<Scalars["Int"]>;
+    total?: InputMaybe<Scalars["Int"]>;
+};
+
+/** aggregate stddev on columns */
+export type Importdetail_Stddev_Fields = {
+    __typename?: "importdetail_stddev_fields";
+    id?: Maybe<Scalars["Float"]>;
+    importid?: Maybe<Scalars["Float"]>;
+    price?: Maybe<Scalars["Float"]>;
+    productid?: Maybe<Scalars["Float"]>;
+    quantity?: Maybe<Scalars["Float"]>;
+    total?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev() on columns of table "importdetail" */
+export type Importdetail_Stddev_Order_By = {
+    id?: InputMaybe<Order_By>;
+    importid?: InputMaybe<Order_By>;
+    price?: InputMaybe<Order_By>;
+    productid?: InputMaybe<Order_By>;
+    quantity?: InputMaybe<Order_By>;
+    total?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Importdetail_Stddev_Pop_Fields = {
+    __typename?: "importdetail_stddev_pop_fields";
+    id?: Maybe<Scalars["Float"]>;
+    importid?: Maybe<Scalars["Float"]>;
+    price?: Maybe<Scalars["Float"]>;
+    productid?: Maybe<Scalars["Float"]>;
+    quantity?: Maybe<Scalars["Float"]>;
+    total?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_pop() on columns of table "importdetail" */
+export type Importdetail_Stddev_Pop_Order_By = {
+    id?: InputMaybe<Order_By>;
+    importid?: InputMaybe<Order_By>;
+    price?: InputMaybe<Order_By>;
+    productid?: InputMaybe<Order_By>;
+    quantity?: InputMaybe<Order_By>;
+    total?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Importdetail_Stddev_Samp_Fields = {
+    __typename?: "importdetail_stddev_samp_fields";
+    id?: Maybe<Scalars["Float"]>;
+    importid?: Maybe<Scalars["Float"]>;
+    price?: Maybe<Scalars["Float"]>;
+    productid?: Maybe<Scalars["Float"]>;
+    quantity?: Maybe<Scalars["Float"]>;
+    total?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_samp() on columns of table "importdetail" */
+export type Importdetail_Stddev_Samp_Order_By = {
+    id?: InputMaybe<Order_By>;
+    importid?: InputMaybe<Order_By>;
+    price?: InputMaybe<Order_By>;
+    productid?: InputMaybe<Order_By>;
+    quantity?: InputMaybe<Order_By>;
+    total?: InputMaybe<Order_By>;
+};
+
+/** Streaming cursor of the table "importdetail" */
+export type Importdetail_Stream_Cursor_Input = {
+    /** Stream column input with initial value */
+    initial_value: Importdetail_Stream_Cursor_Value_Input;
+    /** cursor ordering */
+    ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Importdetail_Stream_Cursor_Value_Input = {
+    id?: InputMaybe<Scalars["Int"]>;
+    importid?: InputMaybe<Scalars["Int"]>;
+    price?: InputMaybe<Scalars["Int"]>;
+    productid?: InputMaybe<Scalars["Int"]>;
+    quantity?: InputMaybe<Scalars["Int"]>;
+    total?: InputMaybe<Scalars["Int"]>;
+};
+
+/** aggregate sum on columns */
+export type Importdetail_Sum_Fields = {
+    __typename?: "importdetail_sum_fields";
+    id?: Maybe<Scalars["Int"]>;
+    importid?: Maybe<Scalars["Int"]>;
+    price?: Maybe<Scalars["Int"]>;
+    productid?: Maybe<Scalars["Int"]>;
+    quantity?: Maybe<Scalars["Int"]>;
+    total?: Maybe<Scalars["Int"]>;
+};
+
+/** order by sum() on columns of table "importdetail" */
+export type Importdetail_Sum_Order_By = {
+    id?: InputMaybe<Order_By>;
+    importid?: InputMaybe<Order_By>;
+    price?: InputMaybe<Order_By>;
+    productid?: InputMaybe<Order_By>;
+    quantity?: InputMaybe<Order_By>;
+    total?: InputMaybe<Order_By>;
+};
+
+/** update columns of table "importdetail" */
+export enum Importdetail_Update_Column {
+    /** column name */
+    Id = "id",
+    /** column name */
+    Importid = "importid",
+    /** column name */
+    Price = "price",
+    /** column name */
+    Productid = "productid",
+    /** column name */
+    Quantity = "quantity",
+    /** column name */
+    Total = "total",
+}
+
+export type Importdetail_Updates = {
+    /** increments the numeric columns with given value of the filtered values */
+    _inc?: InputMaybe<Importdetail_Inc_Input>;
+    /** sets the columns of the filtered rows to the given values */
+    _set?: InputMaybe<Importdetail_Set_Input>;
+    /** filter the rows which have to be updated */
+    where: Importdetail_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Importdetail_Var_Pop_Fields = {
+    __typename?: "importdetail_var_pop_fields";
+    id?: Maybe<Scalars["Float"]>;
+    importid?: Maybe<Scalars["Float"]>;
+    price?: Maybe<Scalars["Float"]>;
+    productid?: Maybe<Scalars["Float"]>;
+    quantity?: Maybe<Scalars["Float"]>;
+    total?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_pop() on columns of table "importdetail" */
+export type Importdetail_Var_Pop_Order_By = {
+    id?: InputMaybe<Order_By>;
+    importid?: InputMaybe<Order_By>;
+    price?: InputMaybe<Order_By>;
+    productid?: InputMaybe<Order_By>;
+    quantity?: InputMaybe<Order_By>;
+    total?: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Importdetail_Var_Samp_Fields = {
+    __typename?: "importdetail_var_samp_fields";
+    id?: Maybe<Scalars["Float"]>;
+    importid?: Maybe<Scalars["Float"]>;
+    price?: Maybe<Scalars["Float"]>;
+    productid?: Maybe<Scalars["Float"]>;
+    quantity?: Maybe<Scalars["Float"]>;
+    total?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_samp() on columns of table "importdetail" */
+export type Importdetail_Var_Samp_Order_By = {
+    id?: InputMaybe<Order_By>;
+    importid?: InputMaybe<Order_By>;
+    price?: InputMaybe<Order_By>;
+    productid?: InputMaybe<Order_By>;
+    quantity?: InputMaybe<Order_By>;
+    total?: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Importdetail_Variance_Fields = {
+    __typename?: "importdetail_variance_fields";
+    id?: Maybe<Scalars["Float"]>;
+    importid?: Maybe<Scalars["Float"]>;
+    price?: Maybe<Scalars["Float"]>;
+    productid?: Maybe<Scalars["Float"]>;
+    quantity?: Maybe<Scalars["Float"]>;
+    total?: Maybe<Scalars["Float"]>;
+};
+
+/** order by variance() on columns of table "importdetail" */
+export type Importdetail_Variance_Order_By = {
+    id?: InputMaybe<Order_By>;
+    importid?: InputMaybe<Order_By>;
+    price?: InputMaybe<Order_By>;
+    productid?: InputMaybe<Order_By>;
+    quantity?: InputMaybe<Order_By>;
+    total?: InputMaybe<Order_By>;
 };
 
 /** mutation root */
@@ -1135,6 +2162,14 @@ export type Mutation_Root = {
     delete_customer?: Maybe<Customer_Mutation_Response>;
     /** delete single row from the table: "customer" */
     delete_customer_by_pk?: Maybe<Customer>;
+    /** delete data from the table: "import" */
+    delete_import?: Maybe<Import_Mutation_Response>;
+    /** delete single row from the table: "import" */
+    delete_import_by_pk?: Maybe<Import>;
+    /** delete data from the table: "importdetail" */
+    delete_importdetail?: Maybe<Importdetail_Mutation_Response>;
+    /** delete single row from the table: "importdetail" */
+    delete_importdetail_by_pk?: Maybe<Importdetail>;
     /** delete data from the table: "orderdetail" */
     delete_orderdetail?: Maybe<Orderdetail_Mutation_Response>;
     /** delete single row from the table: "orderdetail" */
@@ -1167,6 +2202,14 @@ export type Mutation_Root = {
     insert_customer?: Maybe<Customer_Mutation_Response>;
     /** insert a single row into the table: "customer" */
     insert_customer_one?: Maybe<Customer>;
+    /** insert data into the table: "import" */
+    insert_import?: Maybe<Import_Mutation_Response>;
+    /** insert a single row into the table: "import" */
+    insert_import_one?: Maybe<Import>;
+    /** insert data into the table: "importdetail" */
+    insert_importdetail?: Maybe<Importdetail_Mutation_Response>;
+    /** insert a single row into the table: "importdetail" */
+    insert_importdetail_one?: Maybe<Importdetail>;
     /** insert data into the table: "orderdetail" */
     insert_orderdetail?: Maybe<Orderdetail_Mutation_Response>;
     /** insert a single row into the table: "orderdetail" */
@@ -1187,34 +2230,62 @@ export type Mutation_Root = {
     update_Order?: Maybe<Order_Mutation_Response>;
     /** update single row of the table: "Order" */
     update_Order_by_pk?: Maybe<Order>;
+    /** update multiples rows of table: "Order" */
+    update_Order_many?: Maybe<Array<Maybe<Order_Mutation_Response>>>;
     /** update data of the table: "account" */
     update_account?: Maybe<Account_Mutation_Response>;
     /** update single row of the table: "account" */
     update_account_by_pk?: Maybe<Account>;
+    /** update multiples rows of table: "account" */
+    update_account_many?: Maybe<Array<Maybe<Account_Mutation_Response>>>;
     /** update data of the table: "category" */
     update_category?: Maybe<Category_Mutation_Response>;
     /** update single row of the table: "category" */
     update_category_by_pk?: Maybe<Category>;
+    /** update multiples rows of table: "category" */
+    update_category_many?: Maybe<Array<Maybe<Category_Mutation_Response>>>;
     /** update data of the table: "customer" */
     update_customer?: Maybe<Customer_Mutation_Response>;
     /** update single row of the table: "customer" */
     update_customer_by_pk?: Maybe<Customer>;
+    /** update multiples rows of table: "customer" */
+    update_customer_many?: Maybe<Array<Maybe<Customer_Mutation_Response>>>;
+    /** update data of the table: "import" */
+    update_import?: Maybe<Import_Mutation_Response>;
+    /** update single row of the table: "import" */
+    update_import_by_pk?: Maybe<Import>;
+    /** update multiples rows of table: "import" */
+    update_import_many?: Maybe<Array<Maybe<Import_Mutation_Response>>>;
+    /** update data of the table: "importdetail" */
+    update_importdetail?: Maybe<Importdetail_Mutation_Response>;
+    /** update single row of the table: "importdetail" */
+    update_importdetail_by_pk?: Maybe<Importdetail>;
+    /** update multiples rows of table: "importdetail" */
+    update_importdetail_many?: Maybe<Array<Maybe<Importdetail_Mutation_Response>>>;
     /** update data of the table: "orderdetail" */
     update_orderdetail?: Maybe<Orderdetail_Mutation_Response>;
     /** update single row of the table: "orderdetail" */
     update_orderdetail_by_pk?: Maybe<Orderdetail>;
+    /** update multiples rows of table: "orderdetail" */
+    update_orderdetail_many?: Maybe<Array<Maybe<Orderdetail_Mutation_Response>>>;
     /** update data of the table: "product" */
     update_product?: Maybe<Product_Mutation_Response>;
     /** update single row of the table: "product" */
     update_product_by_pk?: Maybe<Product>;
+    /** update multiples rows of table: "product" */
+    update_product_many?: Maybe<Array<Maybe<Product_Mutation_Response>>>;
     /** update data of the table: "supplier" */
     update_supplier?: Maybe<Supplier_Mutation_Response>;
     /** update single row of the table: "supplier" */
     update_supplier_by_pk?: Maybe<Supplier>;
+    /** update multiples rows of table: "supplier" */
+    update_supplier_many?: Maybe<Array<Maybe<Supplier_Mutation_Response>>>;
     /** update data of the table: "unit" */
     update_unit?: Maybe<Unit_Mutation_Response>;
     /** update single row of the table: "unit" */
     update_unit_by_pk?: Maybe<Unit>;
+    /** update multiples rows of table: "unit" */
+    update_unit_many?: Maybe<Array<Maybe<Unit_Mutation_Response>>>;
 };
 
 /** mutation root */
@@ -1254,6 +2325,26 @@ export type Mutation_RootDelete_CustomerArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Customer_By_PkArgs = {
+    id: Scalars["Int"];
+};
+
+/** mutation root */
+export type Mutation_RootDelete_ImportArgs = {
+    where: Import_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Import_By_PkArgs = {
+    id: Scalars["Int"];
+};
+
+/** mutation root */
+export type Mutation_RootDelete_ImportdetailArgs = {
+    where: Importdetail_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Importdetail_By_PkArgs = {
     id: Scalars["Int"];
 };
 
@@ -1346,6 +2437,30 @@ export type Mutation_RootInsert_Customer_OneArgs = {
 };
 
 /** mutation root */
+export type Mutation_RootInsert_ImportArgs = {
+    objects: Array<Import_Insert_Input>;
+    on_conflict?: InputMaybe<Import_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Import_OneArgs = {
+    object: Import_Insert_Input;
+    on_conflict?: InputMaybe<Import_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_ImportdetailArgs = {
+    objects: Array<Importdetail_Insert_Input>;
+    on_conflict?: InputMaybe<Importdetail_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Importdetail_OneArgs = {
+    object: Importdetail_Insert_Input;
+    on_conflict?: InputMaybe<Importdetail_On_Conflict>;
+};
+
+/** mutation root */
 export type Mutation_RootInsert_OrderdetailArgs = {
     objects: Array<Orderdetail_Insert_Input>;
     on_conflict?: InputMaybe<Orderdetail_On_Conflict>;
@@ -1408,6 +2523,11 @@ export type Mutation_RootUpdate_Order_By_PkArgs = {
 };
 
 /** mutation root */
+export type Mutation_RootUpdate_Order_ManyArgs = {
+    updates: Array<Order_Updates>;
+};
+
+/** mutation root */
 export type Mutation_RootUpdate_AccountArgs = {
     _inc?: InputMaybe<Account_Inc_Input>;
     _set?: InputMaybe<Account_Set_Input>;
@@ -1419,6 +2539,11 @@ export type Mutation_RootUpdate_Account_By_PkArgs = {
     _inc?: InputMaybe<Account_Inc_Input>;
     _set?: InputMaybe<Account_Set_Input>;
     pk_columns: Account_Pk_Columns_Input;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Account_ManyArgs = {
+    updates: Array<Account_Updates>;
 };
 
 /** mutation root */
@@ -1436,6 +2561,11 @@ export type Mutation_RootUpdate_Category_By_PkArgs = {
 };
 
 /** mutation root */
+export type Mutation_RootUpdate_Category_ManyArgs = {
+    updates: Array<Category_Updates>;
+};
+
+/** mutation root */
 export type Mutation_RootUpdate_CustomerArgs = {
     _inc?: InputMaybe<Customer_Inc_Input>;
     _set?: InputMaybe<Customer_Set_Input>;
@@ -1447,6 +2577,49 @@ export type Mutation_RootUpdate_Customer_By_PkArgs = {
     _inc?: InputMaybe<Customer_Inc_Input>;
     _set?: InputMaybe<Customer_Set_Input>;
     pk_columns: Customer_Pk_Columns_Input;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Customer_ManyArgs = {
+    updates: Array<Customer_Updates>;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_ImportArgs = {
+    _inc?: InputMaybe<Import_Inc_Input>;
+    _set?: InputMaybe<Import_Set_Input>;
+    where: Import_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Import_By_PkArgs = {
+    _inc?: InputMaybe<Import_Inc_Input>;
+    _set?: InputMaybe<Import_Set_Input>;
+    pk_columns: Import_Pk_Columns_Input;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Import_ManyArgs = {
+    updates: Array<Import_Updates>;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_ImportdetailArgs = {
+    _inc?: InputMaybe<Importdetail_Inc_Input>;
+    _set?: InputMaybe<Importdetail_Set_Input>;
+    where: Importdetail_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Importdetail_By_PkArgs = {
+    _inc?: InputMaybe<Importdetail_Inc_Input>;
+    _set?: InputMaybe<Importdetail_Set_Input>;
+    pk_columns: Importdetail_Pk_Columns_Input;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Importdetail_ManyArgs = {
+    updates: Array<Importdetail_Updates>;
 };
 
 /** mutation root */
@@ -1464,6 +2637,11 @@ export type Mutation_RootUpdate_Orderdetail_By_PkArgs = {
 };
 
 /** mutation root */
+export type Mutation_RootUpdate_Orderdetail_ManyArgs = {
+    updates: Array<Orderdetail_Updates>;
+};
+
+/** mutation root */
 export type Mutation_RootUpdate_ProductArgs = {
     _inc?: InputMaybe<Product_Inc_Input>;
     _set?: InputMaybe<Product_Set_Input>;
@@ -1475,6 +2653,11 @@ export type Mutation_RootUpdate_Product_By_PkArgs = {
     _inc?: InputMaybe<Product_Inc_Input>;
     _set?: InputMaybe<Product_Set_Input>;
     pk_columns: Product_Pk_Columns_Input;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Product_ManyArgs = {
+    updates: Array<Product_Updates>;
 };
 
 /** mutation root */
@@ -1492,6 +2675,11 @@ export type Mutation_RootUpdate_Supplier_By_PkArgs = {
 };
 
 /** mutation root */
+export type Mutation_RootUpdate_Supplier_ManyArgs = {
+    updates: Array<Supplier_Updates>;
+};
+
+/** mutation root */
 export type Mutation_RootUpdate_UnitArgs = {
     _inc?: InputMaybe<Unit_Inc_Input>;
     _set?: InputMaybe<Unit_Set_Input>;
@@ -1503,6 +2691,11 @@ export type Mutation_RootUpdate_Unit_By_PkArgs = {
     _inc?: InputMaybe<Unit_Inc_Input>;
     _set?: InputMaybe<Unit_Set_Input>;
     pk_columns: Unit_Pk_Columns_Input;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Unit_ManyArgs = {
+    updates: Array<Unit_Updates>;
 };
 
 /** column ordering options */
@@ -1544,6 +2737,17 @@ export type Orderdetail_Aggregate = {
     __typename?: "orderdetail_aggregate";
     aggregate?: Maybe<Orderdetail_Aggregate_Fields>;
     nodes: Array<Orderdetail>;
+};
+
+export type Orderdetail_Aggregate_Bool_Exp = {
+    count?: InputMaybe<Orderdetail_Aggregate_Bool_Exp_Count>;
+};
+
+export type Orderdetail_Aggregate_Bool_Exp_Count = {
+    arguments?: InputMaybe<Array<Orderdetail_Select_Column>>;
+    distinct?: InputMaybe<Scalars["Boolean"]>;
+    filter?: InputMaybe<Orderdetail_Bool_Exp>;
+    predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "orderdetail" */
@@ -1632,7 +2836,7 @@ export type Orderdetail_Bool_Exp = {
 
 /** unique or primary key constraints on table "orderdetail" */
 export enum Orderdetail_Constraint {
-    /** unique or primary key constraint */
+    /** unique or primary key constraint on columns "id" */
     OrderdetailPkey = "orderdetail_pkey",
 }
 
@@ -1840,6 +3044,25 @@ export type Orderdetail_Stddev_Samp_Order_By = {
     unitid?: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "orderdetail" */
+export type Orderdetail_Stream_Cursor_Input = {
+    /** Stream column input with initial value */
+    initial_value: Orderdetail_Stream_Cursor_Value_Input;
+    /** cursor ordering */
+    ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Orderdetail_Stream_Cursor_Value_Input = {
+    id?: InputMaybe<Scalars["Int"]>;
+    orderid?: InputMaybe<Scalars["Int"]>;
+    price?: InputMaybe<Scalars["Int"]>;
+    productid?: InputMaybe<Scalars["Int"]>;
+    quantity?: InputMaybe<Scalars["Int"]>;
+    total?: InputMaybe<Scalars["Int"]>;
+    unitid?: InputMaybe<Scalars["Int"]>;
+};
+
 /** aggregate sum on columns */
 export type Orderdetail_Sum_Fields = {
     __typename?: "orderdetail_sum_fields";
@@ -1880,6 +3103,15 @@ export enum Orderdetail_Update_Column {
     /** column name */
     Unitid = "unitid",
 }
+
+export type Orderdetail_Updates = {
+    /** increments the numeric columns with given value of the filtered values */
+    _inc?: InputMaybe<Orderdetail_Inc_Input>;
+    /** sets the columns of the filtered rows to the given values */
+    _set?: InputMaybe<Orderdetail_Set_Input>;
+    /** filter the rows which have to be updated */
+    where: Orderdetail_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Orderdetail_Var_Pop_Fields = {
@@ -1958,6 +3190,10 @@ export type Product = {
     categoryid?: Maybe<Scalars["Int"]>;
     code: Scalars["String"];
     id: Scalars["Int"];
+    /** An array relationship */
+    importdetails: Array<Importdetail>;
+    /** An aggregate relationship */
+    importdetails_aggregate: Importdetail_Aggregate;
     name: Scalars["String"];
     /** An array relationship */
     orderdetails: Array<Orderdetail>;
@@ -1969,6 +3205,24 @@ export type Product = {
     units: Array<Unit>;
     /** An aggregate relationship */
     units_aggregate: Unit_Aggregate;
+};
+
+/** columns and relationships of "product" */
+export type ProductImportdetailsArgs = {
+    distinct_on?: InputMaybe<Array<Importdetail_Select_Column>>;
+    limit?: InputMaybe<Scalars["Int"]>;
+    offset?: InputMaybe<Scalars["Int"]>;
+    order_by?: InputMaybe<Array<Importdetail_Order_By>>;
+    where?: InputMaybe<Importdetail_Bool_Exp>;
+};
+
+/** columns and relationships of "product" */
+export type ProductImportdetails_AggregateArgs = {
+    distinct_on?: InputMaybe<Array<Importdetail_Select_Column>>;
+    limit?: InputMaybe<Scalars["Int"]>;
+    offset?: InputMaybe<Scalars["Int"]>;
+    order_by?: InputMaybe<Array<Importdetail_Order_By>>;
+    where?: InputMaybe<Importdetail_Bool_Exp>;
 };
 
 /** columns and relationships of "product" */
@@ -2012,6 +3266,17 @@ export type Product_Aggregate = {
     __typename?: "product_aggregate";
     aggregate?: Maybe<Product_Aggregate_Fields>;
     nodes: Array<Product>;
+};
+
+export type Product_Aggregate_Bool_Exp = {
+    count?: InputMaybe<Product_Aggregate_Bool_Exp_Count>;
+};
+
+export type Product_Aggregate_Bool_Exp_Count = {
+    arguments?: InputMaybe<Array<Product_Select_Column>>;
+    distinct?: InputMaybe<Scalars["Boolean"]>;
+    filter?: InputMaybe<Product_Bool_Exp>;
+    predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "product" */
@@ -2082,16 +3347,20 @@ export type Product_Bool_Exp = {
     categoryid?: InputMaybe<Int_Comparison_Exp>;
     code?: InputMaybe<String_Comparison_Exp>;
     id?: InputMaybe<Int_Comparison_Exp>;
+    importdetails?: InputMaybe<Importdetail_Bool_Exp>;
+    importdetails_aggregate?: InputMaybe<Importdetail_Aggregate_Bool_Exp>;
     name?: InputMaybe<String_Comparison_Exp>;
     orderdetails?: InputMaybe<Orderdetail_Bool_Exp>;
+    orderdetails_aggregate?: InputMaybe<Orderdetail_Aggregate_Bool_Exp>;
     origin?: InputMaybe<String_Comparison_Exp>;
     quantity?: InputMaybe<Int_Comparison_Exp>;
     units?: InputMaybe<Unit_Bool_Exp>;
+    units_aggregate?: InputMaybe<Unit_Aggregate_Bool_Exp>;
 };
 
 /** unique or primary key constraints on table "product" */
 export enum Product_Constraint {
-    /** unique or primary key constraint */
+    /** unique or primary key constraint on columns "id" */
     ProductPkey = "product_pkey",
 }
 
@@ -2108,6 +3377,7 @@ export type Product_Insert_Input = {
     categoryid?: InputMaybe<Scalars["Int"]>;
     code?: InputMaybe<Scalars["String"]>;
     id?: InputMaybe<Scalars["Int"]>;
+    importdetails?: InputMaybe<Importdetail_Arr_Rel_Insert_Input>;
     name?: InputMaybe<Scalars["String"]>;
     orderdetails?: InputMaybe<Orderdetail_Arr_Rel_Insert_Input>;
     origin?: InputMaybe<Scalars["String"]>;
@@ -2186,6 +3456,7 @@ export type Product_Order_By = {
     categoryid?: InputMaybe<Order_By>;
     code?: InputMaybe<Order_By>;
     id?: InputMaybe<Order_By>;
+    importdetails_aggregate?: InputMaybe<Importdetail_Aggregate_Order_By>;
     name?: InputMaybe<Order_By>;
     orderdetails_aggregate?: InputMaybe<Orderdetail_Aggregate_Order_By>;
     origin?: InputMaybe<Order_By>;
@@ -2269,6 +3540,24 @@ export type Product_Stddev_Samp_Order_By = {
     quantity?: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "product" */
+export type Product_Stream_Cursor_Input = {
+    /** Stream column input with initial value */
+    initial_value: Product_Stream_Cursor_Value_Input;
+    /** cursor ordering */
+    ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Product_Stream_Cursor_Value_Input = {
+    categoryid?: InputMaybe<Scalars["Int"]>;
+    code?: InputMaybe<Scalars["String"]>;
+    id?: InputMaybe<Scalars["Int"]>;
+    name?: InputMaybe<Scalars["String"]>;
+    origin?: InputMaybe<Scalars["String"]>;
+    quantity?: InputMaybe<Scalars["Int"]>;
+};
+
 /** aggregate sum on columns */
 export type Product_Sum_Fields = {
     __typename?: "product_sum_fields";
@@ -2299,6 +3588,15 @@ export enum Product_Update_Column {
     /** column name */
     Quantity = "quantity",
 }
+
+export type Product_Updates = {
+    /** increments the numeric columns with given value of the filtered values */
+    _inc?: InputMaybe<Product_Inc_Input>;
+    /** sets the columns of the filtered rows to the given values */
+    _set?: InputMaybe<Product_Set_Input>;
+    /** filter the rows which have to be updated */
+    where: Product_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Product_Var_Pop_Fields = {
@@ -2371,6 +3669,18 @@ export type Query_Root = {
     customer_aggregate: Customer_Aggregate;
     /** fetch data from the table: "customer" using primary key columns */
     customer_by_pk?: Maybe<Customer>;
+    /** fetch data from the table: "import" */
+    import: Array<Import>;
+    /** fetch aggregated fields from the table: "import" */
+    import_aggregate: Import_Aggregate;
+    /** fetch data from the table: "import" using primary key columns */
+    import_by_pk?: Maybe<Import>;
+    /** fetch data from the table: "importdetail" */
+    importdetail: Array<Importdetail>;
+    /** fetch aggregated fields from the table: "importdetail" */
+    importdetail_aggregate: Importdetail_Aggregate;
+    /** fetch data from the table: "importdetail" using primary key columns */
+    importdetail_by_pk?: Maybe<Importdetail>;
     /** fetch data from the table: "orderdetail" */
     orderdetail: Array<Orderdetail>;
     /** fetch aggregated fields from the table: "orderdetail" */
@@ -2477,6 +3787,46 @@ export type Query_RootCustomer_By_PkArgs = {
     id: Scalars["Int"];
 };
 
+export type Query_RootImportArgs = {
+    distinct_on?: InputMaybe<Array<Import_Select_Column>>;
+    limit?: InputMaybe<Scalars["Int"]>;
+    offset?: InputMaybe<Scalars["Int"]>;
+    order_by?: InputMaybe<Array<Import_Order_By>>;
+    where?: InputMaybe<Import_Bool_Exp>;
+};
+
+export type Query_RootImport_AggregateArgs = {
+    distinct_on?: InputMaybe<Array<Import_Select_Column>>;
+    limit?: InputMaybe<Scalars["Int"]>;
+    offset?: InputMaybe<Scalars["Int"]>;
+    order_by?: InputMaybe<Array<Import_Order_By>>;
+    where?: InputMaybe<Import_Bool_Exp>;
+};
+
+export type Query_RootImport_By_PkArgs = {
+    id: Scalars["Int"];
+};
+
+export type Query_RootImportdetailArgs = {
+    distinct_on?: InputMaybe<Array<Importdetail_Select_Column>>;
+    limit?: InputMaybe<Scalars["Int"]>;
+    offset?: InputMaybe<Scalars["Int"]>;
+    order_by?: InputMaybe<Array<Importdetail_Order_By>>;
+    where?: InputMaybe<Importdetail_Bool_Exp>;
+};
+
+export type Query_RootImportdetail_AggregateArgs = {
+    distinct_on?: InputMaybe<Array<Importdetail_Select_Column>>;
+    limit?: InputMaybe<Scalars["Int"]>;
+    offset?: InputMaybe<Scalars["Int"]>;
+    order_by?: InputMaybe<Array<Importdetail_Order_By>>;
+    where?: InputMaybe<Importdetail_Bool_Exp>;
+};
+
+export type Query_RootImportdetail_By_PkArgs = {
+    id: Scalars["Int"];
+};
+
 export type Query_RootOrderdetailArgs = {
     distinct_on?: InputMaybe<Array<Orderdetail_Select_Column>>;
     limit?: InputMaybe<Scalars["Int"]>;
@@ -2565,48 +3915,80 @@ export type Subscription_Root = {
     Order_aggregate: Order_Aggregate;
     /** fetch data from the table: "Order" using primary key columns */
     Order_by_pk?: Maybe<Order>;
+    /** fetch data from the table in a streaming manner: "Order" */
+    Order_stream: Array<Order>;
     /** fetch data from the table: "account" */
     account: Array<Account>;
     /** fetch aggregated fields from the table: "account" */
     account_aggregate: Account_Aggregate;
     /** fetch data from the table: "account" using primary key columns */
     account_by_pk?: Maybe<Account>;
+    /** fetch data from the table in a streaming manner: "account" */
+    account_stream: Array<Account>;
     /** fetch data from the table: "category" */
     category: Array<Category>;
     /** fetch aggregated fields from the table: "category" */
     category_aggregate: Category_Aggregate;
     /** fetch data from the table: "category" using primary key columns */
     category_by_pk?: Maybe<Category>;
+    /** fetch data from the table in a streaming manner: "category" */
+    category_stream: Array<Category>;
     /** fetch data from the table: "customer" */
     customer: Array<Customer>;
     /** fetch aggregated fields from the table: "customer" */
     customer_aggregate: Customer_Aggregate;
     /** fetch data from the table: "customer" using primary key columns */
     customer_by_pk?: Maybe<Customer>;
+    /** fetch data from the table in a streaming manner: "customer" */
+    customer_stream: Array<Customer>;
+    /** fetch data from the table: "import" */
+    import: Array<Import>;
+    /** fetch aggregated fields from the table: "import" */
+    import_aggregate: Import_Aggregate;
+    /** fetch data from the table: "import" using primary key columns */
+    import_by_pk?: Maybe<Import>;
+    /** fetch data from the table in a streaming manner: "import" */
+    import_stream: Array<Import>;
+    /** fetch data from the table: "importdetail" */
+    importdetail: Array<Importdetail>;
+    /** fetch aggregated fields from the table: "importdetail" */
+    importdetail_aggregate: Importdetail_Aggregate;
+    /** fetch data from the table: "importdetail" using primary key columns */
+    importdetail_by_pk?: Maybe<Importdetail>;
+    /** fetch data from the table in a streaming manner: "importdetail" */
+    importdetail_stream: Array<Importdetail>;
     /** fetch data from the table: "orderdetail" */
     orderdetail: Array<Orderdetail>;
     /** fetch aggregated fields from the table: "orderdetail" */
     orderdetail_aggregate: Orderdetail_Aggregate;
     /** fetch data from the table: "orderdetail" using primary key columns */
     orderdetail_by_pk?: Maybe<Orderdetail>;
+    /** fetch data from the table in a streaming manner: "orderdetail" */
+    orderdetail_stream: Array<Orderdetail>;
     /** fetch data from the table: "product" */
     product: Array<Product>;
     /** fetch aggregated fields from the table: "product" */
     product_aggregate: Product_Aggregate;
     /** fetch data from the table: "product" using primary key columns */
     product_by_pk?: Maybe<Product>;
+    /** fetch data from the table in a streaming manner: "product" */
+    product_stream: Array<Product>;
     /** fetch data from the table: "supplier" */
     supplier: Array<Supplier>;
     /** fetch aggregated fields from the table: "supplier" */
     supplier_aggregate: Supplier_Aggregate;
     /** fetch data from the table: "supplier" using primary key columns */
     supplier_by_pk?: Maybe<Supplier>;
+    /** fetch data from the table in a streaming manner: "supplier" */
+    supplier_stream: Array<Supplier>;
     /** fetch data from the table: "unit" */
     unit: Array<Unit>;
     /** fetch aggregated fields from the table: "unit" */
     unit_aggregate: Unit_Aggregate;
     /** fetch data from the table: "unit" using primary key columns */
     unit_by_pk?: Maybe<Unit>;
+    /** fetch data from the table in a streaming manner: "unit" */
+    unit_stream: Array<Unit>;
 };
 
 export type Subscription_RootOrderArgs = {
@@ -2629,6 +4011,12 @@ export type Subscription_RootOrder_By_PkArgs = {
     id: Scalars["Int"];
 };
 
+export type Subscription_RootOrder_StreamArgs = {
+    batch_size: Scalars["Int"];
+    cursor: Array<InputMaybe<Order_Stream_Cursor_Input>>;
+    where?: InputMaybe<Order_Bool_Exp>;
+};
+
 export type Subscription_RootAccountArgs = {
     distinct_on?: InputMaybe<Array<Account_Select_Column>>;
     limit?: InputMaybe<Scalars["Int"]>;
@@ -2647,6 +4035,12 @@ export type Subscription_RootAccount_AggregateArgs = {
 
 export type Subscription_RootAccount_By_PkArgs = {
     id: Scalars["Int"];
+};
+
+export type Subscription_RootAccount_StreamArgs = {
+    batch_size: Scalars["Int"];
+    cursor: Array<InputMaybe<Account_Stream_Cursor_Input>>;
+    where?: InputMaybe<Account_Bool_Exp>;
 };
 
 export type Subscription_RootCategoryArgs = {
@@ -2669,6 +4063,12 @@ export type Subscription_RootCategory_By_PkArgs = {
     id: Scalars["Int"];
 };
 
+export type Subscription_RootCategory_StreamArgs = {
+    batch_size: Scalars["Int"];
+    cursor: Array<InputMaybe<Category_Stream_Cursor_Input>>;
+    where?: InputMaybe<Category_Bool_Exp>;
+};
+
 export type Subscription_RootCustomerArgs = {
     distinct_on?: InputMaybe<Array<Customer_Select_Column>>;
     limit?: InputMaybe<Scalars["Int"]>;
@@ -2687,6 +4087,64 @@ export type Subscription_RootCustomer_AggregateArgs = {
 
 export type Subscription_RootCustomer_By_PkArgs = {
     id: Scalars["Int"];
+};
+
+export type Subscription_RootCustomer_StreamArgs = {
+    batch_size: Scalars["Int"];
+    cursor: Array<InputMaybe<Customer_Stream_Cursor_Input>>;
+    where?: InputMaybe<Customer_Bool_Exp>;
+};
+
+export type Subscription_RootImportArgs = {
+    distinct_on?: InputMaybe<Array<Import_Select_Column>>;
+    limit?: InputMaybe<Scalars["Int"]>;
+    offset?: InputMaybe<Scalars["Int"]>;
+    order_by?: InputMaybe<Array<Import_Order_By>>;
+    where?: InputMaybe<Import_Bool_Exp>;
+};
+
+export type Subscription_RootImport_AggregateArgs = {
+    distinct_on?: InputMaybe<Array<Import_Select_Column>>;
+    limit?: InputMaybe<Scalars["Int"]>;
+    offset?: InputMaybe<Scalars["Int"]>;
+    order_by?: InputMaybe<Array<Import_Order_By>>;
+    where?: InputMaybe<Import_Bool_Exp>;
+};
+
+export type Subscription_RootImport_By_PkArgs = {
+    id: Scalars["Int"];
+};
+
+export type Subscription_RootImport_StreamArgs = {
+    batch_size: Scalars["Int"];
+    cursor: Array<InputMaybe<Import_Stream_Cursor_Input>>;
+    where?: InputMaybe<Import_Bool_Exp>;
+};
+
+export type Subscription_RootImportdetailArgs = {
+    distinct_on?: InputMaybe<Array<Importdetail_Select_Column>>;
+    limit?: InputMaybe<Scalars["Int"]>;
+    offset?: InputMaybe<Scalars["Int"]>;
+    order_by?: InputMaybe<Array<Importdetail_Order_By>>;
+    where?: InputMaybe<Importdetail_Bool_Exp>;
+};
+
+export type Subscription_RootImportdetail_AggregateArgs = {
+    distinct_on?: InputMaybe<Array<Importdetail_Select_Column>>;
+    limit?: InputMaybe<Scalars["Int"]>;
+    offset?: InputMaybe<Scalars["Int"]>;
+    order_by?: InputMaybe<Array<Importdetail_Order_By>>;
+    where?: InputMaybe<Importdetail_Bool_Exp>;
+};
+
+export type Subscription_RootImportdetail_By_PkArgs = {
+    id: Scalars["Int"];
+};
+
+export type Subscription_RootImportdetail_StreamArgs = {
+    batch_size: Scalars["Int"];
+    cursor: Array<InputMaybe<Importdetail_Stream_Cursor_Input>>;
+    where?: InputMaybe<Importdetail_Bool_Exp>;
 };
 
 export type Subscription_RootOrderdetailArgs = {
@@ -2709,6 +4167,12 @@ export type Subscription_RootOrderdetail_By_PkArgs = {
     id: Scalars["Int"];
 };
 
+export type Subscription_RootOrderdetail_StreamArgs = {
+    batch_size: Scalars["Int"];
+    cursor: Array<InputMaybe<Orderdetail_Stream_Cursor_Input>>;
+    where?: InputMaybe<Orderdetail_Bool_Exp>;
+};
+
 export type Subscription_RootProductArgs = {
     distinct_on?: InputMaybe<Array<Product_Select_Column>>;
     limit?: InputMaybe<Scalars["Int"]>;
@@ -2727,6 +4191,12 @@ export type Subscription_RootProduct_AggregateArgs = {
 
 export type Subscription_RootProduct_By_PkArgs = {
     id: Scalars["Int"];
+};
+
+export type Subscription_RootProduct_StreamArgs = {
+    batch_size: Scalars["Int"];
+    cursor: Array<InputMaybe<Product_Stream_Cursor_Input>>;
+    where?: InputMaybe<Product_Bool_Exp>;
 };
 
 export type Subscription_RootSupplierArgs = {
@@ -2749,6 +4219,12 @@ export type Subscription_RootSupplier_By_PkArgs = {
     id: Scalars["Int"];
 };
 
+export type Subscription_RootSupplier_StreamArgs = {
+    batch_size: Scalars["Int"];
+    cursor: Array<InputMaybe<Supplier_Stream_Cursor_Input>>;
+    where?: InputMaybe<Supplier_Bool_Exp>;
+};
+
 export type Subscription_RootUnitArgs = {
     distinct_on?: InputMaybe<Array<Unit_Select_Column>>;
     limit?: InputMaybe<Scalars["Int"]>;
@@ -2769,12 +4245,40 @@ export type Subscription_RootUnit_By_PkArgs = {
     id: Scalars["Int"];
 };
 
+export type Subscription_RootUnit_StreamArgs = {
+    batch_size: Scalars["Int"];
+    cursor: Array<InputMaybe<Unit_Stream_Cursor_Input>>;
+    where?: InputMaybe<Unit_Bool_Exp>;
+};
+
 /** columns and relationships of "supplier" */
 export type Supplier = {
     __typename?: "supplier";
     id: Scalars["Int"];
+    /** An array relationship */
+    imports: Array<Import>;
+    /** An aggregate relationship */
+    imports_aggregate: Import_Aggregate;
     name: Scalars["String"];
     phone: Scalars["String"];
+};
+
+/** columns and relationships of "supplier" */
+export type SupplierImportsArgs = {
+    distinct_on?: InputMaybe<Array<Import_Select_Column>>;
+    limit?: InputMaybe<Scalars["Int"]>;
+    offset?: InputMaybe<Scalars["Int"]>;
+    order_by?: InputMaybe<Array<Import_Order_By>>;
+    where?: InputMaybe<Import_Bool_Exp>;
+};
+
+/** columns and relationships of "supplier" */
+export type SupplierImports_AggregateArgs = {
+    distinct_on?: InputMaybe<Array<Import_Select_Column>>;
+    limit?: InputMaybe<Scalars["Int"]>;
+    offset?: InputMaybe<Scalars["Int"]>;
+    order_by?: InputMaybe<Array<Import_Order_By>>;
+    where?: InputMaybe<Import_Bool_Exp>;
 };
 
 /** aggregated selection of "supplier" */
@@ -2818,13 +4322,15 @@ export type Supplier_Bool_Exp = {
     _not?: InputMaybe<Supplier_Bool_Exp>;
     _or?: InputMaybe<Array<Supplier_Bool_Exp>>;
     id?: InputMaybe<Int_Comparison_Exp>;
+    imports?: InputMaybe<Import_Bool_Exp>;
+    imports_aggregate?: InputMaybe<Import_Aggregate_Bool_Exp>;
     name?: InputMaybe<String_Comparison_Exp>;
     phone?: InputMaybe<String_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "supplier" */
 export enum Supplier_Constraint {
-    /** unique or primary key constraint */
+    /** unique or primary key constraint on columns "id" */
     SupplierPkey = "supplier_pkey",
 }
 
@@ -2836,6 +4342,7 @@ export type Supplier_Inc_Input = {
 /** input type for inserting data into table "supplier" */
 export type Supplier_Insert_Input = {
     id?: InputMaybe<Scalars["Int"]>;
+    imports?: InputMaybe<Import_Arr_Rel_Insert_Input>;
     name?: InputMaybe<Scalars["String"]>;
     phone?: InputMaybe<Scalars["String"]>;
 };
@@ -2865,6 +4372,13 @@ export type Supplier_Mutation_Response = {
     returning: Array<Supplier>;
 };
 
+/** input type for inserting object relation for remote table "supplier" */
+export type Supplier_Obj_Rel_Insert_Input = {
+    data: Supplier_Insert_Input;
+    /** upsert condition */
+    on_conflict?: InputMaybe<Supplier_On_Conflict>;
+};
+
 /** on_conflict condition type for table "supplier" */
 export type Supplier_On_Conflict = {
     constraint: Supplier_Constraint;
@@ -2875,6 +4389,7 @@ export type Supplier_On_Conflict = {
 /** Ordering options when selecting data from "supplier". */
 export type Supplier_Order_By = {
     id?: InputMaybe<Order_By>;
+    imports_aggregate?: InputMaybe<Import_Aggregate_Order_By>;
     name?: InputMaybe<Order_By>;
     phone?: InputMaybe<Order_By>;
 };
@@ -2919,6 +4434,21 @@ export type Supplier_Stddev_Samp_Fields = {
     id?: Maybe<Scalars["Float"]>;
 };
 
+/** Streaming cursor of the table "supplier" */
+export type Supplier_Stream_Cursor_Input = {
+    /** Stream column input with initial value */
+    initial_value: Supplier_Stream_Cursor_Value_Input;
+    /** cursor ordering */
+    ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Supplier_Stream_Cursor_Value_Input = {
+    id?: InputMaybe<Scalars["Int"]>;
+    name?: InputMaybe<Scalars["String"]>;
+    phone?: InputMaybe<Scalars["String"]>;
+};
+
 /** aggregate sum on columns */
 export type Supplier_Sum_Fields = {
     __typename?: "supplier_sum_fields";
@@ -2934,6 +4464,15 @@ export enum Supplier_Update_Column {
     /** column name */
     Phone = "phone",
 }
+
+export type Supplier_Updates = {
+    /** increments the numeric columns with given value of the filtered values */
+    _inc?: InputMaybe<Supplier_Inc_Input>;
+    /** sets the columns of the filtered rows to the given values */
+    _set?: InputMaybe<Supplier_Set_Input>;
+    /** filter the rows which have to be updated */
+    where: Supplier_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Supplier_Var_Pop_Fields = {
@@ -3007,6 +4546,17 @@ export type Unit_Aggregate = {
     nodes: Array<Unit>;
 };
 
+export type Unit_Aggregate_Bool_Exp = {
+    count?: InputMaybe<Unit_Aggregate_Bool_Exp_Count>;
+};
+
+export type Unit_Aggregate_Bool_Exp_Count = {
+    arguments?: InputMaybe<Array<Unit_Select_Column>>;
+    distinct?: InputMaybe<Scalars["Boolean"]>;
+    filter?: InputMaybe<Unit_Bool_Exp>;
+    predicate: Int_Comparison_Exp;
+};
+
 /** aggregate fields of "unit" */
 export type Unit_Aggregate_Fields = {
     __typename?: "unit_aggregate_fields";
@@ -3076,6 +4626,7 @@ export type Unit_Bool_Exp = {
     id?: InputMaybe<Int_Comparison_Exp>;
     name?: InputMaybe<String_Comparison_Exp>;
     orderdetails?: InputMaybe<Orderdetail_Bool_Exp>;
+    orderdetails_aggregate?: InputMaybe<Orderdetail_Aggregate_Bool_Exp>;
     price?: InputMaybe<Int_Comparison_Exp>;
     product?: InputMaybe<Product_Bool_Exp>;
     productid?: InputMaybe<Int_Comparison_Exp>;
@@ -3084,7 +4635,7 @@ export type Unit_Bool_Exp = {
 
 /** unique or primary key constraints on table "unit" */
 export enum Unit_Constraint {
-    /** unique or primary key constraint */
+    /** unique or primary key constraint on columns "id" */
     UnitPkey = "unit_pkey",
 }
 
@@ -3258,6 +4809,23 @@ export type Unit_Stddev_Samp_Order_By = {
     ratio?: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "unit" */
+export type Unit_Stream_Cursor_Input = {
+    /** Stream column input with initial value */
+    initial_value: Unit_Stream_Cursor_Value_Input;
+    /** cursor ordering */
+    ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Unit_Stream_Cursor_Value_Input = {
+    id?: InputMaybe<Scalars["Int"]>;
+    name?: InputMaybe<Scalars["String"]>;
+    price?: InputMaybe<Scalars["Int"]>;
+    productid?: InputMaybe<Scalars["Int"]>;
+    ratio?: InputMaybe<Scalars["Int"]>;
+};
+
 /** aggregate sum on columns */
 export type Unit_Sum_Fields = {
     __typename?: "unit_sum_fields";
@@ -3288,6 +4856,15 @@ export enum Unit_Update_Column {
     /** column name */
     Ratio = "ratio",
 }
+
+export type Unit_Updates = {
+    /** increments the numeric columns with given value of the filtered values */
+    _inc?: InputMaybe<Unit_Inc_Input>;
+    /** sets the columns of the filtered rows to the given values */
+    _set?: InputMaybe<Unit_Set_Input>;
+    /** filter the rows which have to be updated */
+    where: Unit_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Unit_Var_Pop_Fields = {
@@ -3390,6 +4967,42 @@ export type UpdateCustomerMutation = {
     update_customer_by_pk?: { __typename?: "customer"; id: number } | null;
 };
 
+export type CreateImportMutationVariables = Exact<{
+    object?: InputMaybe<Import_Insert_Input>;
+}>;
+
+export type CreateImportMutation = {
+    __typename?: "mutation_root";
+    insert_import_one?: { __typename?: "import"; id: number } | null;
+};
+
+export type GetImportDetailByImportQueryVariables = Exact<{
+    _eq?: InputMaybe<Scalars["Int"]>;
+}>;
+
+export type GetImportDetailByImportQuery = {
+    __typename?: "query_root";
+    importdetail: Array<{
+        __typename?: "importdetail";
+        id: number;
+        productid: number;
+        quantity?: number | null;
+        price?: number | null;
+        total?: number | null;
+        product: { __typename?: "product"; name: string };
+    }>;
+};
+
+export type UpdateImportMutationVariables = Exact<{
+    id?: InputMaybe<Scalars["Int"]>;
+    _set?: InputMaybe<Import_Set_Input>;
+}>;
+
+export type UpdateImportMutation = {
+    __typename?: "mutation_root";
+    update_import_by_pk?: { __typename?: "import"; id: number } | null;
+};
+
 export type CreateOrderMutationVariables = Exact<{
     object?: InputMaybe<Order_Insert_Input>;
 }>;
@@ -3444,6 +5057,19 @@ export type GetProductByPkQueryVariables = Exact<{
 export type GetProductByPkQuery = {
     __typename?: "query_root";
     product_by_pk?: { __typename?: "product"; id: number; quantity: number; name: string } | null;
+};
+
+export type UpdateManyProductMutationVariables = Exact<{
+    updates?: InputMaybe<Array<Product_Updates> | Product_Updates>;
+}>;
+
+export type UpdateManyProductMutation = {
+    __typename?: "mutation_root";
+    update_product_many?: Array<{
+        __typename?: "product_mutation_response";
+        affected_rows: number;
+        returning: Array<{ __typename?: "product"; id: number }>;
+    } | null> | null;
 };
 
 export type UpdateProductMutationVariables = Exact<{

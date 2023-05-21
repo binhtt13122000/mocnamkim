@@ -16,7 +16,7 @@ export const routes = [
     {
         id: 3,
         name: "Nhập hàng",
-        path: "/sell",
+        path: "/import",
         icon: artificial,
     },
     {

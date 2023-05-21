@@ -176,7 +176,6 @@ const ProductForm: React.FC<IForm<ProductMutationType>> = (props: IForm<ProductM
                         </ReactHookFormSelect>
                         <CustomizeAutocomplete
                             defaultId={!!defaultData.id ? defaultData.categoryid || 0 : undefined}
-                            conditionField=""
                             control={control}
                             rules={{
                                 min: {

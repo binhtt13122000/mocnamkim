@@ -38,7 +38,7 @@ export interface IColumn {
         | "time"
         | "boolean"
         | "enum";
-    render?: (data?: any, id?: number) => React.ReactElement;
+    render?: (data?: any, id?: number, dataRaw?: any) => React.ReactElement;
     renderLink?: (data?: any) => string;
     disableSort?: boolean;
     disableFilter?: boolean;

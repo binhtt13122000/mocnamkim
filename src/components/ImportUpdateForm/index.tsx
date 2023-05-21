@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Order } from "src/generated/graphql";
+import { Import } from "src/generated/graphql";
 import { IForm, getTimeFromStringDate } from "src/utils/common";
 
 import {
@@ -23,38 +23,38 @@ import TextfieldBase from "../BaseTextField";
 import CustomizeAutocomplete from "../CustomizedAutocomplete";
 import { CurrencyFormatInput } from "../NumberInput";
 
-import useGetOrderdetailByOrder from "src/hooks/order/useGetOrderDetailByOrder";
+import useGetImportdetailByImport from "src/hooks/import/useGetImportDetailByImport";
 
-export interface OrderMutationType {
-    id?: Order["id"];
-    customerid: Order["customerid"];
-    status: Order["status"];
-    total: Order["total"];
-    pay: Order["pay"];
-    backMoney: Order["backMoney"];
-    createTime: Order["createTime"];
-    paymentTime: Order["paymentTime"];
+export interface ImportMutationType {
+    id?: Import["id"];
+    supplierid: Import["supplierid"];
+    status: Import["status"];
+    total: Import["total"];
+    pay: Import["pay"];
+    backMoney: Import["backMoney"];
+    createTime: Import["createTime"];
+    paymentTime: Import["paymentTime"];
 }
 
-const OrderForm: React.FC<IForm<OrderMutationType>> = (props: IForm<OrderMutationType>) => {
+const ImportForm: React.FC<IForm<ImportMutationType>> = (props: IForm<ImportMutationType>) => {
     const { data: defaultData, isView } = props;
     const { register, handleSubmit, setValue, watch, getValues, control, clearErrors, unregister } =
-        useForm<OrderMutationType>({});
+        useForm<ImportMutationType>({});
 
     const watchMoney = watch("pay");
 
-    const { data: detailData } = useGetOrderdetailByOrder(defaultData.id || 0);
+    const { data: detailData } = useGetImportdetailByImport(defaultData.id || 0);
 
     useEffect(() => {
         if (!watchMoney) {
             setValue("backMoney", 0);
         } else {
-            setValue("backMoney", (watchMoney ? watchMoney : 0) - getValues("total"));
+            setValue("backMoney", (watchMoney ? watchMoney : 0) - (getValues("total") || 0));
         }
     }, [watchMoney, setValue, getValues]);
     useEffect(() => {
         setValue("id", defaultData.id);
-        setValue("customerid", defaultData.customerid);
+        setValue("supplierid", defaultData.supplierid);
         setValue("status", defaultData.status);
         setValue("total", defaultData.total);
         setValue("createTime", getTimeFromStringDate(defaultData.createTime));
@@ -63,7 +63,7 @@ const OrderForm: React.FC<IForm<OrderMutationType>> = (props: IForm<OrderMutatio
         setValue("pay", defaultData.pay);
     }, [defaultData, setValue]);
 
-    const submitHandler: SubmitHandler<OrderMutationType> = async (data: OrderMutationType) => {
+    const submitHandler: SubmitHandler<ImportMutationType> = async (data: ImportMutationType) => {
         try {
             if (data) {
                 props.handleClose("SAVE", data, () => {
@@ -84,9 +84,9 @@ const OrderForm: React.FC<IForm<OrderMutationType>> = (props: IForm<OrderMutatio
                     <Typography variant="h6" component="h2">
                         {defaultData.id
                             ? props.isView
-                                ? "Chi tiết đơn hàng"
-                                : "Chỉnh sửa và thanh toán đơn hàng"
-                            : "Tạo mới đơn hàng"}
+                                ? "Chi tiết đơn nhập"
+                                : "Chỉnh sửa và thanh toán đơn nhập"
+                            : "Tạo mới đơn nhập"}
                     </Typography>
                 </Box>
                 <Grid
@@ -121,7 +121,7 @@ const OrderForm: React.FC<IForm<OrderMutationType>> = (props: IForm<OrderMutatio
                         />
                         <TextfieldBase
                             id="createTime"
-                            label={"Thời gian tạo đơn hàng"}
+                            label={"Thời gian tạo đơn nhập"}
                             variant="outlined"
                             InputProps={{
                                 readOnly: true,
@@ -141,19 +141,19 @@ const OrderForm: React.FC<IForm<OrderMutationType>> = (props: IForm<OrderMutatio
                         }}
                     >
                         <CustomizeAutocomplete
-                            defaultId={!!defaultData.id ? defaultData.customerid || 0 : undefined}
+                            defaultId={!!defaultData.id ? defaultData.supplierid || 0 : undefined}
                             control={control}
                             rules={{
                                 min: {
                                     value: 1,
-                                    message: "Khách hàng là bắt buộc",
+                                    message: "Nhà cung cấp là bắt buộc",
                                 },
                             }}
                             readonly={isView}
-                            name="customerid"
-                            entity="customer"
+                            name="supplierid"
+                            entity="supplier"
                             displayField="name"
-                            label={"Khách hàng"}
+                            label={"Nhà cung cấp"}
                             fullWidth
                             required
                         />
@@ -177,12 +177,11 @@ const OrderForm: React.FC<IForm<OrderMutationType>> = (props: IForm<OrderMutatio
                                     <TableCell>Tên sản phẩm</TableCell>
                                     <TableCell>Giá</TableCell>
                                     <TableCell>Số lượng</TableCell>
-                                    <TableCell>Đơn vị</TableCell>
                                     <TableCell>Thành tiền</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {detailData?.orderdetail?.map((x, i) => {
+                                {detailData?.importdetail?.map((x, i: number) => {
                                     return (
                                         <TableRow key={x.id}>
                                             <TableCell>{i + 1}</TableCell>
@@ -194,7 +193,6 @@ const OrderForm: React.FC<IForm<OrderMutationType>> = (props: IForm<OrderMutatio
                                                 }).format(x.price || 0)}
                                             </TableCell>
                                             <TableCell>{x.quantity}</TableCell>
-                                            <TableCell>{x.unit?.name}</TableCell>
                                             <TableCell>
                                                 {new Intl.NumberFormat("vi-VN", {
                                                     style: "currency",
@@ -242,11 +240,11 @@ const OrderForm: React.FC<IForm<OrderMutationType>> = (props: IForm<OrderMutatio
                             control={control}
                             required
                             name="pay"
-                            label="Khách hàng thanh toán"
+                            label="Thanh toán"
                             rules={{
                                 required: {
                                     value: true,
-                                    message: "Khách hàng thanh toán là bắt buộc",
+                                    message: "Thanh toán là bắt buộc",
                                 },
                                 min: {
                                     value: 500,
@@ -314,4 +312,4 @@ const OrderForm: React.FC<IForm<OrderMutationType>> = (props: IForm<OrderMutatio
     );
 };
 
-export default React.memo(OrderForm);
+export default React.memo(ImportForm);

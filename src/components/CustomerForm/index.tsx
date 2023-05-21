@@ -114,15 +114,10 @@ const CustomerForm: React.FC<IForm<CustomerMutationType>> = (
                             InputProps={{
                                 readOnly: isView,
                             }}
-                            required
                             fullWidth
                             error={!!errors.phone}
                             helperText={errors.phone && errors.phone.message}
                             {...register("phone", {
-                                required: {
-                                    value: true,
-                                    message: "Số điện thoại là bắt buộc!",
-                                },
                                 onBlur: () =>
                                     setValue(
                                         "phone",

@@ -1,18 +1,18 @@
 import React, { useCallback, useState } from "react";
 
 import CellTableTypography from "src/components/CellTableTypography";
-import OrderForm, { OrderMutationType } from "src/components/OrderForm";
+import ImportForm, { ImportMutationType } from "src/components/ImportUpdateForm";
 import useSnackbar from "src/components/Snackbar/useSnackbar";
 import CRUDTable from "src/components/Table";
 import { IColumn } from "src/components/Table/models";
 
-import useUpdateOrder from "src/hooks/order/useUpdateOrder";
+import useUpdateImport from "src/hooks/import/useUpdateImport";
 
-const BillOut = () => {
-    const initData: OrderMutationType = {
+const BillIn = () => {
+    const initData: ImportMutationType = {
         id: 0,
         status: "",
-        customerid: 0,
+        supplierid: 0,
         total: 0,
         backMoney: 0,
         pay: 0,
@@ -20,11 +20,11 @@ const BillOut = () => {
         createTime: "",
     };
 
-    const { mutate: mutateUpdate } = useUpdateOrder("OrderQuery");
+    const { mutate: mutateUpdate } = useUpdateImport("ImportQuery");
     const showSnackbar = useSnackbar();
-    const [data, setData] = useState<OrderMutationType>(initData);
+    const [data, setData] = useState<ImportMutationType>(initData);
     const [isOpenForm, setIsOpenForm] = useState<boolean>(false);
-    const updateRowData = (rowData: OrderMutationType) => {
+    const updateRowData = (rowData: ImportMutationType) => {
         if (rowData?.status === "Đã thanh toán") {
             showSnackbar({
                 children: "Không thể chỉnh sửa",
@@ -32,10 +32,10 @@ const BillOut = () => {
             });
             return;
         }
-        const data: OrderMutationType = {
+        const data: ImportMutationType = {
             status: rowData.status,
             id: rowData.id,
-            customerid: rowData.customerid,
+            supplierid: rowData.supplierid,
             total: rowData.total,
             backMoney: rowData.backMoney,
             createTime: rowData.createTime,
@@ -72,15 +72,15 @@ const BillOut = () => {
             type: "string",
         },
         {
-            field: "customer",
-            title: "Khách hàng",
+            field: "supplier",
+            title: "Nhà cung cấp",
             index: 4,
             type: "object",
             subField: "name",
             subFieldType: "string",
         },
         {
-            field: "customerid",
+            field: "supplierid",
             title: "Khách hàng",
             index: 5,
             type: "number",
@@ -144,7 +144,7 @@ const BillOut = () => {
     ];
 
     const handleClose = useCallback(
-        (type: "SAVE" | "CANCEL", data?: OrderMutationType, clearErrors?: Function) => {
+        (type: "SAVE" | "CANCEL", data?: ImportMutationType, clearErrors?: Function) => {
             if (type === "SAVE") {
                 if (data) {
                     if (!data.id) {
@@ -154,7 +154,7 @@ const BillOut = () => {
                             {
                                 id: data.id,
                                 _set: {
-                                    customerid: data.customerid,
+                                    supplierid: data.supplierid,
                                     status:
                                         data.backMoney === 0 ||
                                         (data.backMoney && data.backMoney > 0)
@@ -194,11 +194,11 @@ const BillOut = () => {
         []
     );
 
-    const viewRowData = (rowData: OrderMutationType) => {
-        const data: OrderMutationType = {
+    const viewRowData = (rowData: ImportMutationType) => {
+        const data: ImportMutationType = {
             status: rowData.status,
             id: rowData.id,
-            customerid: rowData.customerid,
+            supplierid: rowData.supplierid,
             total: rowData.total,
             backMoney: rowData.backMoney,
             createTime: rowData.createTime,
@@ -217,29 +217,29 @@ const BillOut = () => {
 
     return (
         <>
-            <OrderForm
+            <ImportForm
                 opened={isOpenForm}
                 isView={isViewAction}
                 data={data}
                 handleClose={handleClose}
             />
             <CRUDTable
-                queryKey="OrderQuery"
+                queryKey="ImportQuery"
                 columns={columns}
-                title={"Quản lý hóa đơn bán hàng"}
-                entity="Order"
+                title={"Quản lý hóa đơn nhập hàng"}
+                entity="import"
                 firstOrderField="id"
                 sort
                 typeOrder="desc"
                 enableFilter
                 maxWidth="100%"
                 action={{
-                    onView: (rowData: OrderMutationType) => viewRowData(rowData),
-                    onEdit: (rowData: OrderMutationType) => updateRowData(rowData),
+                    onView: (rowData: ImportMutationType) => viewRowData(rowData),
+                    onEdit: (rowData: ImportMutationType) => updateRowData(rowData),
                 }}
             />
         </>
     );
 };
 
-export default BillOut;
+export default BillIn;

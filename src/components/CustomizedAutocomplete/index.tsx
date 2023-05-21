@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import React from "react";
 
 import { Control, Controller, Path, RegisterOptions } from "react-hook-form";
@@ -35,10 +35,10 @@ export interface ICustomizeAuto<
     extraWhereFilter?: string;
     rules?: Omit<RegisterOptions<T>, "valueAsNumber" | "valueAsDate" | "setValueAs" | "disabled">;
     defaultId?: number;
-    conditionField: string;
     required?: boolean;
     extra?: string;
     type?: "object" | "key";
+    needRerenderForDefault?: boolean;
 }
 
 const CustomizeAutocomplete = <T extends {}>(props: ICustomizeAuto<T>) => {
@@ -52,7 +52,6 @@ const CustomizeAutocomplete = <T extends {}>(props: ICustomizeAuto<T>) => {
         disabled,
         rules,
         defaultId,
-        onGetConditionState,
         required,
         type,
         extra,
@@ -60,7 +59,12 @@ const CustomizeAutocomplete = <T extends {}>(props: ICustomizeAuto<T>) => {
     } = props;
 
     const [search, setSearch] = useState("");
-    const { data, isLoading } = useGetListEntity(entity, displayField, search, extra || "");
+    const { data, isLoading, refetch } = useGetListEntity(
+        entity,
+        displayField,
+        search,
+        extra || ""
+    );
 
     const [autoCompleteKey, setAutoCompleteKey] = useState(
         defaultId !== undefined && !!defaultId ? defaultId : 0
@@ -70,44 +74,54 @@ const CustomizeAutocomplete = <T extends {}>(props: ICustomizeAuto<T>) => {
 
     const [autoCompleteCondition, setAutoCompleteCondition] = useState(false);
 
-    React.useEffect(() => {
+    const run = useCallback(async () => {
         if (defaultId) {
+            await refetch();
             setAutoCompleteKey(defaultId);
         }
-    }, [defaultId]);
+    }, [defaultId, refetch]);
 
     React.useEffect(() => {
-        const getData = (key: number): { key: number; value: string; conditionField: boolean } => {
-            const value: Array<{ key: number; value: string; conditionField: boolean }> = data
-                ? (data as any)[entity]
-                : [];
-            const index: number = value.findIndex((x) => x.key === key);
-            if (index != -1) {
-                return value[index];
-            }
-            return {
-                key: key,
-                value: "",
-                conditionField: false,
+        run();
+    }, [run]);
+
+    React.useEffect(() => {
+        if (autoCompleteKey) {
+            const getData = (
+                key: number
+            ): { key: number; value: string; conditionField: boolean } => {
+                const value: Array<{ key: number; value: string; conditionField: boolean }> = data
+                    ? (data as any)[entity]
+                    : [];
+                const index: number = value.findIndex((x) => x.key === key);
+                if (index != -1) {
+                    return value[index];
+                }
+                return {
+                    key: key,
+                    value: "",
+                    conditionField: false,
+                };
             };
-        };
-        if (data && (data as any)[entity].length > 0) {
-            setAutoCompleteValue(getData(autoCompleteKey).value);
-            setAutoCompleteCondition(getData(autoCompleteKey).conditionField);
+            if (data && (data as any)[entity].length > 0 && autoCompleteKey) {
+                setAutoCompleteValue(getData(autoCompleteKey).value);
+                setAutoCompleteCondition(getData(autoCompleteKey).conditionField);
+            }
         }
     }, [data, entity, autoCompleteKey]);
+
     return (
         <Controller
             control={control}
             name={name}
             rules={rules}
             render={({ field: { value: currentValue, ref, onChange }, fieldState: { error } }) => {
-                setAutoCompleteKey(currentValue);
                 return (
                     <Autocomplete<{ key: number; value: string; conditionField: boolean }>
                         {...rest}
                         id="select-customize"
                         options={data ? (data as any)[entity] : []}
+                        filterOptions={(options) => options.filter((x) => x.value)}
                         getOptionLabel={(option) => option.value}
                         value={
                             !currentValue
@@ -125,14 +139,14 @@ const CustomizeAutocomplete = <T extends {}>(props: ICustomizeAuto<T>) => {
                         loading={isLoading}
                         onChange={(e, newValue) => {
                             if (newValue) {
+                                setAutoCompleteKey(newValue.key);
                                 if (type === undefined || type === "key") {
                                     onChange(Number(newValue.key));
                                 } else if (type === "object") {
                                     onChange(newValue);
                                 }
-                                setAutoCompleteKey(newValue.key);
-                                setAutoCompleteValue(newValue.value);
-                                onGetConditionState && onGetConditionState(newValue.conditionField);
+                                // setAutoCompleteValue(newValue.value);
+                                // onGetConditionState && onGetConditionState(newValue.conditionField);
                             }
                         }}
                         onInputChange={(e, value, reason) => {

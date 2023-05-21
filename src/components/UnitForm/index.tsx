@@ -175,7 +175,6 @@ const UnitForm: React.FC<IForm<UnitMutationType>> = (props: IForm<UnitMutationTy
                     >
                         <CustomizeAutocomplete
                             defaultId={defaultData.productid || 0}
-                            conditionField=""
                             control={control}
                             rules={{
                                 min: {
