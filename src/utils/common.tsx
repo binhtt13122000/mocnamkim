@@ -6,6 +6,7 @@ export const getTimeFromStringDate = (dateText: string) => {
     }
     try {
         let dateConvert = new Date(dateText);
+        dateConvert.setHours(dateConvert.getHours() - 7);
         let timeText = format(dateConvert, "MM/dd/yyyy HH:mm:ss");
         return timeText;
     } catch (e) {

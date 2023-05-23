@@ -10,6 +10,7 @@ import {
     PopperProps,
     SxProps,
 } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers";
 import useSnackbar from "src/components/Snackbar/useSnackbar";
 
 import { IFilterTable, IColumn } from "../models";
@@ -158,29 +159,27 @@ export const FilterTable: React.FC<IFilterTable> = (props: IFilterTable) => {
                         </TableCell>
                     );
                 }
-                // if (column.type === "time") {
-                //     const key = column.field;
-                //     return (
-                //         <TableCell key={index} width={column.width || 205}>
-                //             <TimePicker
-                //                 value={
-                //                     props.filters[key].value === ""
-                //                         ? null
-                //                         : new Date(props.filters[key].value as string)
-                //                 }
-                //                 ampm={false}
-                //                 openTo="hours"
-                //                 views={["hours", "minutes", "seconds"]}
-                //                 format="HH:mm:ss"
-                //                 mask="__:__:__"
-                //                 onChange={(date) => props.onTimeHandleChange(date, key)}
-                //                 renderInput={(params) => (
-                //                     <TextField size="small" variant="standard" {...params} />
-                //                 )}
-                //             />
-                //         </TableCell>
-                //     );
-                // }
+                if (column.type === "timestamptz") {
+                    const key = column.field;
+                    return (
+                        <TableCell key={index} width={column.width || 205}>
+                            <DatePicker
+                                value={
+                                    props.filters[key].value === ""
+                                        ? null
+                                        : new Date(props.filters[key].value as string)
+                                }
+                                slotProps={{
+                                    textField: {
+                                        placeholder: "",
+                                        variant: "standard",
+                                    },
+                                }}
+                                onChange={(date) => props.onTimeHandleChange(date, key)}
+                            />
+                        </TableCell>
+                    );
+                }
                 // if (column.type === "date") {
                 //     const key = column.field;
                 //     return (

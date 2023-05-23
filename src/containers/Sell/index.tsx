@@ -740,15 +740,20 @@ const Sell = () => {
                                     root: (result as any)[key].root,
                                 };
                             });
+                            const today = new Date();
+                            today.setHours(today.getHours() + 7);
                             mutate(
                                 {
                                     object: {
-                                        createTime: new Date().toISOString(),
+                                        createTime: today.toISOString(),
                                         paymentTime: null,
                                         customerid: watchPhone,
-                                        backMoney: getValues("backMoney"),
-                                        pay: getValues("pay"),
-                                        status: "Chưa thanh toán",
+                                        status:
+                                            (getValues("backMoney") || 0) < 0
+                                                ? "NOT_PAID"
+                                                : "NOT_PAY",
+                                        backMoney: getValues("backMoney") || 0,
+                                        pay: getValues("pay") || 0,
                                         total:
                                             orderDetails
                                                 .map((x) => x.total)
@@ -824,15 +829,17 @@ const Sell = () => {
                                     root: (result as any)[key].root,
                                 };
                             });
+                            const today = new Date();
+                            today.setHours(today.getHours() + 7);
                             mutate(
                                 {
                                     object: {
-                                        createTime: new Date().toISOString(),
-                                        paymentTime: new Date().toISOString(),
+                                        createTime: today.toISOString(),
+                                        paymentTime: today.toISOString(),
                                         backMoney: getValues("backMoney"),
                                         pay: getValues("pay"),
                                         customerid: watchPhone,
-                                        status: "Đã thanh toán",
+                                        status: "PAID",
                                         total:
                                             orderDetails
                                                 .map((x) => x.total)

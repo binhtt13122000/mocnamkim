@@ -3,6 +3,8 @@ import React from "react";
 import { QueryCache, QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import Home from "src/components/Home";
 import GraphQLQueryClientContextProvider from "src/components/Table/context/QueryClientContext";
 
@@ -28,47 +30,49 @@ const App = () => {
 
     return (
         <React.Fragment>
-            <QueryClientProvider client={queryClient}>
-                <GraphQLQueryClientContextProvider>
-                    <BrowserRouter>
-                        <SnackbarProvider>
-                            <Routes>
-                                <Route element={<PublicRoutes />}>
-                                    <Route path="/" element={<Login />} />
-                                    <Route path="/login" element={<Login />} />
-                                </Route>
-                                <Route element={<PrivateRoutes />}>
-                                    <Route
-                                        path="/home"
-                                        element={
-                                            <Layout>
-                                                <Home />
-                                            </Layout>
-                                        }
-                                    />
-                                    <Route
-                                        element={
-                                            <Layout>
-                                                <Outlet />
-                                            </Layout>
-                                        }
-                                    >
-                                        <Route path="/import" element={<ImportForm />} />
-                                        <Route path="/sell" element={<Sell />} />
-                                        <Route path="/bill-out" element={<BillOut />} />
-                                        <Route path="/bill-in" element={<BillIn />} />
-                                        <Route path="/categories" element={<Category />} />
-                                        <Route path="/customers" element={<Customer />} />
-                                        <Route path="/suppliers" element={<Supplier />} />
-                                        <Route path="/products" element={<Product />} />
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <QueryClientProvider client={queryClient}>
+                    <GraphQLQueryClientContextProvider>
+                        <BrowserRouter>
+                            <SnackbarProvider>
+                                <Routes>
+                                    <Route element={<PublicRoutes />}>
+                                        <Route path="/" element={<Login />} />
+                                        <Route path="/login" element={<Login />} />
                                     </Route>
-                                    <Route path="/rooms/:id" element={<Layout></Layout>} />
-                                </Route>
-                            </Routes>
-                        </SnackbarProvider>
-                    </BrowserRouter>
-                </GraphQLQueryClientContextProvider>
-            </QueryClientProvider>
+                                    <Route element={<PrivateRoutes />}>
+                                        <Route
+                                            path="/home"
+                                            element={
+                                                <Layout>
+                                                    <Home />
+                                                </Layout>
+                                            }
+                                        />
+                                        <Route
+                                            element={
+                                                <Layout>
+                                                    <Outlet />
+                                                </Layout>
+                                            }
+                                        >
+                                            <Route path="/import" element={<ImportForm />} />
+                                            <Route path="/sell" element={<Sell />} />
+                                            <Route path="/bill-out" element={<BillOut />} />
+                                            <Route path="/bill-in" element={<BillIn />} />
+                                            <Route path="/categories" element={<Category />} />
+                                            <Route path="/customers" element={<Customer />} />
+                                            <Route path="/suppliers" element={<Supplier />} />
+                                            <Route path="/products" element={<Product />} />
+                                        </Route>
+                                        <Route path="/rooms/:id" element={<Layout></Layout>} />
+                                    </Route>
+                                </Routes>
+                            </SnackbarProvider>
+                        </BrowserRouter>
+                    </GraphQLQueryClientContextProvider>
+                </QueryClientProvider>
+            </LocalizationProvider>
         </React.Fragment>
     );
 };

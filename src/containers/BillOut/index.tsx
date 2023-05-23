@@ -62,14 +62,39 @@ const BillOut = () => {
             field: "createTime",
             title: "Thời gian mua",
             index: 2,
-            disableFilter: true,
-            type: "timestamp",
+            type: "timestamptz",
         },
         {
             field: "status",
             title: "Trạng thái",
             index: 3,
-            type: "string",
+            type: "enum",
+            enumValue: [
+                {
+                    value: "Chưa thanh toán",
+                    key: "NOT_PAY",
+                },
+                {
+                    value: "Đã thanh toán",
+                    key: "PAID",
+                },
+                {
+                    value: "Đang thanh toán",
+                    key: "NOT_PAID",
+                },
+            ],
+            render: (x) => {
+                switch (x) {
+                    case "NOT_PAY":
+                        return <CellTableTypography>Chưa thanh toán</CellTableTypography>;
+                    case "PAID":
+                        return <CellTableTypography>Đã thanh toán</CellTableTypography>;
+                    case "NOT_PAID":
+                        return <CellTableTypography>Đang thanh toán</CellTableTypography>;
+                    default:
+                        return <CellTableTypography></CellTableTypography>;
+                }
+            },
         },
         {
             field: "customer",
@@ -139,7 +164,7 @@ const BillOut = () => {
             title: "Thời gian thanh toan",
             index: 9,
             disable: true,
-            type: "timestamp",
+            type: "timestamptz",
         },
     ];
 
@@ -150,6 +175,8 @@ const BillOut = () => {
                     if (!data.id) {
                         data.id = undefined;
                     } else {
+                        const today = new Date();
+                        today.setHours(today.getHours() + 7);
                         mutateUpdate(
                             {
                                 id: data.id,
@@ -158,12 +185,12 @@ const BillOut = () => {
                                     status:
                                         data.backMoney === 0 ||
                                         (data.backMoney && data.backMoney > 0)
-                                            ? "Đã thanh toán"
-                                            : "Chưa thanh toán",
+                                            ? "PAID"
+                                            : "NOT_PAID",
                                     total: data.total,
                                     backMoney: data.backMoney,
                                     pay: data.pay,
-                                    paymentTime: new Date().toISOString(),
+                                    paymentTime: today.toISOString(),
                                 },
                             },
                             {

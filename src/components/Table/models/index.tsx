@@ -33,7 +33,7 @@ export interface IColumn {
         | "number"
         | "string"
         | "object"
-        | "timestamp"
+        | "timestamptz"
         | "date"
         | "time"
         | "boolean"
@@ -49,7 +49,7 @@ export interface IColumn {
         | "number"
         | "string"
         | "object"
-        | "timestamp"
+        | "timestamptz"
         | "date"
         | "time"
         | "boolean"
@@ -123,4 +123,4 @@ export interface IFilterTable {
     onBooleanEnumHandleChange: (name: string, data: Array<{ key: boolean; value: string }>) => void;
 }
 
-export type TypeRecord = string | "date" | "timestamp" | "time" | boolean | "enum";
+export type TypeRecord = string | "date" | "timestamptz" | "time" | boolean | "enum";

@@ -70,7 +70,7 @@ const useTableQuery = (
                     }
                 } else if (
                     filters[key].type === "date" ||
-                    filters[key].type === "timestamp" ||
+                    filters[key].type === "timestamptz" ||
                     filters[key].type === "time"
                 ) {
                     if (!filters[key].value) {
@@ -86,7 +86,11 @@ const useTableQuery = (
                                 date.getDay() - 1
                             }`;
                         } else {
-                            variable[key] = filters[key].value as string;
+                            let date = new Date(filters[key].value as string);
+                            date.setHours(date.getHours() + 7);
+                            variable[`${key}1`] = date.toISOString();
+                            date.setDate(date.getDate() + 1);
+                            variable[`${key}2`] = date.toISOString();
                         }
                     }
                 } else if (filters[key].type === "object") {
@@ -113,32 +117,60 @@ const useTableQuery = (
                         filters[key].type !== "object" &&
                         filters[key].value.toString() !== ""
                     ) {
-                        filterString =
-                            filterString +
-                            " $" +
-                            key +
-                            ": " +
-                            (filters[key].type === "string"
-                                ? "String"
-                                : filters[key].type === "date"
-                                ? "date"
-                                : filters[key].type === "timestamp"
-                                ? "timestamp"
-                                : filters[key].type === "time"
-                                ? "time"
-                                : filters[key].type == "boolean"
-                                ? "boolean"
-                                : "Int") +
-                            ",";
-                        filterStringInline =
-                            filterStringInline +
-                            "{" +
-                            key +
-                            ": {" +
-                            (filters[key].type === "string" ? "_ilike" : "_eq") +
-                            ": $" +
-                            key +
-                            "}},";
+                        if (filters[key].type === "timestamptz") {
+                            filterString =
+                                filterString + " $" + `${key}1` + ": " + "timestamptz" + ",";
+                            filterString =
+                                filterString + " $" + `${key}2` + ": " + "timestamptz" + ",";
+                        } else {
+                            filterString =
+                                filterString +
+                                " $" +
+                                key +
+                                ": " +
+                                (filters[key].type === "string"
+                                    ? "String"
+                                    : filters[key].type === "date"
+                                    ? "date"
+                                    : filters[key].type === "timestamptz"
+                                    ? "timestamptz"
+                                    : filters[key].type === "time"
+                                    ? "time"
+                                    : filters[key].type == "boolean"
+                                    ? "boolean"
+                                    : "Int") +
+                                ",";
+                        }
+                        if (filters[key].type === "timestamptz") {
+                            filterStringInline =
+                                filterStringInline +
+                                "{" +
+                                `${key}` +
+                                ": {" +
+                                "_gte" +
+                                ": $" +
+                                `${key}1` +
+                                "}},";
+                            filterStringInline =
+                                filterStringInline +
+                                "{" +
+                                `${key}` +
+                                ": {" +
+                                "_lte" +
+                                ": $" +
+                                `${key}2` +
+                                "}},";
+                        } else {
+                            filterStringInline =
+                                filterStringInline +
+                                "{" +
+                                key +
+                                ": {" +
+                                (filters[key].type === "string" ? "_ilike" : "_eq") +
+                                ": $" +
+                                key +
+                                "}},";
+                        }
                     }
                     if (filters[key].type === "object") {
                         if (subFieldType === "enum") {

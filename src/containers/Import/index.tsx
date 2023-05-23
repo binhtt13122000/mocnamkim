@@ -750,15 +750,20 @@ const ImportForm = () => {
                                     quan: (result as any)[key].quan,
                                 };
                             });
+                            const today = new Date();
+                            today.setHours(today.getHours() + 7);
                             mutate(
                                 {
                                     object: {
-                                        createTime: new Date().toISOString(),
+                                        createTime: today.toISOString(),
                                         paymentTime: null,
                                         supplierid: watchPhone,
-                                        status: "Chưa thanh toán",
-                                        backMoney: getValues("backMoney"),
-                                        pay: getValues("pay"),
+                                        status:
+                                            (getValues("backMoney") || 0) < 0
+                                                ? "NOT_PAID"
+                                                : "NOT_PAY",
+                                        backMoney: getValues("backMoney") || 0,
+                                        pay: getValues("pay") || 0,
                                         total:
                                             importDetails
                                                 .map((x) => x.total)
@@ -832,15 +837,17 @@ const ImportForm = () => {
                                 };
                             });
                             if (newArr.length) {
+                                const today = new Date();
+                                today.setHours(today.getHours() + 7);
                                 mutate(
                                     {
                                         object: {
-                                            createTime: new Date().toISOString(),
-                                            paymentTime: new Date().toISOString(),
+                                            createTime: today.toISOString(),
+                                            paymentTime: today.toISOString(),
                                             backMoney: getValues("backMoney"),
                                             pay: getValues("pay"),
                                             supplierid: watchPhone,
-                                            status: "Đã thanh toán",
+                                            status: "PAID",
                                             total:
                                                 importDetails
                                                     .map((x) => x.total)

@@ -4967,6 +4967,101 @@ export type UpdateCustomerMutation = {
     update_customer_by_pk?: { __typename?: "customer"; id: number } | null;
 };
 
+export type GetBillInByTimeQueryVariables = Exact<{
+    _gte?: InputMaybe<Scalars["timestamptz"]>;
+    _lte?: InputMaybe<Scalars["timestamptz"]>;
+}>;
+
+export type GetBillInByTimeQuery = {
+    __typename?: "query_root";
+    Order_aggregate: {
+        __typename?: "Order_aggregate";
+        aggregate?: {
+            __typename?: "Order_aggregate_fields";
+            count: number;
+            sum?: {
+                __typename?: "Order_sum_fields";
+                total?: number | null;
+                pay?: number | null;
+            } | null;
+        } | null;
+    };
+};
+
+export type GetBillOutByTimeQueryVariables = Exact<{
+    _gte?: InputMaybe<Scalars["timestamptz"]>;
+    _lte?: InputMaybe<Scalars["timestamptz"]>;
+}>;
+
+export type GetBillOutByTimeQuery = {
+    __typename?: "query_root";
+    import_aggregate: {
+        __typename?: "import_aggregate";
+        aggregate?: {
+            __typename?: "import_aggregate_fields";
+            count: number;
+            sum?: {
+                __typename?: "import_sum_fields";
+                total?: number | null;
+                pay?: number | null;
+            } | null;
+        } | null;
+    };
+};
+
+export type GetDebtByTimeQueryVariables = Exact<{
+    _gte?: InputMaybe<Scalars["timestamptz"]>;
+    _lte?: InputMaybe<Scalars["timestamptz"]>;
+}>;
+
+export type GetDebtByTimeQuery = {
+    __typename?: "query_root";
+    Order_aggregate: {
+        __typename?: "Order_aggregate";
+        aggregate?: {
+            __typename?: "Order_aggregate_fields";
+            sum?: { __typename?: "Order_sum_fields"; backMoney?: number | null } | null;
+        } | null;
+    };
+};
+
+export type GetDebtByTimeOutQueryVariables = Exact<{
+    _gte?: InputMaybe<Scalars["timestamptz"]>;
+    _lte?: InputMaybe<Scalars["timestamptz"]>;
+}>;
+
+export type GetDebtByTimeOutQuery = {
+    __typename?: "query_root";
+    import_aggregate: {
+        __typename?: "import_aggregate";
+        aggregate?: {
+            __typename?: "import_aggregate_fields";
+            sum?: { __typename?: "import_sum_fields"; backMoney?: number | null } | null;
+        } | null;
+    };
+};
+
+export type GetProductByAmountQueryVariables = Exact<{
+    _gte?: InputMaybe<Scalars["timestamptz"]>;
+    _lte?: InputMaybe<Scalars["timestamptz"]>;
+}>;
+
+export type GetProductByAmountQuery = {
+    __typename?: "query_root";
+    product: Array<{
+        __typename?: "product";
+        id: number;
+        name: string;
+        orderdetails_aggregate: {
+            __typename?: "orderdetail_aggregate";
+            aggregate?: {
+                __typename?: "orderdetail_aggregate_fields";
+                sum?: { __typename?: "orderdetail_sum_fields"; total?: number | null } | null;
+            } | null;
+        };
+    }>;
+};
+
 export type CreateImportMutationVariables = Exact<{
     object?: InputMaybe<Import_Insert_Input>;
 }>;

@@ -139,7 +139,7 @@ export const TableData = <T extends Record<string, any>>(
                                     </StyledTableCell>
                                 );
                             }
-                            if (column.type === "timestamp") {
+                            if (column.type === "timestamptz") {
                                 return (
                                     <StyledTableCell
                                         width={column.width || 205}

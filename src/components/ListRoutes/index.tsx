@@ -4,7 +4,7 @@ import * as _ from "lodash";
 import { useLocation, useNavigate } from "react-router";
 
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
-import { ListItem, ListItemIcon, ListItemText, Box, useTheme } from "@mui/material";
+import { ListItem, ListItemText, Box, useTheme } from "@mui/material";
 
 import RoutesCollapse from "../RoutesCollapse";
 import { routes } from "./data";
@@ -155,13 +155,13 @@ const ListRoutes: React.FC<ListRoutesType> = ({ appbarHeight }) => {
                             }
                             selected={openChildren.fatherIndex === item.id}
                         >
-                            <ListItemIcon
+                            {/* <ListItemIcon
                                 style={{
                                     minWidth: "50px",
                                 }}
                             >
                                 <img src={item.icon} width={30} height={30} alt={"icon"} />
-                            </ListItemIcon>
+                            </ListItemIcon> */}
                             <ListItemText primary={`${item.name}`} />
                             {item?.children ? (
                                 openChildren.fatherIndex == item.id && openChildren.isOpen ? (

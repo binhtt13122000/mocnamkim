@@ -1,19 +1,11 @@
 import React from "react";
 
-import {
-    ListItemIcon,
-    ListItem,
-    Divider,
-    ListItemText,
-    List,
-    Collapse,
-    useTheme,
-} from "@mui/material";
+import { ListItem, Divider, ListItemText, List, Collapse, useTheme } from "@mui/material";
 
 export type RoutesCollapseType = {
     openChildren: { fatherIndex: number; selectedChildIndex: number; isOpen: boolean };
     fatherId: number;
-    item: { id: number; name: string; path: string; icon: string }[];
+    item: { id: number; name: string; path: string }[];
     handleListItemClick: (
         index: number,
         path: string | undefined,
@@ -60,13 +52,6 @@ const RoutesCollapse: React.FC<RoutesCollapseType> = (props: RoutesCollapseType)
                                 )
                             }
                         >
-                            <ListItemIcon
-                                style={{
-                                    minWidth: "50px",
-                                }}
-                            >
-                                <img src={itemChildren?.icon} width={30} height={30} alt={"icon"} />
-                            </ListItemIcon>
                             <ListItemText primary={`${itemChildren?.name}`} />
                         </ListItem>
                     );
