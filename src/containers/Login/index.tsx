@@ -6,12 +6,15 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
+import useAuth from "src/context/useAuth";
+
 interface LoginModel {
     username: string;
     password: string;
 }
 
 const Login = () => {
+    const { login } = useAuth();
     const {
         handleSubmit,
         register,
@@ -20,74 +23,7 @@ const Login = () => {
 
     const submitHandler = (data: LoginModel) => {
         if (data) {
-            //     mutate(
-            //         {
-            //             _eq: data.username,
-            //         },
-            //         {
-            //             onSuccess: async (user) => {
-            //                 if (!user || !user.account) {
-            //                     setError("username", { message: "" });
-            //                     setError("password", {
-            //                         message: "Tên đăng nhập hoặc mật khẩu không chính xác!",
-            //                     });
-            //                     return;
-            //                 }
-            //                 if (user.account.length != 1) {
-            //                     setError("username", { message: "" });
-            //                     setError("password", {
-            //                         message: "Tên đăng nhập và mật khẩu không chính xác!",
-            //                     });
-            //                     return;
-            //                 }
-            //                 const match = await bcrypt.compare(data.password, user.account[0].password);
-            //                 if (!match) {
-            //                     setError("username", { message: "" });
-            //                     setError("password", {
-            //                         message: "Tên đăng nhập hoặc mật khẩu không chính xác!",
-            //                     });
-            //                     return;
-            //                 }
-            //                 if (
-            //                     user.account[0].role.name.toLocaleUpperCase() !== "MANAGER" &&
-            //                     user.account[0].role.name.toLocaleUpperCase() !== "ADMIN"
-            //                 ) {
-            //                     setError("username", { message: "" });
-            //                     setError("password", { message: "Vai trò không phù hợp!" });
-            //                     return;
-            //                 }
-            //                 if (user.account[0].status === USER_ENUM.INACTIVE) {
-            //                     setError("username", { message: "" });
-            //                     setError("password", { message: "Người dùng đã bị khóa!" });
-            //                     return;
-            //                 }
-            //                 deleteAcc(
-            //                     {
-            //                         id: user.account[0]?.id,
-            //                         status: USER_ENUM.ONLINE,
-            //                     },
-            //                     {
-            //                         onSuccess: () => {
-            //                             if (
-            //                                 user.account[0].role.name.toLocaleUpperCase() === "MANAGER"
-            //                             ) {
-            //                                 localStorage.setItem("manager-user", JSON.stringify(user));
-            //                                 window.location.replace(
-            //                                     "https://capstoneposrestaurant.tech/manager/"
-            //                                 );
-            //                             }
-            //                             if (user.account[0].role.name.toLocaleUpperCase() === "ADMIN") {
-            //                                 localStorage.setItem("user", JSON.stringify(user));
-            //                                 window.location.replace(
-            //                                     "https://capstoneposrestaurant.tech/admin/account/"
-            //                                 );
-            //                             }
-            //                         },
-            //                     }
-            //                 );
-            //             },
-            //         }
-            //     );
+            login(data.username, data.password);
         }
     };
     return (

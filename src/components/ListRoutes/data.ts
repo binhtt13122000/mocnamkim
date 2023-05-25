@@ -37,7 +37,7 @@ export const routes = [
             {
                 id: 5.1,
                 name: "Báo cáo 1",
-                path: "/report1",
+                path: "/login",
             },
             {
                 id: 5.2,

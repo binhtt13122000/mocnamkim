@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 
 import logo from "src/assets/handcraft.png";
+import useAuth from "src/context/useAuth";
 
 type IAppBarWithDrawer = {
     appbarHeight: number;
@@ -26,11 +27,10 @@ const AppBarWithDrawer: React.FC<IAppBarWithDrawer> = ({ appbarHeight, handleDra
     const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
+
+    const { logout: logOutApp } = useAuth();
     const logout = () => {
-        if (window) {
-            window.localStorage.clear();
-            window.location.reload();
-        }
+        logOutApp();
     };
 
     return (

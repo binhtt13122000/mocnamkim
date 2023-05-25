@@ -25,7 +25,7 @@ const BarChartWithAmount = ({ min, max }: { min: string; max: string }) => {
                 datasets: [
                     {
                         label: "Số tiền",
-                        indexAxis: "y" as "x" | "y",
+                        indexAxis: "x" as "x" | "y",
                         data: data?.product
                             ?.filter((x) => x.orderdetails_aggregate?.aggregate?.sum?.total || 0)
                             .sort(

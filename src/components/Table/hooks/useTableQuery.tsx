@@ -1,6 +1,8 @@
 import { gql } from "graphql-request";
 import { useQuery } from "react-query";
 
+import useSnackbar from "src/components/Snackbar/useSnackbar";
+
 import { IColumn, Order, TypeRecord } from "../models";
 import useQueryClient from "./useQueryClient";
 
@@ -26,6 +28,7 @@ const useTableQuery = (
     defaultFilter?: string,
     defaultFilterForCount?: string
 ) => {
+    const showSnackbar = useSnackbar();
     offset = limit * offset;
     const queryClient = useQueryClient();
     const variable: Record<string, string | number | boolean> = {
@@ -256,6 +259,16 @@ const useTableQuery = (
                 variable
             );
             return result;
+        },
+        {
+            onError: () => {
+                showSnackbar({
+                    children: "Phiên làm việc đã hết hạn! Đang đăng xuất",
+                    severity: "error",
+                });
+                window.localStorage.clear();
+                window.location.reload();
+            },
         }
     );
     return result;

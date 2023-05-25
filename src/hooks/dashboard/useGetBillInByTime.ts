@@ -2,9 +2,11 @@ import { gql } from "graphql-request";
 import { useQuery } from "react-query";
 import { GetBillInByTimeQuery, GetBillInByTimeQueryVariables } from "src/generated/graphql";
 
+import useSnackbar from "src/components/Snackbar/useSnackbar";
 import useCustomQueryClient from "src/components/Table/hooks/useQueryClient";
 
 const useGetBillInByTime = (gte: string, lte: string, index?: number) => {
+    const showSnackbar = useSnackbar();
     const queryClient = useCustomQueryClient();
     const result = useQuery<GetBillInByTimeQuery, GetBillInByTimeQueryVariables>(
         ["GetBillInByTime" + index || "", gte, lte, index],
@@ -29,6 +31,16 @@ const useGetBillInByTime = (gte: string, lte: string, index?: number) => {
                 }
             );
             return result;
+        },
+        {
+            onError: () => {
+                showSnackbar({
+                    children: "Phiên làm việc đã hết hạn! Đang đăng xuất",
+                    severity: "error",
+                });
+                window.localStorage.clear();
+                window.location.reload();
+            },
         }
     );
     return result;
